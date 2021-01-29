@@ -21,5 +21,11 @@ router.get('/api/v1/productos', /*verifyToken*/ AlmacenController.getAllProdutos
 //  query Text Mongoose
 router.get('/api/v1/search', AlmacenController.findByQueryText)
 
+// search by ean
+router.get('/api/v1/ean/:ean', AlmacenController.findByEan)
+
+// search by alterno
+router.get('/api/v1/alterno/:alterno', AlmacenController.findByAlterno)
+
 
 module.exports = router

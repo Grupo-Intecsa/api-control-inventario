@@ -20,10 +20,15 @@ module.exports = {
                 '$text': {
                     '$search': text
                 }
-            },{}
-        )
+            }
+        ).sort({
+                "nombre": { "$meta": "textScore" }
+            })
         return queryText
-    }
+    },
+    findByEan: (ean) => Inventarios.find({ ean }),
+    findByAlterno: (alterno) => Inventarios.find({ alterno }),
+        
 
     
 
