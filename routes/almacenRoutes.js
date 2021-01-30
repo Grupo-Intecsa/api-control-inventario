@@ -27,5 +27,8 @@ router.get('/api/v1/ean/:ean', AlmacenController.findByEan)
 // search by alterno
 router.get('/api/v1/alterno/:alterno', AlmacenController.findByAlterno)
 
+// actualizar documento
+router.patch('/api/v1/update/:_id', AlmacenController.findByIdAndUpdate)
+
 
 module.exports = router

@@ -28,8 +28,12 @@ module.exports = {
     },
     findByEan: (ean) => Inventarios.find({ ean }),
     findByAlterno: (alterno) => Inventarios.find({ alterno }),
-        
-
-    
+    findByIdAndUpdate: (_id, payload) => {
+        const res = Inventarios.findByIdAndUpdate(_id, payload, function(err, doc){
+            if(err) throw new Error('No existe el documento')
+            doc.save()
+        })
+        return res 
+    }
 
 }
