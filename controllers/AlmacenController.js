@@ -90,6 +90,18 @@ module.exports = {
             res.status(400).json({ message: 'udapte fail'})
         }
 
+    },
+    findById: async(req, res) => {
+        const { _id } = req.params
+
+        try {
+            const response = await AlmacenServices.findById(_id)
+            if(response){
+                res.status(200).json({ message: response })
+            }
+        } catch (error) {
+            res.status(400).json({ message: error })
+        }
     }
 
 }

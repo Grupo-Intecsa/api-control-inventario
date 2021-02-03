@@ -7,6 +7,7 @@ const { AlmacenController } = require('../controllers');
 
 // midlewwares
 router.use(express.urlencoded({ extended: true }));
+
 router.use(express.json({ extended: true }));
 
 // Añadir un producto
@@ -29,6 +30,9 @@ router.get('/api/v1/alterno/:alterno', AlmacenController.findByAlterno)
 
 // actualizar documento
 router.patch('/api/v1/update/:_id', AlmacenController.findByIdAndUpdate)
+
+// buscar con ObjectId del modelo
+router.get('/api/v1/producto/:_id', AlmacenController.findById)
 
 
 module.exports = router

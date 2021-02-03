@@ -34,6 +34,7 @@ module.exports = {
             doc.save()
         })
         return res 
-    }
+    }, 
+    findById: (_id) => Inventarios.findById(_id).exec()
 
 }
