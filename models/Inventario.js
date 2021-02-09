@@ -10,20 +10,23 @@ const InventarioSchema = new Schema({
     ean: {
         type: String,
         unique: true,
-        required: false,
+        required: true,
+        trim: true
     },
     alterno: {
         type: String,
         required: false,
+        trim: true
     },
     nombre: {
         type: String,
-        required: false,
+        required: true,
     },
     // propiedades no obligatorias
     inventario: {
-        type: String,
+        type: Number,
         required: false,
+        trim: true
     },
     ubicacion: {
         type: String,
@@ -36,6 +39,12 @@ const InventarioSchema = new Schema({
     img: {
         type: String,
         required: false,
+        trim: true
+    },
+    unegocio: {
+        type: String,
+        required: false,
+        trim: true
     }
 
 }, { timestamps: true })
