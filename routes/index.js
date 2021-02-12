@@ -4,6 +4,7 @@ const { errors } = require('celebrate');
 
 
 router.use(require('./almacenRoutes'))
+router.use(require('./webRoutes'))
 
 
 router.use(errors())
