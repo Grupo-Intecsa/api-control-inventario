@@ -19,8 +19,6 @@ module.exports = {
             to: 'whatsapp:+5215524097656'
         }) 
         .then(message => message.sid )
-        
-        console.log(message)
 
         if(twilioMessage){
             return twilioMessage

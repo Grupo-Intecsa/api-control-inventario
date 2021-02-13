@@ -4,7 +4,6 @@ const { TwilioService } = require('../services')
 module.exports = {
     create: async(req, res ) => {
 
-        console.log(req.body)
         try {
 
             const twilioMessage = await TwilioService.send(req.body)
