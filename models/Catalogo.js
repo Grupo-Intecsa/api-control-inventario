@@ -17,6 +17,11 @@ const CatalogoSchema = new Schema({
         required: true,
         trim: true
     },
+    amazon: {
+        type: String,
+        required: false,
+        default: null
+    },
     sku: {
         type: String,
         required: false,
