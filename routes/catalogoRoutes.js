@@ -15,6 +15,9 @@ router.get('/api/v1/labels', CatalogoController.getAllLabels)
 
 // CRUD DE PRODUCTOS 
 
+// ruta para productos de inicio 
+router.get('/api/v1/catalog/sample', CatalogoController.sample)
+
 router.post('/api/v1/catalog/create', CatalogoController.create)
 router.get('/api/v1/catalog/products', CatalogoController.getAllProducts)
 

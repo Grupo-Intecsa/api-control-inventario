@@ -17,8 +17,6 @@ module.exports = {
     },
     insertMany: async(req, res) => {
 
-        console.log('de tu padre')
-
         try {
             
             const manyProductos = await CatalogoServices.insertMany(req.body)
@@ -36,11 +34,25 @@ module.exports = {
             
             const query = await CatalogoServices.getAllProducts()
             if(!query) throw new Error('No data')
-            
+
             return res.status(200).json({ message: query })
 
         } catch (error) {
             res.status(404).json({ error })
+        }
+    },
+    sample: async(_, res) => {
+
+        try {
+
+            const sample = await CatalogoServices.sample()
+    
+            if(!sample) throw new Error('No data in db')
+
+            return res.status(200).json({ message: sample })
+
+        } catch (error) {
+            res.status(400).json('Error on api sample')
         }
     },
 
@@ -62,7 +74,6 @@ module.exports = {
     getAllBrands: async(_, res) => {
         try {
             
-            console.log('atencion')
             const brands = await CatalogoServices.getAllBrands()
             if(!brands) throw new Error('hubo un error')
 

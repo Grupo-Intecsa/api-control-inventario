@@ -12,8 +12,38 @@ module.exports =  {
         })
         return response
     },
-
     getAllProducts: () => Catalogo.find({ isActive: true }),
+    sample: () => {
+
+        const p1 = new Promise((resolve, reject) => {
+                resolve(
+                    Catalogo.aggregate().match(
+                        {
+                            'isActive': true
+                        },
+                    ).sort(
+                        {
+                            'createdAt': 1
+                        }
+                    ).limit(6)
+                )
+        })
+
+        const p2 = new Promise((resolve, reject) => {
+            resolve(Catalogo.countDocuments({ "isActive": true }, function( err, count) {
+                return count
+            }))
+        })
+        
+        
+        return Promise.all([ p1, p2 ]).then(res => {
+            let response = {}
+            return(
+                {...response, prod: res[0], count: res[1] }
+            )
+        })
+
+    },
 
     // Brands
     createBrand: (props) => new Brand(props).save(),
