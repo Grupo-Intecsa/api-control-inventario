@@ -17,15 +17,10 @@ module.exports =  {
 
         const p1 = new Promise((resolve, reject) => {
                 resolve(
-                    Catalogo.aggregate().match(
-                        {
-                            'isActive': true
-                        },
-                    ).sort(
-                        {
-                            'createdAt': 1
-                        }
-                    ).limit(6)
+                    Catalogo.aggregate()
+                        .match({ 'isActive': true })
+                        .sort({ 'createdAt': 1 })
+                        .limit(6)
                 )
         })
 
@@ -47,7 +42,19 @@ module.exports =  {
 
     // Brands
     createBrand: (props) => new Brand(props).save(),
-    getAllBrands: () => Brand.find({ isActive: true }),
+    getAllBrands: async() => {
+
+        const p1 = await Brand.aggregate()
+                    .lookup({
+                        'from': 'catalogos', 
+                        'localField': '_id', 
+                        'foreignField': 'brand.brand_id', 
+                        'as': 'catalogos' 
+                    })
+            
+        return p1
+
+    },
 
     // Label
     createLabel: (props) => new Label(props).save(),
