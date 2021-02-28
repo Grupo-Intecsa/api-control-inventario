@@ -1,6 +1,24 @@
 const { CatalogoServices } = require('../services')
 
 module.exports = {
+    // Query text
+
+    findByQueryText: async(req, res) => {
+
+        const { text } = req.query
+
+        try {
+
+            const response = await CatalogoServices.findByQueryText(text)
+            if(!response) throw new Error('no hay datos')
+
+            res.status(200).json({ message: response })
+            
+        } catch (error) {
+            res.status(404).json({ ...error })
+        }
+
+    },
 
     create: async(req, res) => {
 

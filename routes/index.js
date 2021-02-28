@@ -8,5 +8,5 @@ router.use(require('./webRoutes'))
 router.use(require('./catalogoRoutes'))
 
 
-router.use(errors())
 module.exports = router
+router.use(errors())

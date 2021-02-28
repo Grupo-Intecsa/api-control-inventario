@@ -2,6 +2,23 @@ const { Catalogo, Label, Brand  } = require('../models/')
 
 module.exports =  {
 
+    findByQueryText: (text) => {
+
+        const queryText = Catalogo.aggregate().match(
+            {
+                '$text': {
+                    '$search': text
+                }
+            }
+        ).sort({
+                "model": { "$meta": "textScore" }
+            }
+            )
+            
+        return queryText
+
+    },
+
     create: (props) => new Catalogo(props).save(),
 
     insertMany: (payload) => {

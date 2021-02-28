@@ -19,12 +19,12 @@ router.get('/api/v1/labels/:id', CatalogoController.findLabelsAndGetDataById)
 
 // ruta para productos de inicio 
 router.get('/api/v1/catalog/sample', CatalogoController.sample)
-
 router.post('/api/v1/catalog/create', CatalogoController.create)
 router.get('/api/v1/catalog/products', CatalogoController.getAllProducts)
-
 router.post('/api/v1/catalog/insertall', CatalogoController.insertMany)
 
 
+//  query Text Mongoose
+router.get('/api/v1/catalog/search', CatalogoController.findByQueryText)
 
 module.exports = router
