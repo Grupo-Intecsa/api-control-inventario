@@ -87,6 +87,21 @@ module.exports = {
             res.status(400).json({ error })
         }
     },
+    findBrandAndGetDataById: async(req, res) => {
+            const { id } = req.params
+
+            try {
+                
+                const query = await CatalogoServices.findBrandAndGetDataById(id)
+                if(!query) throw new Error('do no found data')
+
+                return res.status(200).json({ message: query })
+
+            } catch (error) {
+                res.status(404).json({ ... error })
+            }
+
+    },
 
     // LABELS
     createLabel: async(req, res) => {
@@ -120,6 +135,21 @@ module.exports = {
             res.status(404).json({ error })
         }
     },
-    
+    findLabelsAndGetDataById: async(req, res) => {
+        const { id } = req.params
+
+        try {
+
+            const query = await CatalogoServices.findLabelsAndGetDataById(id)
+
+            if(!query) throw new Error('No data in db')
+
+            return res.status(200).json({ message: query })
+
+            
+        } catch (error) {
+            res.status(404).json({ ... error })
+        }
+    }
 
 }

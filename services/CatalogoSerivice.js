@@ -55,6 +55,7 @@ module.exports =  {
         return p1
 
     },
+    findBrandAndGetDataById: (id) => Catalogo.find({ "brand.brand_id": id }),
 
     // Label
     createLabel: (props) => new Label(props).save(),
@@ -68,8 +69,9 @@ module.exports =  {
             'foreignField': 'label.label_id', 
             'as': 'labels' 
         })
-        
+
         return p1
 
     },
+    findLabelsAndGetDataById: async(id) => Catalogo.find({ "label.label_id": id }),
 }

@@ -6,11 +6,13 @@ const { CatalogoController } = require('../controllers')
 // CRUD DE BRAND
 router.post('/api/v1/brand/create', CatalogoController.createBrand)
 router.get('/api/v1/brands', CatalogoController.getAllBrands)
+router.get('/api/v1/brands/:id', CatalogoController.findBrandAndGetDataById)
 
 
 // CUD DE LABEL
 router.post('/api/v1/labels/create', CatalogoController.createLabel)
 router.get('/api/v1/labels', CatalogoController.getAllLabels)
+router.get('/api/v1/labels/:id', CatalogoController.findLabelsAndGetDataById)
 
 
 // CRUD DE PRODUCTOS 
