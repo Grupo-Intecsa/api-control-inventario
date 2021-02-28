@@ -58,5 +58,18 @@ module.exports =  {
 
     // Label
     createLabel: (props) => new Label(props).save(),
-    getAllLabels: () => Label.find({ isActive: true }),
+    getAllLabels: async() => {
+
+        
+        const p1 = await Label.aggregate()
+        .lookup({
+            'from': 'catalogos', 
+            'localField': '_id', 
+            'foreignField': 'label.label_id', 
+            'as': 'labels' 
+        })
+        
+        return p1
+
+    },
 }

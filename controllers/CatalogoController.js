@@ -77,9 +77,8 @@ module.exports = {
             const brands = await CatalogoServices.getAllBrands()
             if(!brands) throw new Error('hubo un error')
 
-            // const done = {}
             let response = Object.values(brands).map(item => {
-                return { _id: item._id, title: item.title, slug: item.slug, count: item.catalogos.length }
+                return { _id: item._id, title: item.title, slug: item.slug, count: item.catalogos.length, is_active: item.isActive }
             })
 
             return res.status(200).json({ message: { response } })
@@ -111,7 +110,11 @@ module.exports = {
 
             const labelsQuery = await CatalogoServices.getAllLabels()
             
-            return res.status(200).json({ message: labelsQuery })
+            let response = Object.values(labelsQuery).map(item => {
+                return { _id: item._id, title: item.title, count: item.labels.length, is_active: item.isActive }
+            })
+
+            return res.status(200).json({ message: { response } })
             
         } catch (error) {
             res.status(404).json({ error })
