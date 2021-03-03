@@ -10,11 +10,11 @@ const CatalogoSchema = new Schema({
     },
     textSearch: {
         type: String,
-        required: true
+        required: false
     },
     ml: {
         type: String,
-        required: true,
+        required: false,
         trim: true
     },
     amazon: {

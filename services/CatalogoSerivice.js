@@ -36,7 +36,7 @@ module.exports =  {
                 resolve(
                     Catalogo.aggregate()
                         .match({ 'isActive': true })
-                        .sort({ 'createdAt': 1 })
+                        .sort({ 'createdAt': -1 })
                         .limit(6)
                 )
         })
