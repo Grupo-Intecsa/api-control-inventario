@@ -27,7 +27,7 @@ module.exports =  {
             resolve(
                 Catalogo.aggregate().match(
                     {
-                        "title": { "$regex": new RegExp(`${text}`) }
+                        "title": { "$regex": new RegExp(`${text}`, 'i') }
                     }
                 )
             )
