@@ -96,7 +96,7 @@ module.exports =  {
         return p1
 
     },
-    findBrandAndGetDataById: (id) => Catalogo.aggregate().match({ "brand.brand_id": id }),
+    findBrandAndGetDataById: (id) => Catalogo.find({ '$and': [ { "brand.brand_id": id }, { "isActive": true } ] }),
 
     // Label
     createLabel: (props) => new Label(props).save(),
@@ -111,10 +111,8 @@ module.exports =  {
             'as': 'labels' 
         }).sort({ "title": 1 }).match({ isActive: true})
 
-        console.log(p1)
-
         return p1
 
     },
-    findLabelsAndGetDataById: async(id) => Catalogo.aggregate().match({ "label.label_id": id }),
+    findLabelsAndGetDataById: async(id) => Catalogo.find({ '$and': [ { "label.label_id": id }, { "isActive": true } ] }),
 }

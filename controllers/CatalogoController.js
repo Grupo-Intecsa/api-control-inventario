@@ -96,7 +96,11 @@ module.exports = {
             if(!brands) throw new Error('hubo un error')
 
             let response = Object.values(brands).map(item => {
-                return { _id: item._id, title: item.title, slug: item.slug, count: item.catalogos.length, is_active: item.isActive }
+
+                // Seleccionamos solo los elementos que estan activos
+                let count = item.catalogos.filter(item => item.isActive === true ).length
+                
+                return { _id: item._id, title: item.title, slug: item.slug, count, is_active: item.isActive }
             })
 
             return res.status(200).json({ message: { response } })
@@ -144,7 +148,11 @@ module.exports = {
             const labelsQuery = await CatalogoServices.getAllLabels()
             
             let response = Object.values(labelsQuery).map(item => {
-                return { _id: item._id, title: item.title, count: item.labels.length, is_active: item.isActive }
+
+            // Seleccionamos solo los elementos que estan activos
+            const count = item.labels.filter(item => item.isActive === true ).length
+
+                return { _id: item._id, title: item.title, count, is_active: item.isActive }
             })
 
             return res.status(200).json({ message: { response } })
