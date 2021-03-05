@@ -17,7 +17,7 @@ module.exports =  {
                 ).sort({
                         "model": { "$meta": "textScore" }
                     }
-                    )
+                    ).match({ "isActive": true })
             )
         })
 
@@ -29,7 +29,7 @@ module.exports =  {
                     {
                         "title": { "$regex": new RegExp(`${text}`, 'i') }
                     }
-                )
+                ).match({ "isActive": true })
             )
         }) 
 
@@ -91,7 +91,7 @@ module.exports =  {
                         'localField': '_id', 
                         'foreignField': 'brand.brand_id', 
                         'as': 'catalogos' 
-                    })
+                    }).match({ "isActive": true })
             
         return p1
 
@@ -109,7 +109,7 @@ module.exports =  {
             'localField': '_id', 
             'foreignField': 'label.label_id', 
             'as': 'labels' 
-        }).sort({ "title": 1 })
+        }).sort({ "title": 1 }).match({ "isActive": true })
 
         return p1
 
