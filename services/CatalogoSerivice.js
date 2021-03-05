@@ -109,7 +109,7 @@ module.exports =  {
             'localField': '_id', 
             'foreignField': 'label.label_id', 
             'as': 'labels' 
-        }).sort({ "title": 1 }).match({ "isActive": true })
+        }).match({ "isActive": true }).sort({ "title": 1 })
 
         return p1
 
