@@ -83,6 +83,7 @@ module.exports =  {
 
     // Brands
     createBrand: (props) => new Brand(props).save(),
+
     getAllBrands: async() => {
 
         const p1 = await Brand.aggregate()
@@ -91,12 +92,11 @@ module.exports =  {
                         'localField': '_id', 
                         'foreignField': 'brand.brand_id', 
                         'as': 'catalogos' 
-                    }).match({ "isActive": true })
-            
+                    })
         return p1
 
     },
-    findBrandAndGetDataById: (id) => Catalogo.find({ "brand.brand_id": id }),
+    findBrandAndGetDataById: (id) => Catalogo.aggregate().match({ "brand.brand_id": id }).match({ "isActive": true }),
 
     // Label
     createLabel: (props) => new Label(props).save(),
@@ -109,10 +109,10 @@ module.exports =  {
             'localField': '_id', 
             'foreignField': 'label.label_id', 
             'as': 'labels' 
-        }).match({ "isActive": true }).sort({ "title": 1 })
+        }).sort({ "title": 1 })
 
         return p1
 
     },
-    findLabelsAndGetDataById: async(id) => Catalogo.find({ "label.label_id": id }),
+    findLabelsAndGetDataById: async(id) => Catalogo.aggregate().match({ "label.label_id": id }).match({ "isActive": true }),
 }
