@@ -42,6 +42,7 @@ module.exports =  {
         })
             
     },
+    // PRODUCTOS
 
     create: (props) => new Catalogo(props).save(),
 
@@ -80,6 +81,7 @@ module.exports =  {
         })
 
     },
+    getByModel: (id) => Catalogo.find({ model: id }),
 
     // Brands
     createBrand: (props) => new Brand(props).save(),

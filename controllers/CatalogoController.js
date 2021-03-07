@@ -73,6 +73,22 @@ module.exports = {
             res.status(400).json('Error on api sample')
         }
     },
+    getByModel: async(req, res) => {
+
+        const { id } = req.params
+
+        try {
+            
+            const producto = await CatalogoServices.getByModel(id)
+            if(Object.keys(producto).length === 0) throw new Error('product not found')
+
+            res.status(200).json({ message: producto })
+
+        } catch (error) {
+            
+            res.status(404).json({ message: 'product not found' })
+        }
+    },
 
     // BRAND
     createBrand: async(req, res) => {
