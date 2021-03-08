@@ -15,7 +15,8 @@ const CatalogoSchema = new Schema({
     ml: {
         type: String,
         required: false,
-        trim: true
+        trim: true,
+        default: null
     },
     amazon: {
         type: String,
