@@ -19,7 +19,7 @@ router.get('/api/v1/labels/:id', CatalogoController.findLabelsAndGetDataById)
 
 // ruta para productos de inicio 
 router.get('/api/v1/catalog/sample', CatalogoController.sample)
-// router.post('/api/v1/catalog/create', CatalogoController.create)
+router.post('/api/v1/catalog/create', CatalogoController.create)
 router.get('/api/v1/catalog/products', CatalogoController.getAllProducts)
 // router.post('/api/v1/catalog/insertall', CatalogoController.insertMany)
 router.get('/api/v1/catalog/product/:id', CatalogoController.getByModel)
