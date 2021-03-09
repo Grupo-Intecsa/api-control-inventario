@@ -1,16 +1,26 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose
 
-
 const CatalogoSchema = new Schema({
     isActive: {
         type: Boolean,
         default: true,
         required: false
     },
-    textSearch: {
+    isKit: {
+        type: Boolean, 
+        default: false,
+        required: false,
+    },
+    familia: {
         type: String,
-        required: false
+        default: null,
+        require: false
+    },
+    capacidad:{
+        type: String,
+        default: null,
+        require: false
     },
     ml: {
         type: String,
