@@ -3,6 +3,7 @@ const { Catalogo }  =require('./Catalogo')
 const { Label }  =require('./Label')
 const { Brand }  = require('./Brand')
 const { User } = require('./User')
+const { Familia } = require('./Familia')
 
 
 module.exports = {
@@ -10,5 +11,6 @@ module.exports = {
     Brand,
     Catalogo,
     Label,
-    User
+    User,
+    Familia
 }

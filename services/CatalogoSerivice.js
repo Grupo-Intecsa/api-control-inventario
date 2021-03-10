@@ -1,4 +1,4 @@
-const { Catalogo, Label, Brand  } = require('../models/')
+const { Catalogo, Label, Brand, Familia } = require('../models/')
 
 module.exports =  {
     
@@ -71,12 +71,18 @@ module.exports =  {
                 return count
             }))
         })
+
+        const p3 = new Promise((resolve, _) => {
+            resolve(Familia.countDocuments({ "isActive": true }, function(err, count){
+                return count
+            }))
+        })
         
         
-        return Promise.all([ p1, p2 ]).then(res => {
+        return Promise.all([ p1, p2, p3 ]).then(res => {
             let response = {}
             return(
-                {...response, prod: res[0], count: res[1] }
+                {...response, prod: res[0], count: Number(res[1]) + Number(res[2]) }
             )
         })
 
