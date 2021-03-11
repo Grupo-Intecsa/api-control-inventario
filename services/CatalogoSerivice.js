@@ -179,5 +179,26 @@ module.exports =  {
         return response
 
     },
-    findLabelsAndGetDataById: async(id) => Catalogo.find({ '$and': [ { "label.label_id": id }, { "isActive": true } ] }),
+    // findLabelsAndGetDataById: async(id) => Catalogo.find({ '$and': [ { "label.label_id": id }, { "isActive": true } ] }),
+    findLabelsAndGetDataById: async(id) => {
+
+        
+        let p1 = new Promise((resolve, reject) => {
+            resolve(
+                Catalogo.find({ '$and': [ { "label.label_id": id }, { "isActive": true } ] }),
+            )
+        })
+
+        let p2 = new Promise((resolve, reject) => {
+            resolve(
+                Familia.find({ '$and': [ { "label.label_id": id }, { "isActive": true } ] }),
+            )
+        })
+
+        let response = Promise.all([ p1, p2 ]).then(res => {
+            return Object.assign(res[0], res[1])
+        })
+
+        return response
+    },
 }
