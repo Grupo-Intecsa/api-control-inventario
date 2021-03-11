@@ -1,4 +1,12 @@
+const { compareSync } = require('bcrypt')
 const { Catalogo, Label, Brand, Familia } = require('../models/')
+var _ = require('lodash')
+
+function customizer(objValue, srcValue) {
+      if (_.isArray(objValue)) {
+        return objValue.concat(srcValue);
+      }
+    }
 
 module.exports =  {
     
@@ -78,7 +86,7 @@ module.exports =  {
             }))
         })
         
-        
+
         return Promise.all([ p1, p2, p3 ]).then(res => {
             let response = {}
             return(
@@ -94,14 +102,31 @@ module.exports =  {
 
     getAllBrands: async() => {
 
-        const p1 = await Brand.aggregate()
+        const catalogos = await Brand.aggregate()
                     .lookup({
                         'from': 'catalogos', 
                         'localField': '_id', 
                         'foreignField': 'brand.brand_id', 
                         'as': 'catalogos' 
                     })
-        return p1
+
+        const familias = await Brand.aggregate()                    
+                    .lookup({
+                        'from': 'familias',
+                        'localField': '_id',
+                        'foreignField': 'brand.brand_id',
+                        'as': 'catalogos'
+                    })
+
+        
+        const response =  Promise.all([ catalogos, familias  ]).then(res =>{
+            
+            let lodash = _.mergeWith(res[0], res[1], customizer);
+            return lodash
+        })
+
+        return response
+
 
     },
     findBrandAndGetDataById: (id) => Catalogo.find({ '$and': [ { "brand.brand_id": id }, { "isActive": true } ] }),
@@ -111,7 +136,7 @@ module.exports =  {
     getAllLabels: async() => {
 
         
-        const p1 = await Label.aggregate()
+        const catalogos = await Label.aggregate()
         .lookup({
             'from': 'catalogos', 
             'localField': '_id', 
@@ -119,7 +144,21 @@ module.exports =  {
             'as': 'labels' 
         }).sort({ "title": 1 }).match({ isActive: true})
 
-        return p1
+        const familias = await Label.aggregate()
+        .lookup({
+            'from': 'familias', 
+            'localField': '_id', 
+            'foreignField': 'label.label_id', 
+            'as': 'labels' 
+        }).sort({ "title": 1 }).match({ isActive: true})
+
+        const response =  Promise.all([ catalogos, familias  ]).then(res =>{
+            
+            let lodash = _.mergeWith(res[0], res[1], customizer);
+            return lodash
+        })
+
+        return response
 
     },
     findLabelsAndGetDataById: async(id) => Catalogo.find({ '$and': [ { "label.label_id": id }, { "isActive": true } ] }),
