@@ -48,7 +48,10 @@ module.exports = {
         })
 
         const response = Promise.all([ query, count ]).then(res => {
-            return { response: res[0], info: res[1] }
+
+            console.log(res[1])
+
+            return { response: res[0], info: { total: res[1] } }
         })
 
         return response
