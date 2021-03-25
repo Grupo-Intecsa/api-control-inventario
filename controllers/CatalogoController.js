@@ -4,12 +4,10 @@ module.exports = {
     // Query text
 
     findByQueryText: async(req, res) => {
-
-        const { text } = req.query
-
+        console.log(req.query)
         try {
 
-            const response = await CatalogoServices.findByQueryText(text)
+            const response = await CatalogoServices.findByQueryText(req.query)
             if(!response) throw new Error('no hay datos')
 
             res.status(200).json({ message: response })
@@ -105,7 +103,8 @@ module.exports = {
         }
 
     },
-    getAllBrands: async(_, res) => {
+    getAllBrands: async(req, res) => {
+
         try {
             
             const brands = await CatalogoServices.getAllBrands()
@@ -125,12 +124,11 @@ module.exports = {
             res.status(400).json({ error })
         }
     },
-    findBrandAndGetDataById: async(req, res) => {
-            const { id } = req.params
+    findByBrandIdCatalogo: async(req, res) => {
 
             try {
                 
-                const query = await CatalogoServices.findBrandAndGetDataById(id)
+                const query = await CatalogoServices.findByBrandIdCatalogo(req)
                 if(!query) throw new Error('do no found data')
 
                 return res.status(200).json({ message: query })
@@ -139,6 +137,33 @@ module.exports = {
                 res.status(404).json({ ... error })
             }
 
+    },
+    findByBrandIdFamilia: async(req, res) => {
+        
+        try{
+
+            const query = await CatalogoServices.findByBrandIdFamilia(req)
+            if(!query) throw new Error('no data found')
+
+            return res.status(200).json({ message: query })
+
+        } catch (error){
+            res.status(400).json({ ... error  })
+        }
+    },
+    getEtiquetaByBrandId: async(req, res) => {
+
+
+        try {
+            
+            const query = await CatalogoServices.getEtiquetaByBrandId(req.params)
+            if(!query) res.status(400).json({ message: 'error '})
+
+            return res.status(200).json({ message: query })
+
+        } catch (error) {
+            res.status(400).json({ error })
+        }
     },
 
     // LABELS
@@ -177,12 +202,11 @@ module.exports = {
             res.status(404).json({ error })
         }
     },
-    findLabelsAndGetDataById: async(req, res) => {
-        const { id } = req.params
-
+    findByLabelIdCatalogo: async(req, res) => {
+                
         try {
 
-            const query = await CatalogoServices.findLabelsAndGetDataById(id)
+            const query = await CatalogoServices.findByLabelIdCatalogo(req)
 
             if(!query) throw new Error('No data in db')
 
@@ -192,6 +216,20 @@ module.exports = {
         } catch (error) {
             res.status(404).json({ ... error })
         }
+    },
+    findByLabelIdFamilia: async(req, res) => {
+
+        try {
+
+            const query = await CatalogoServices.findByLabelIdFamilia(req)
+            if(!query) throw new Error('No data in db')
+
+            return res.status(200).json({ message: query })
+            
+        } catch (error) {
+            res.status(400).json({ ... error })
+        }
+
     }
 
 }

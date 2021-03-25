@@ -18,6 +18,10 @@ const FamiliaSchema = new Schema({
         default: null,
         require: false
     },
+    compatible: {
+        type: Array,
+        require: false
+    },
     capacidad:{
         type: String,
         default: null,

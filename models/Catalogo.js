@@ -77,6 +77,10 @@ const CatalogoSchema = new Schema({
     urldata:{
         type: Array,
         required: false
+    },
+    compatible: {
+        type: Array,
+        required: false
     }
 }, { timestamps: true })
 

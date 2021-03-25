@@ -1,6 +1,6 @@
-const { compareSync } = require('bcrypt')
+const mongoose = require('mongoose')
 const { Catalogo, Label, Brand, Familia } = require('../models/')
-var _ = require('lodash')
+var _ = require('lodash');
 
 function customizer(objValue, srcValue) {
       if (_.isArray(objValue)) {
@@ -10,10 +10,37 @@ function customizer(objValue, srcValue) {
 
 module.exports =  {
     
-    findByQueryText: async(text) => {
+    findByQueryText: async({ limit, text, offset }) => {
 
-        // buscamos primero por text index
-        
+        // buscamos primero por text index        
+        const c1 = new Promise(( resolve, _ ) => {
+            resolve(
+                Catalogo.aggregate().match(
+                    {
+                        '$text': {
+                            '$search': text
+                        }
+                    }
+                ).sort({
+                        "model": { "$meta": "textScore" },
+                    }
+                    ).match({ "isActive": true }).count('total')
+            )
+        }).catch(err => console.log(err))
+
+        // buscamos por regex
+
+        const c2 = new Promise((resolve, _ ) => {
+            resolve(
+                Catalogo.aggregate().match(
+                    {
+                        "title": { "$regex": new RegExp(`${text}`, 'i') }
+                    }
+                ).match({ "isActive": true }).count('total')
+            )
+        }).catch(err => console.log(err))
+
+
         const p1 = new Promise(( resolve, _ ) => {
             resolve(
                 Catalogo.aggregate().match(
@@ -25,9 +52,12 @@ module.exports =  {
                 ).sort({
                         "model": { "$meta": "textScore" }
                     }
-                    ).match({ "isActive": true })
+                    )
+                    .match({ "isActive": true })
+                    .skip(Number(offset))
+                    .limit(Number(limit))
             )
-        })
+        }).catch(err => console.log(err))
 
         // buscamos por regex
 
@@ -37,17 +67,25 @@ module.exports =  {
                     {
                         "title": { "$regex": new RegExp(`${text}`, 'i') }
                     }
-                ).match({ "isActive": true })
+                )
+                .match({ "isActive": true })
+                .skip(Number(offset))
+                .limit(Number(limit))
             )
-        }) 
+        }).catch(err => console.log(err))
 
         // unimos las dos busquedas en un solo object
+    
+        return Promise.all([ p1, p2, c1, c2 ]).then( res => {
 
-        return Promise.all([ p1, p2 ]).then( res => {
+            const totalesArray = res[2].concat(res[3])
+            const count = totalesArray.reduce((acc, val) => acc.total + val.total )
+            
+            const respArra = res[0].concat(res[1])
 
-            let resultArra = Object.assign(res[0], res[1])
-            return resultArra
+            return { response: respArra, info: { total: count} }
         })
+        .catch(res => console.log(res))
             
     },
     // PRODUCTOS
@@ -70,7 +108,7 @@ module.exports =  {
                     Catalogo.aggregate()
                         .match({ 'isActive': true })
                         .sort({ 'createdAt': -1 })
-                        .limit(6)
+                        .limit(8)
                 )
         })
 
@@ -129,26 +167,112 @@ module.exports =  {
 
 
     },
-    findBrandAndGetDataById: (id) => {
+    findByBrandIdCatalogo: async(req) => {
+
+        const { id } = req.params
+        const { limit, offset } = req.query
+
+        // obtenemos el total de documentos de la coleccion de catalogos, por brand 
+
+        let p0 = new Promise((resolve, reject) => {
+                resolve(
+                    Catalogo.aggregate()
+                        .match({
+                            $and: [ ({ "brand.brand_id": mongoose.Types.ObjectId(id) }), { "isActive": true }]
+                        })
+                        .count('total')
+
+                )
+        })
+
+        // buscamos los documentos activos por marca en la coleccion de catalogos
+
         let p1 = new Promise((resolve, reject) => {
+    
             resolve(
-                Catalogo.find({ '$and': [ { "brand.brand_id": id }, { "isActive": true } ] }),
+                Catalogo.aggregate()
+                    .match({ '$and': [ { "brand.brand_id": mongoose.Types.ObjectId(id) }, { "isActive": true } ] })
+                    .skip(Number(offset))
+                    .limit(Number(limit))
             )
         })
 
-        let p2 = new Promise((resolve, reject) => {
-            resolve(
-                Familia.find({ '$and': [ { "brand.brand_id": id }, { "isActive": true } ] }),
-            )
-        })
+        let response = Promise.all([ p0, p1 ])
+        .then(res => {
 
-        let response = Promise.all([ p1, p2 ]).then(res => {
-            return Object.assign(res[0], res[1])
+            let count
+            if( res[0].length > 0 ){
+                count = res[0].reduce((acc, val) => acc.concat(val))
+            }else if(res[0].length === 0){
+                count = { total: 0 }                
+            }
+            
+            return { response: res[1], info: count }
         })
+        .catch(err => console.log(err))
 
         return response
 
     },
+    // FIND BRAND BY ID FAMILIA
+    findByBrandIdFamilia: async(req) => {
+        
+        const { id } = req.params
+        const { limit, offset } = req.query
+
+        // obtenemos el total de documentos de la coleccion de catalogos, por brand 
+
+        let p0 = new Promise((resolve, reject) => {
+                resolve(
+                    Familia.aggregate()
+                        .match({
+                            $and: [ ({ "brand.brand_id": mongoose.Types.ObjectId(id) }), { "isActive": true }]
+                        })
+                        .count('total')
+
+                )
+        })
+
+        // buscamos los documentos activos por marca en la coleccion de catalogos
+
+        let p1 = new Promise((resolve, reject) => {
+    
+            resolve(
+                Familia.aggregate()
+                    .match({ '$and': [ { "brand.brand_id": mongoose.Types.ObjectId(id) }, { "isActive": true } ] })
+                    .sort({ 'createdAt': -1 })
+                    .skip(Number(offset)) 
+                    .limit(Number(limit))
+            )
+        })
+
+        let response = Promise.all([ p0, p1 ])
+        .then(res => {
+        
+            return { response: res[1], info: res[0]  }
+        })
+        .catch(err => console.log(err))
+
+        return response
+    },
+    getEtiquetaByBrandId: ({ id }) => {
+
+        let p1 =  new Promise((resolve, reject) => {
+            resolve(
+                Familia.aggregate()
+                    .match({ '$and' : [ { "brand.brand_id": mongoose.Types.ObjectId(id)}, { "isActive": true } ] })
+                    .project({ 'familia': 1, 'urlfoto': 1, '_id': 0 })
+                    
+            )
+        })
+
+        let response = Promise.all([ p1 ]).then(res => {
+            return res[0]
+        })
+
+        return response
+    },
+
 
     // Label
     createLabel: (props) => new Label(props).save(),
@@ -180,25 +304,68 @@ module.exports =  {
 
     },
     // findLabelsAndGetDataById: async(id) => Catalogo.find({ '$and': [ { "label.label_id": id }, { "isActive": true } ] }),
-    findLabelsAndGetDataById: async(id) => {
+    findByLabelIdCatalogo: async(req) => {
 
+        const { id } = req.params
+        const { limit, offset } = req.query
+
+        // numero de documentos
+        let p0 = new Promise((resolve, reject) => {
+            resolve(
+                Catalogo.aggregate()
+                    .match({ '$and': [{ "label.label_id": mongoose.Types.ObjectId(id)}, { "isActive": true } ]})
+                    .count('total')
+            )
+        }) 
         
+        // documentos por id de familia
         let p1 = new Promise((resolve, reject) => {
             resolve(
-                Catalogo.find({ '$and': [ { "label.label_id": id }, { "isActive": true } ] }),
+                Familia.aggregate()
+                    .match({ '$and': [ { "label.label_id": mongoose.Types.ObjectId(id) }, { "isActive": true } ] })
+                    .skip(Number(offset))
+                    .limit(Number(limit))
+
             )
         })
 
-        let p2 = new Promise((resolve, reject) => {
-            resolve(
-                Familia.find({ '$and': [ { "label.label_id": id }, { "isActive": true } ] }),
-            )
-        })
-
-        let response = Promise.all([ p1, p2 ]).then(res => {
-            return Object.assign(res[0], res[1])
+        let response = Promise.all([ p0, p1 ]).then(res => {            
+            return { response: res[1], info: res[0] }
         })
 
         return response
     },
+    findByLabelIdFamilia: (req) => {
+
+        
+        const { id } = req.params
+        const { limit, offset } = req.query
+
+        // numero de documentos
+        let p0 = new Promise((resolve, reject) => {
+            resolve(
+                Familia.aggregate()
+                    .match({ '$and': [{ "label.label_id": mongoose.Types.ObjectId(id)}, { "isActive": true } ]})
+                    .count('total')
+            )
+        }) 
+        
+        // documentos por id de familia
+        let p1 = new Promise((resolve, reject) => {
+            resolve(
+                Familia.aggregate()
+                    .match({ '$and': [ { "label.label_id": mongoose.Types.ObjectId(id) }, { "isActive": true } ] })
+                    .skip(Number(offset))
+                    .limit(Number(limit))
+
+            )
+        })
+
+        let response = Promise.all([ p0, p1 ]).then(res => {            
+            return { response: res[1], info: res[0] }
+        })
+
+        return response
+
+    }
 }
