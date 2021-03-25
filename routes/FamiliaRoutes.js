@@ -11,6 +11,8 @@ const { FamiliasController } = require('../controllers')
 router.post('/api/v1/familia/insertall', FamiliasController.insertMany)
 
 // All ProductoFamilia
-router.get('/api/v1/familia', FamiliasController.getAllProdutos)
+// router.get('/api/v1/familia', FamiliasController.getAllProdutos)
+
+router.get('/api/v1/familia', FamiliasController.getFamiliaByTitleId)
 
 module.exports = router 

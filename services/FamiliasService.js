@@ -1,4 +1,5 @@
 const { Familia } = require('../models/Familia')
+const mongoose = require('mongoose')
 
 module.exports = {
     create: (payload) => new Familia(payload).save(),
@@ -26,6 +27,34 @@ module.exports = {
             })
         return queryText
     },
+    getFamiliaByTitleId: ({ id, limit, offset }) => {
+
+        const query = new Promise((resolve, reject) => {
+
+            resolve(
+                Familia.aggregate()
+                .match({ $and: [ { 'parent.catalogo_id': mongoose.Types.ObjectId(id)  }, { "isActive": true }]})
+                .skip(Number(offset))
+                .limit(Number(limit))
+            )
+        })
+
+        const count = new Promise((resolve, reject) => {
+            resolve(
+                Familia.aggregate()
+                .match({ $and: [ { 'parent.catalogo_id': mongoose.Types.ObjectId(id)  }, { "isActive": true }]})
+                .count("total")
+            )
+        })
+
+        const response = Promise.all([ query, count ]).then(res => {
+            return { response: res[0], info: res[1] }
+        })
+
+        return response
+
+    },
+    
     findByEan: (ean) => Familia.find({ ean }),
     findByAlterno: (alterno) => Familia.find({ alterno }),
     findByIdAndUpdate: (_id, payload) => {
