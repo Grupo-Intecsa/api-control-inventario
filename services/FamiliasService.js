@@ -49,9 +49,9 @@ module.exports = {
 
         const response = Promise.all([ query, count ]).then(res => {
 
-            console.log(res[1])
+            const count = res[1].reduce((acc, val) => acc + val)
 
-            return { response: res[0], info: { total: res[1] } }
+            return { response: res[0], info: count }
         })
 
         return response
