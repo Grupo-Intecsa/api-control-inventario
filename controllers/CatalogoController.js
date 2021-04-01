@@ -1,3 +1,4 @@
+const { rest } = require('lodash')
 const { CatalogoServices } = require('../services')
 
 module.exports = {
@@ -85,6 +86,55 @@ module.exports = {
         } catch (error) {
             
             res.status(404).json({ message: 'product not found' })
+        }
+    },
+    getCatalogByID: async(req, res) => {
+        
+        const { id } = req.params
+        console.log(id)
+
+        try {
+
+            const response = await CatalogoServices.getCatalogByID(id)
+            if(!response) res.status(400).json({ message: 'product not found' })
+
+            return res.status(200).json({ message: response })
+
+        } catch (error) {
+            res.status(400).json({ error })
+        }
+    },
+
+    getFamiliaByID: async(req, res) => {
+        
+        const { id } = req.params
+        console.log(id)
+
+        try {
+
+            const response = await CatalogoServices.getFamiliaByID(id)
+            if(!response) res.status(400).json({ message: 'product not found' })
+
+            return res.status(200).json({ message: response })
+
+        } catch (error) {
+            res.status(400).json({ error })
+        }
+    },
+    getProductsByParentId: async(req, res) => {
+
+        const { id } = req.params
+        
+        try {
+            
+            const response = await CatalogoServices.getProductsByParentId(id)
+            if(!response) res.status(400).json({ message: 'producto not found' })
+
+            return res.status(200).json({ message: response })
+            
+
+        } catch (error) {
+            res.status(400).json({ error })
         }
     },
 

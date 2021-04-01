@@ -134,7 +134,15 @@ module.exports =  {
 
     },
     getByModel: (id) => Catalogo.find({ model: id }),
-
+    getCatalogByID: (id) => {
+        const catRes =  Catalogo.findById(id)
+        return catRes
+    },
+    getFamiliaByID: (id) => {
+        const catRes =  Familia.findById(id)
+        return catRes
+    },
+    getProductsByParentId: (id) => Familia.aggregate().match({ "parent.catalogo_id": mongoose.Types.ObjectId(id) }).sort({ "capacidad": 1 }),
     // Brands
     createBrand: (props) => new Brand(props).save(),
 

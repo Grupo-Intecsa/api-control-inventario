@@ -21,8 +21,8 @@ router.get('/api/v1/labels/', CatalogoController.getAllLabels)
 router.get('/api/v1/labels/catalogo/:id', CatalogoController.findByLabelIdCatalogo)
 router.get('/api/v1/labels/familia/:id', CatalogoController.findByLabelIdFamilia)
 
-// SOLO NOMBRE DE CADA FAMILIA
 router.get('/api/v1/brand/familia/etiqueta/:id', CatalogoController.getEtiquetaByBrandId)
+router.get('/api/v1/label/familia/parent/:id', CatalogoController.getProductsByParentId)
 
 // CRUD DE PRODUCTOS 
 
@@ -30,6 +30,9 @@ router.get('/api/v1/brand/familia/etiqueta/:id', CatalogoController.getEtiquetaB
 router.get('/api/v1/catalog/sample', CatalogoController.sample)
 router.get('/api/v1/catalog/products', CatalogoController.getAllProducts)
 router.get('/api/v1/catalog/product/:id', CatalogoController.getByModel)
+
+router.get('/api/v1/catalog/detalle/product/:id', CatalogoController.getCatalogByID)
+router.get('/api/v1/familia/detalle/product/:id', CatalogoController.getFamiliaByID)
 
 router.post('/api/v1/catalog/insertall', verifyToken, CatalogoController.insertMany)
 router.post('/api/v1/catalog/create', verifyToken, CatalogoController.create)
