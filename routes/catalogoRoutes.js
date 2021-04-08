@@ -41,4 +41,5 @@ router.post('/api/v1/catalog/create', verifyToken, CatalogoController.create)
 //  query Text Mongoose
 router.get('/api/v1/catalog/search', CatalogoController.findByQueryText)
 
+
 module.exports = router

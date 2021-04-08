@@ -1,4 +1,5 @@
 require('dotenv').config()
+const fetch = require('node-fetch');
 
 // de twilio whatsapp
 
@@ -49,6 +50,53 @@ module.exports = {
 
         return send 
         
+    },
+    createItemOnBoard: async(payload) => {
+
+
+        console.log(payload)
+
+        const { email, name, phone, subject, coment, urlValid  } = payload
+        
+        // TODO pasarle datos de nombre, label, email, telefono, comentario
+
+        let query4 = 'mutation ($myItemName: String!, $columnVals: JSON!) { create_item (board_id:202977424, item_name:$myItemName, column_values: $columnVals ) { id } }';
+        let vars = {
+            "myItemName" : name,
+            "columnVals": JSON.stringify({
+                "status": { "label": subject },  
+                "text3": email,
+                "text": phone,
+                "comentario": `mensaje: ${coment} archivo adjunto: ${urlValid}`                
+            })        
+                    
+        };  
+
+        // const uploadQuery = 'mutation { add_file_to_column (item_id: 1191458915, column_id: "file", $file: File!) { id } }'
+
+        const response = new Promise((resolve, reject) => {
+            resolve(
+            fetch("https://api.monday.com/v2", {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization' : process.env.MONDAYAPIAUTH
+            },
+            body: JSON.stringify({
+                'query' : query4,
+                'variables': JSON.stringify(vars)
+            })
+            })
+            .then(res => res.json())
+            .then(res => res)
+            )
+        })
+            // .then(res => console.log(JSON.stringify(res, null, 2)));
+            
+            const p1 = Promise.all([response]).then(res => res[0])
+            
+            return p1
+
     }
 }
 

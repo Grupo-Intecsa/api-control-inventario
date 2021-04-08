@@ -1,8 +1,14 @@
 # api-control-inventario
 Backend con Mongoose para el control de inventarios
 
+## query para monday
 
-Lista de pendientes:
+````javascript  
+    let query3 = 'mutation{ create_item (board_id:202977424, item_name:\"Enviado desde la api de grupo intecsa!\") { id } }';
+    let getOnBoardId = 'query { boards(ids: 202977424 ) { items(limit: 10) { column_values { id value } } } }
+````
+
+## Lista de pendientes:
 
 * crear para modelo de Labels un apartado de descripcion corta
 * Obtener desde la api el numero piezas de categoria y marca (en proceso)

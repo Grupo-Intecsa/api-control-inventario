@@ -8,4 +8,8 @@ router.post('/api/v1/whatsapp', MessageController.whatspapp)
 router.post('/api/v1/email', MessageController.email)
 
 
+router.post('/api/v1/monday/create', MessageController.createItemOnBoard)
+router.post('/api/v1/monday/getboard', MessageController.getBoard)
+
+
 module.exports = router
