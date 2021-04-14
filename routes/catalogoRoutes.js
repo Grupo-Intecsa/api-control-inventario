@@ -27,7 +27,7 @@ router.get('/api/v1/label/familia/parent/:id', CatalogoController.getProductsByP
 // CRUD DE PRODUCTOS 
 
 // ruta para productos de inicio 
-router.get('/api/v1/catalog/sample', CatalogoController.sample)
+router.get('/api/v1/catalog/sample/', CatalogoController.sample)
 router.get('/api/v1/catalog/products', CatalogoController.getAllProducts)
 router.get('/api/v1/catalog/product/:id', CatalogoController.getByModel)
 

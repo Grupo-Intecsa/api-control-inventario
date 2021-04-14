@@ -58,11 +58,13 @@ module.exports = {
             res.status(404).json({ error })
         }
     },
-    sample: async(_, res) => {
+    sample: async(req, res) => {
+
+        console.log(req.query)
 
         try {
 
-            const sample = await CatalogoServices.sample()
+            const sample = await CatalogoServices.sample(req.query)
     
             if(!sample) throw new Error('No data in db')
 

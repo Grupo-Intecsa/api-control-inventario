@@ -101,14 +101,17 @@ module.exports =  {
         return response
     },
     getAllProducts: () => Catalogo.find({ isActive: true }),
-    sample: async() => {
+    sample: async({ limit, offset }) => {
+
+        console.log('sample-limit', limit)
 
         const p1 = new Promise((resolve, _) => {
                 resolve(
                     Catalogo.aggregate()
                         .match({ 'isActive': true })
                         .sort({ 'createdAt': -1 })
-                        .limit(8)
+                        .skip(Number(offset))
+                        .limit(Number(limit))
                 )
         })
 
