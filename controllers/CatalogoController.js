@@ -282,6 +282,19 @@ module.exports = {
             res.status(400).json({ ... error })
         }
 
-    }
+    },
+    updateOneModel: async(req, res) => {
+
+        try {
+            
+            const update = await CatalogoServices.updateOneModel(req)
+            if(!update) throw new Error('No se puedo actualizar')
+
+            return res.status(200).json({ message: update})
+
+        } catch (error) {
+            res.status(400).json({ error })
+        }
+    }   
 
 }

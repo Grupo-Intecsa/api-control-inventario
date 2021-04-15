@@ -30,12 +30,14 @@ router.get('/api/v1/label/familia/parent/:id', CatalogoController.getProductsByP
 router.get('/api/v1/catalog/sample/', CatalogoController.sample)
 router.get('/api/v1/catalog/products', CatalogoController.getAllProducts)
 router.get('/api/v1/catalog/product/:id', CatalogoController.getByModel)
+router.patch('/api/v1/catalog/product/:id', CatalogoController.updateOneModel)
 
 router.get('/api/v1/catalog/detalle/product/:id', CatalogoController.getCatalogByID)
 router.get('/api/v1/familia/detalle/product/:id', CatalogoController.getFamiliaByID)
 
 router.post('/api/v1/catalog/insertall', verifyToken, CatalogoController.insertMany)
 router.post('/api/v1/catalog/create', verifyToken, CatalogoController.create)
+
 
 
 //  query Text Mongoose

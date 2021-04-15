@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const { Catalogo, Label, Brand, Familia } = require('../models/')
 var _ = require('lodash');
 
+
 function customizer(objValue, srcValue) {
       if (_.isArray(objValue)) {
         return objValue.concat(srcValue);
@@ -377,6 +378,12 @@ module.exports =  {
         })
 
         return response
+
+    },
+    updateOneModel: async({ body, params }) => {
+        
+        const res = await Catalogo.updateOne({ 'model': params.id }, body )
+        return res
 
     }
 }
