@@ -1,3 +1,4 @@
+const { isArguments } = require('lodash')
 const { CatalogoServices } = require('../services')
 
 module.exports = {
@@ -56,6 +57,36 @@ module.exports = {
         } catch (error) {
             res.status(404).json({ error })
         }
+    },
+    updateCatalogoByTaskFile: async(req, res) => {
+
+        const task = req.body
+
+        const promiseResolver = (item) => {
+            return Promise.resolve(
+                CatalogoServices.updateOneCatalogoByModel(item)
+            ).then(res => {
+                if(res.nModified > 0){
+                    return 'Modificado'
+                }
+            })
+        }
+
+        const jobAsyncTask = async(item) => {
+            return promiseResolver(item)
+        }
+
+        const getData = async() => {
+            return Promise.all(task.map(item => jobAsyncTask( item )))
+        }
+
+        try {
+            const job = getData()
+            if(job) return res.status(200).json({ message: job })
+        } catch (error) {
+            res.status(400).json({ error })
+        }
+
     },
     sample: async(req, res) => {
 
@@ -318,9 +349,9 @@ module.exports = {
         }
             
         try {
-            const res = getData()
-            if(res)
-            res.status(200).json({ message: res })
+            const job = getData()
+            if(job) res.status(200).json({ message: res })
+            
         } catch (error) {
             res.status(400).json({ error })
         }

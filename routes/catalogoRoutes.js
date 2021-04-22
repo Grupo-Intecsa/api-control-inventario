@@ -13,6 +13,8 @@ router.get('/api/v1/brands/', CatalogoController.getAllBrands)
 router.get('/api/v1/brands/catalogo/:id', CatalogoController.findByBrandIdCatalogo)
 router.get('/api/v1/brands/familia/:id', CatalogoController.findByBrandIdFamilia)
 
+router.patch('/api/v1/catalogo/updatetask', verifyToken, CatalogoController.updateCatalogoByTaskFile)
+
 // CUD DE LABEL
 router.post('/api/v1/labels/create', verifyToken, CatalogoController.createLabel)
 router.get('/api/v1/labels/', CatalogoController.getAllLabels)

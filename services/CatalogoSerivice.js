@@ -140,6 +140,10 @@ module.exports =  {
         const catRes =  Catalogo.findById(id)
         return catRes
     },
+    upateCatalogoByTaskFile: ({ model, ... restOfdata}) => {
+
+
+    },
     getFamiliaByID: (id) => {
         const catRes =  Familia.findById(id)
         return catRes
@@ -378,14 +382,21 @@ module.exports =  {
         return response
 
     },
+    // TODO CAMBIR NOMBRE DE LAS FUNCIONES
+    // esta debe ser update by _id
     updateOneModel: async({ body, params }) => {
         
         const res = await Catalogo.updateOne({ 'model': params.id }, body )
         return res
 
     },
+    // este debe de ser updata One Famili by model
     updateOneByModel: async({ model, ...restOfdata}) => {
         const res = await Familia.updateOne({ 'model': model }, restOfdata )
+        return res
+    },
+    updateOneCatalogoByModel: async({ model, ...restOfdata}) => {
+        const res = await Catalogo.updateOne({ 'model': model }, restOfdata )
         return res
     },
     createFamiliaItem: async(payload) => new Familia(payload).save()
