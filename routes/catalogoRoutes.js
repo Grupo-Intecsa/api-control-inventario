@@ -24,6 +24,9 @@ router.get('/api/v1/labels/familia/:id', CatalogoController.findByLabelIdFamilia
 router.get('/api/v1/brand/familia/etiqueta/:id', CatalogoController.getEtiquetaByBrandId)
 router.get('/api/v1/label/familia/parent/:id', CatalogoController.getProductsByParentId)
 
+router.patch('/api/v1/familia/updatetask', verifyToken, CatalogoController.updateByTaskFile)
+router.post('/api/v1/familia/create', verifyToken, CatalogoController.createFamiliaItem)
+
 // CRUD DE PRODUCTOS 
 
 // ruta para productos de inicio 

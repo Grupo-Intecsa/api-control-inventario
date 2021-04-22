@@ -18,6 +18,11 @@ const FamiliaSchema = new Schema({
         default: null,
         require: false
     },
+    precio: {
+        type: Number,
+        default: 0,
+        required: false
+    },
     compatible: {
         type: Array,
         require: false

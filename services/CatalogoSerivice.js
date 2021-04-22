@@ -104,8 +104,6 @@ module.exports =  {
     getAllProducts: () => Catalogo.find({ isActive: true }),
     sample: async({ limit, offset }) => {
 
-        console.log('sample-limit', limit)
-
         const p1 = new Promise((resolve, _) => {
                 resolve(
                     Catalogo.aggregate()
@@ -132,7 +130,7 @@ module.exports =  {
         return Promise.all([ p1, p2, p3 ]).then(res => {
             let response = {}
             return(
-                {...response, prod: res[0], count: Number(res[1]) + Number(res[2]) }
+                {...response, prod: res[0], count: Number(res[1]) + Number(res[2]), infiniteCount: res[1] }
             )
         })
 
@@ -385,5 +383,10 @@ module.exports =  {
         const res = await Catalogo.updateOne({ 'model': params.id }, body )
         return res
 
-    }
+    },
+    updateOneByModel: async({ model, ...restOfdata}) => {
+        const res = await Familia.updateOne({ 'model': model }, restOfdata )
+        return res
+    },
+    createFamiliaItem: async(payload) => new Familia(payload).save()
 }

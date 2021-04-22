@@ -5,8 +5,7 @@ module.exports = {
         
         try {
             const productData = await FamiliasServices.create(req.body)
-            console.log(productData)
-
+            
             if(productData){
                 return res.status(200).json({ message: productData })
             }

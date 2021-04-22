@@ -7,7 +7,7 @@ module.exports = {
     insertMany: (payload) => {
         const response = Familia.insertMany( payload , function(err, docs){
             if(err) throw new Error(JSON.stringify(err))
-            console.log(err)
+            
             return docs
         })
         return response

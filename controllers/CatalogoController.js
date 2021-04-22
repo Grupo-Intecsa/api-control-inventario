@@ -1,11 +1,10 @@
-const { rest } = require('lodash')
 const { CatalogoServices } = require('../services')
 
 module.exports = {
     // Query text
 
     findByQueryText: async(req, res) => {
-        console.log(req.query)
+        
         try {
 
             const response = await CatalogoServices.findByQueryText(req.query)
@@ -60,8 +59,6 @@ module.exports = {
     },
     sample: async(req, res) => {
 
-        console.log(req.query)
-
         try {
 
             const sample = await CatalogoServices.sample(req.query)
@@ -93,8 +90,7 @@ module.exports = {
     getCatalogByID: async(req, res) => {
         
         const { id } = req.params
-        console.log(id)
-
+        
         try {
 
             const response = await CatalogoServices.getCatalogByID(id)
@@ -110,8 +106,7 @@ module.exports = {
     getFamiliaByID: async(req, res) => {
         
         const { id } = req.params
-        console.log(id)
-
+        
         try {
 
             const response = await CatalogoServices.getFamiliaByID(id)
@@ -295,6 +290,53 @@ module.exports = {
         } catch (error) {
             res.status(400).json({ error })
         }
-    }   
+    },
+    updateByTaskFile: async(req, res) =>  {
+
+        const task = req.body
+
+        // TODO falta terminar el de return ok 
+
+        const promiseResolver = (item) => {
+            return Promise.resolve(
+                CatalogoServices.updateOneByModel(item)
+                ).then(res => {
+                    
+                    if(res.nModified > 0){
+                        return 'Modificado'
+                    }
+                })
+            
+        }
+        
+        const jobAsyncTask = async(item) => {
+            return promiseResolver(item)
+        }
+
+        const getData = async() => {
+            return Promise.all(task.map(item => jobAsyncTask( item )))
+        }
+            
+        try {
+            const res = getData()
+            if(res)
+            res.status(200).json({ message: res })
+        } catch (error) {
+            res.status(400).json({ error })
+        }
+
+    },
+    createFamiliaItem: async(req, res) => {
+        
+        
+        try {
+            const res = await CatalogoServices.createFamiliaItem(req.body)    
+            if(!res) throw new Error('Error en la creación de producto')
+
+            return res.status(200).json({ message: res })
+        } catch (error) {
+            res.status(400).json({ error })
+        }
+    }
 
 }

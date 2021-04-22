@@ -53,9 +53,6 @@ module.exports = {
     },
     createItemOnBoard: async(payload) => {
 
-
-        console.log(payload)
-
         const { email, name, phone, subject, coment, urlValid  } = payload
         
         // TODO pasarle datos de nombre, label, email, telefono, comentario
