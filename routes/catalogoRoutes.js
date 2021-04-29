@@ -35,7 +35,7 @@ router.post('/api/v1/familia/create', verifyToken, CatalogoController.createFami
 router.get('/api/v1/catalog/sample/', CatalogoController.sample)
 router.get('/api/v1/catalog/products', CatalogoController.getAllProducts)
 router.get('/api/v1/catalog/product/:id', CatalogoController.getByModel)
-router.patch('/api/v1/catalog/product/:id', CatalogoController.updateOneModel)
+router.patch('/api/v1/catalog/product/:id', verifyToken, CatalogoController.updateOneModel)
 
 router.get('/api/v1/catalog/detalle/product/:id', CatalogoController.getCatalogByID)
 router.get('/api/v1/familia/detalle/product/:id', CatalogoController.getFamiliaByID)
