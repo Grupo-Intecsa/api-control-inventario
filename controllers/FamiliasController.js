@@ -1,4 +1,5 @@
 const { FamiliasServices } = require('../services')
+const axios = require('axios')
 
 module.exports = {
     create: async(req, res) =>  {
@@ -113,6 +114,26 @@ module.exports = {
         } catch (error) {
             res.status(400).json({ error })
         }
+    },
+    getTranslate: async(req, res) => {
+
+
+        console.log("hola")
+
+        const { desc } = req.body
+
+        console.log(desc)
+                
+        
+            
+            const response = axios.get(`https://translate.google.com.mx/?hl=es&sl=es&tl=en&text=${desc}&op=translate`)
+            response.headers['text/html']  
+
+
+
+            console.log(await response.message)
+
+        
     }
 
 }

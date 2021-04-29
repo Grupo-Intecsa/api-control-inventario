@@ -63,6 +63,10 @@ const CatalogoSchema = new Schema({
         type: String,
         required: true,
     },
+    inglesDesc:{
+        type: String,
+        required: false,
+    },
     // las clasificaciones del producto
     label: [{
         label_id: {

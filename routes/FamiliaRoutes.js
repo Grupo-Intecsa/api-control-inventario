@@ -15,4 +15,6 @@ router.post('/api/v1/familia/insertall', FamiliasController.insertMany)
 
 router.get('/api/v1/familia', FamiliasController.getFamiliaByTitleId)
 
+
+router.get('/api/v1/translate', FamiliasController.getTranslate)
 module.exports = router 
