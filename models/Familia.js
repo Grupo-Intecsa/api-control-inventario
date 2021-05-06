@@ -52,6 +52,10 @@ const FamiliaSchema = new Schema({
         type: String,
         required: true,
     },
+    inglesTitle: {
+        type: String,
+        required: true,
+    },
     coduniversal: {
         type: String,
         required: false,
@@ -72,6 +76,10 @@ const FamiliaSchema = new Schema({
     desc: {
         type: String,
         required: true,
+    },
+    inglesDesc: {
+        type: String,
+        required: false,
     },
     // las clasificaciones del producto
     label: [{

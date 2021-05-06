@@ -42,6 +42,10 @@ const CatalogoSchema = new Schema({
         type: String,
         required: true,
     },
+    inglesTitle: {
+        type: String,
+        required: true,
+    },
     coduniversal: {
         type: String,
         required: false,
