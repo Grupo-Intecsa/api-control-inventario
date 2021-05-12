@@ -89,6 +89,11 @@ const CatalogoSchema = new Schema({
     compatible: {
         type: Array,
         required: false
+    },
+    precio: {
+        type: Number,
+        default: 0,
+        required: false
     }
 }, { timestamps: true })
 
