@@ -12,4 +12,8 @@ router.post('/api/v1/monday/create', MessageController.createItemOnBoard)
 router.post('/api/v1/monday/getboard', MessageController.getBoard)
 
 
+router.post('/api/v1/pdf', MessageController.createInvoice)
+router.post('/api/v1/save-pdf', MessageController.saveInvoice)
+router.get('/api/v1/invoice/:folio', MessageController.getInvoiceId)
+
 module.exports = router

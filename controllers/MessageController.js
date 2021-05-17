@@ -1,4 +1,5 @@
-const { TwilioService } = require('../services')
+const { TwilioService, PDFServices  } = require('../services')
+const puppeteer = require("puppeteer")
 const fetch = require('node-fetch')
 
 module.exports = {
@@ -75,6 +76,68 @@ module.exports = {
         
         return res.status(200).json({ message: p1 })
 
+    },
+    saveInvoice: async(req, res) => {
+
+        console.log(req.body, "[el mundo]")
+
+        try {
+            
+            const invoice = await PDFServices.saveInvoice(req.body)
+            console.log(invoice)
+            if(invoice) return res.status(200).json({ message: invoice })
+
+        } catch (error) {
+            res.status(500).json({ message: error })
+        }
+
+
+    },
+    createInvoice: async(req, res) => {
+
+        const browser = await puppeteer.launch({ headless: true })
+        const page = await browser.newPage()
+
+        try {
+            
+            const pdfString = PDFServices.createInvoice(req.body, req.query)
+            await page.setContent(pdfString)
+
+            const pdf = await page.pdf({
+                format: "letter",
+                printBackground: true,
+                scale: 0.9,
+                margin: {
+                    left: "0px",
+                    top: "0px",
+                    right: "0px",
+                    bottom: "0px"
+                }
+            })
+
+            await browser.close()
+            res.contentType("application/pdf")
+
+            return res.send(pdf)
+
+        } catch (error) {
+            
+        }
+    },
+    getInvoiceId: async(req, res) => {
+
+        const { folio } = req.params
+        console.log(folio, "[FOLIO DE PARAMS?]")
+
+        try {   
+
+            const pdfData = await PDFServices.getInvoiceId(folio)
+            
+            if(pdfData) return res.status(200).json({ message: pdfData })
+
+            
+        } catch (error) {
+            res.status(400).json({ message: error })
+        }
     }
 }
-

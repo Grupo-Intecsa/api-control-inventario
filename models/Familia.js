@@ -54,7 +54,7 @@ const FamiliaSchema = new Schema({
     },
     inglesTitle: {
         type: String,
-        required: true,
+        required: false,
     },
     coduniversal: {
         type: String,

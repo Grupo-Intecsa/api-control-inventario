@@ -22,5 +22,6 @@ module.exports = {
             } catch (error) {
                 throw new Error('Token Error', error )
             }
-        }
+    },
+
 }
