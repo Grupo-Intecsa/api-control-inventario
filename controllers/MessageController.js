@@ -90,9 +90,8 @@ module.exports = {
     createInvoice: async(req, res) => {
 
         const browser = await puppeteer.launch({
-            devtools: true,
-            headless: false,
-            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            args: ['--no-sandbox', '--disable-setuid-sandbox', '--headless'],
+            
         });
         const page = await browser.newPage()
 
