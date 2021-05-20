@@ -90,6 +90,8 @@ module.exports = {
     createInvoice: async(req, res) => {
 
         const browser = await puppeteer.launch({
+            devtools: true,
+            ignoreDefaultArgs: true,
             headless: false,
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
         });
@@ -101,6 +103,7 @@ module.exports = {
             await page.setContent(pdfString)
 
             const pdf = await page.pdf({
+                
                 format: "letter",
                 printBackground: true,
                 scale: 0.9,
