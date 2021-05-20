@@ -91,7 +91,6 @@ module.exports = {
 
         const browser = await puppeteer.launch({
             devtools: true,
-            ignoreDefaultArgs: true,
             headless: false,
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
         });
