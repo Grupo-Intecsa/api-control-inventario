@@ -91,7 +91,7 @@ module.exports = {
 
         const browser = await puppeteer.launch({ 
             headless: false,
-            args: ['--disable-web-security'],
+            args: ['--disable-web-security', '--no-sandbox', '--disable-setuid-sandbox'],
         })
         const page = await browser.newPage()
 
