@@ -253,7 +253,7 @@ module.exports = {
     
                   <div class="col-12">
                     
-                      <h5>Folio: <a href=https://itamx.com/#/checkout/invoice/${folio}">${folio}</a></h5>
+                      <h5>Folio: <a href="https://itamx.com/#/checkout/invoice/${folio}">${folio}</a></h5>
                       
                     
                   </div>
