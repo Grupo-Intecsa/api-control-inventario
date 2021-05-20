@@ -1,5 +1,6 @@
 const { FamiliasServices } = require('../services')
-const axios = require('axios')
+const { JSDOM } = require("jsdom")
+const fetch = require('node-fetch')
 
 module.exports = {
     create: async(req, res) =>  {
@@ -115,25 +116,41 @@ module.exports = {
             res.status(400).json({ error })
         }
     },
-    getTranslate: async(req, res) => {
+    getMLPrice: async(req, res) => {
+        const { ml } = req.query
+        const URL = `https://articulo.mercadolibre.com.mx/MLM-${ml}`
 
-
-        console.log("hola")
-
-        const { desc } = req.body
-
-        console.log(desc)
-                
+        try {
         
-            
-            const response = axios.get(`https://translate.google.com.mx/?hl=es&sl=es&tl=en&text=${desc}&op=translate`)
-            response.headers['text/html']  
-
-
-
-            console.log(await response.message)
-
+        // si ml no estsa difindo lanzamos el error 
+        if(typeof ml === 'undefined'){
+            throw new Error('ML undefined')
+        }
         
+        const document = await fetch(URL)
+            .then(res => res.text())
+            .then(html => html)
+        
+        const parser =  new JSDOM(document, {
+            contentType: "text/html"
+        })
+
+        const precio = parser.window.document.getElementsByClassName("price-tag-amount")
+        // const descABB = parser.window.document.getElementsByTagName('dt')
+
+        let precioML 
+        if(precio.length === 3 ){
+            precioML = precio[1]
+        }else if(precio.length === 2){
+            precioML = precio[0]
+        }
+        
+        res.status(200).json({ precio: (precioML?.textContent).split('$')[1] })
+
+        } catch (error) {
+            res.status(400).json(error)
+        }
+    
     }
 
 }

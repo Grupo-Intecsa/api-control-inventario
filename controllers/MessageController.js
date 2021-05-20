@@ -43,10 +43,7 @@ module.exports = {
 
         try {
 
-            const query = await TwilioService.createItemOnBoard(payload)
-
-            console.log(query)
-            
+            const query = await TwilioService.createItemOnBoard(payload)           
             return res.status(200).json({ message: query })
             
         } catch (error) {
@@ -79,12 +76,9 @@ module.exports = {
     },
     saveInvoice: async(req, res) => {
 
-        console.log(req.body, "[el mundo]")
-
         try {
             
             const invoice = await PDFServices.saveInvoice(req.body)
-            console.log(invoice)
             if(invoice) return res.status(200).json({ message: invoice })
 
         } catch (error) {
@@ -127,7 +121,6 @@ module.exports = {
     getInvoiceId: async(req, res) => {
 
         const { folio } = req.params
-        console.log(folio, "[FOLIO DE PARAMS?]")
 
         try {   
 

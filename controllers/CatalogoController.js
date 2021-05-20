@@ -130,7 +130,7 @@ module.exports = {
             return res.status(200).json({ message: response })
 
         } catch (error) {
-            res.status(400).json({ error })
+            res.status(400).json({ message: JSON.stringify(error) })
         }
     },
 
@@ -141,7 +141,10 @@ module.exports = {
         try {
 
             const response = await CatalogoServices.getFamiliaByID(id)
-            if(!response) res.status(400).json({ message: 'product not found' })
+            
+            if(!response){
+                throw new Error('No respones FAMILIABID')
+            }
 
             return res.status(200).json({ message: response })
 

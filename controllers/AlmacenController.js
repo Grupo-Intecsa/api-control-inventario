@@ -5,8 +5,6 @@ module.exports = {
         
         try {
             const productData = await AlmacenServices.create(req.body)
-            console.log(productData)
-
             if(productData){
                 return res.status(200).json({ message: productData })
             }
@@ -17,7 +15,6 @@ module.exports = {
     insertMany: async(req, res) =>  {
         
         try {
-            console.log(req.body)
             const manyProductos = await AlmacenServices.insertMany(req.body)
 
             if(manyProductos){

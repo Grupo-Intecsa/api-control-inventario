@@ -5,9 +5,6 @@ module.exports = {
 
     const { name, address, cpostal, phone, email, cotizar, carrito, total, date } = body
     const { folio } = query
-    
-    console.log(cpostal, cotizar)
-
 
     const carritoMap = carrito.map(item => {
       return( 
@@ -15,6 +12,7 @@ module.exports = {
           <td>${item.cantidad}</td>
           <td>${item.title}</td>
           <td>${ item.precio === 0 ? "<p>*Por cotizar</p>" : item.precio }</td>
+          <td>${item?.foto && `<img src="${item.foto}" class="fotoMini"}></img>`}</td>
         </tr>  
         `
         )
@@ -25,6 +23,7 @@ module.exports = {
       <td>1</td>
       <td>Cotizar servicio de envio al codigo postal: ${cpostal}</td>
       <td>*Por Cotizar</td>
+      <td></td>
     </tr>  
       `
     const cotizacionNull = `<tr class="d-none"></tr>`
@@ -49,6 +48,12 @@ module.exports = {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
 
     <style>
+      .fotoMini{
+        height: 50px;
+        width: auto;
+
+      }
+
       .back{
         width: 100%;
       }
@@ -248,7 +253,7 @@ module.exports = {
     
                   <div class="col-12">
                     
-                      <h5>Folio: <a href="http://localhost:3001/#/checkout/invoice/${folio}">${folio}</a></h5>
+                      <h5>Folio: <a href=https://itamx.com/#/checkout/invoice/${folio}">${folio}</a></h5>
                       
                     
                   </div>
@@ -260,6 +265,7 @@ module.exports = {
                             <th>Cantidad</th>
                             <th>Descripción</th>
                             <th>Precio</th>
+                            <th>Imagen</th>
                           </tr>
                         </thead>
                         <tbody>                                
@@ -274,13 +280,15 @@ module.exports = {
                           <tr>
                             <th>Total</th>
                             <th></th>
+                            <th></th>
                             <th>${total}</th>
+                            
                           </tr>
                         </thead>
                       </table>
                       <h4 class="terms">Terminos</h4>
                       <ul>
-                        <li>El total de está cotización no representa el costo total de los materiales </li>
+                        <li>El total de está cotización puede tener partidas pendientes de cotizar o los precios pueden cambiar sin previo aviso</li>
                       </ul>
                     </div>
                   </div>

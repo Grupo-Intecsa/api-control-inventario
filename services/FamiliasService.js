@@ -4,13 +4,15 @@ const mongoose = require('mongoose')
 module.exports = {
     create: (payload) => new Familia(payload).save(),
     getAllProductos: () => Familia.find(),
-    insertMany: (payload) => {
-        const response = Familia.insertMany( payload , function(err, docs){
+    insertMany: async(payload) => {
+        let done
+        await Familia.insertMany( payload , function(err, docs, next){
             if(err) throw new Error(JSON.stringify(err))
-            
-            return docs
+            return done = true
         })
-        return response
+        
+        if(done) return done 
+    
     },
     findByQueryText: (text) => {
         // TODO: con esto podemos mejorar la busqueda de palabras claves dentro de mongoDB
