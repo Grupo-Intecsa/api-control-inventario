@@ -393,11 +393,27 @@ module.exports =  {
     // este debe de ser updata One Famili by model
     updateOneByModel: async({ model, ...restOfdata}) => {
         const res = await Familia.updateOne({ 'model': model }, restOfdata )
-        return res
+        if(res && res.nModified) return res
     },
     updateOneCatalogoByModel: async({ model, ...restOfdata}) => {
+        
         const res = await Catalogo.updateOne({ 'model': model }, restOfdata )
-        return res
+        if(res && res.nModified) return res
     },
-    createFamiliaItem: async(payload) => new Familia(payload).save()
+    createFamiliaItem: async(payload) => new Familia(payload).save(),
+
+    getAllProductsBylabelId:  async(id) => {
+
+        const consulta = new Promise(( resolve ) => {
+            resolve(
+                Catalogo.aggregate()
+                .match({ "label.label_id": mongoose.Types.ObjectId(id) })
+            )
+        })
+        .then(res => res)
+
+        return consulta
+
+    }
+
 }

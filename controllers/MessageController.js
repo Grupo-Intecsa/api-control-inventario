@@ -69,6 +69,8 @@ module.exports = {
         .then(res => res.json())
         .then(res => res)
 
+        assert.equal
+
         const p1 = await Promise.resolve(response).then(res => res.data.boards)
         
         return res.status(200).json({ message: p1 })

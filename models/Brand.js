@@ -15,6 +15,10 @@ const BrandSchema = new Schema({
     title: {
         type: String, 
         required: true,
+    },
+    img: {
+        type: String,
+        requiref: false
     }
 },{ timestamps: true })
 

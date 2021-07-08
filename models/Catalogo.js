@@ -18,7 +18,7 @@ const CatalogoSchema = new Schema({
         require: false
     },
     capacidad:{
-        type: String,
+        type: Object,
         default: null,
         require: false
     },

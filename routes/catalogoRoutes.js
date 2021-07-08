@@ -15,9 +15,10 @@ router.get('/api/v1/brands/familia/:id', CatalogoController.findByBrandIdFamilia
 
 router.patch('/api/v1/catalogo/updatetask', verifyToken, CatalogoController.updateCatalogoByTaskFile)
 
-// CUD DE LABEL
+// CRUD DE LABEL
 router.post('/api/v1/labels/create', verifyToken, CatalogoController.createLabel)
 router.get('/api/v1/labels/', CatalogoController.getAllLabels)
+router.get('/api/v1/labels/:id', CatalogoController.getAllProductsBylabelId)
 
 // FAMILIA
 router.get('/api/v1/labels/catalogo/:id', CatalogoController.findByLabelIdCatalogo)
@@ -26,7 +27,7 @@ router.get('/api/v1/labels/familia/:id', CatalogoController.findByLabelIdFamilia
 router.get('/api/v1/brand/familia/etiqueta/:id', CatalogoController.getEtiquetaByBrandId)
 router.get('/api/v1/label/familia/parent/:id', CatalogoController.getProductsByParentId)
 
-router.patch('/api/v1/familia/updatetask', verifyToken, CatalogoController.updateByTaskFile)
+router.patch('/api/v1/familia/updatetask', CatalogoController.updateByTaskFile)
 router.post('/api/v1/familia/create', verifyToken, CatalogoController.createFamiliaItem)
 
 // CRUD DE PRODUCTOS 

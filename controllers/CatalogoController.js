@@ -273,8 +273,7 @@ module.exports = {
 
             // Seleccionamos solo los elementos que estan activos
             const count = item.labels.filter(item => item.isActive === true ).length
-
-                return { _id: item._id, title: item.title, count, is_active: item.isActive }
+                return { _id: item._id, title: item.title, count, is_active: item.isActive, img: item.img }
             })
 
             return res.status(200).json({ message: { response } })
@@ -328,16 +327,22 @@ module.exports = {
     updateByTaskFile: async(req, res) =>  {
 
         const task = req.body
+        console.log(task)
 
         // TODO falta terminar el de return ok 
+        const modified = []
+        const noModified = []
 
         const promiseResolver = (item) => {
             return Promise.resolve(
                 CatalogoServices.updateOneByModel(item)
                 ).then(res => {
+                    console.log(res, "por cada respuesta")
+                        noModified.push(1)
                     
-                    if(res.nModified > 0){
-                        return 'Modificado'
+                    if(res?.nModified > 0){
+                        console.log(res.nModified + "es muchio")
+                        modified.push(res.n)
                     }
                 })
             
@@ -353,9 +358,16 @@ module.exports = {
             
         try {
             const job = getData()
-            if(job) res.status(200).json({ message: res })
+
+            const sumaModified = modified.reduce((prev, current) => prev + current)
+            const sumaNomodified = modified.reduce((prev, current) => prev + current)
+
+            console.log(sumaModified, sumaNomodified)
+            
+            if(job) res.status(200).json({ message: { modified: sumaModified, noModified: sumaNomodified } })
             
         } catch (error) {
+            console.log(error)
             res.status(400).json({ error })
         }
 
@@ -364,11 +376,27 @@ module.exports = {
         
         
         try {
-            const res = await CatalogoServices.createFamiliaItem(req.body)    
-            if(!res) throw new Error('Error en la creación de producto')
+            const response = await CatalogoServices.createFamiliaItem(req.body)    
+            if(!response) throw new Error('Error en la creación de producto')
 
-            return res.status(200).json({ message: res })
+            return res.status(200).json({ message: response })
         } catch (error) {
+            res.status(400).json({ error })
+        }
+    },
+    getAllProductsBylabelId: async(req, res) => {
+
+        console.log(req)
+        
+        const { id } = req.params
+
+        try{
+            const response = await CatalogoServices.getAllProductsBylabelId(id)
+            if(!response) throw new Error("No exisite el id solicitado")
+
+            return res.status(200).json({ message: response })
+
+        }catch(error){
             res.status(400).json({ error })
         }
     }
