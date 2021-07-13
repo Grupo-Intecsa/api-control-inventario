@@ -19,8 +19,8 @@ module.exports =  {
             resolve(
                 Catalogo.aggregate()
                 .match({ "isActive": true })
-                .match({ "desc": regText })
-                // .match({ "title": regText })
+                .match({ "title": regText })
+                // .match({ "desc": regText })
                 .skip(Number(offset))
                 .limit(Number(limit))
             )
