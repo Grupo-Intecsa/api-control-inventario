@@ -13,80 +13,23 @@ module.exports =  {
     
     findByQueryText: async({ limit, text, offset }) => {
 
-        // buscamos primero por text index        
+        const regText = new RegExp(`${text}`, 'i')
+        
         const c1 = new Promise(( resolve, _ ) => {
             resolve(
-                Catalogo.aggregate().match(
-                    {
-                        '$text': {
-                            '$search': text
-                        }
-                    }
-                ).sort({
-                        "model": { "$meta": "textScore" },
-                    }
-                    ).match({ "isActive": true }).count('total')
-            )
-        }).catch(err => console.log(err))
-
-        // buscamos por regex
-
-        const c2 = new Promise((resolve, _ ) => {
-            resolve(
-                Catalogo.aggregate().match(
-                    {
-                        "title": { "$regex": new RegExp(`${text}`, 'i') }
-                    }
-                ).match({ "isActive": true }).count('total')
-            )
-        }).catch(err => console.log(err))
-
-
-        const p1 = new Promise(( resolve, _ ) => {
-            resolve(
-                Catalogo.aggregate().match(
-                    {
-                        '$text': {
-                            '$search': text
-                        }
-                    }
-                ).sort({
-                        "model": { "$meta": "textScore" }
-                    }
-                    )
-                    .match({ "isActive": true })
-                    .skip(Number(offset))
-                    .limit(Number(limit))
-            )
-        }).catch(err => console.log(err))
-
-        // buscamos por regex
-
-        const p2 = new Promise((resolve, _ ) => {
-            resolve(
-                Catalogo.aggregate().match(
-                    {
-                        "title": { "$regex": new RegExp(`${text}`, 'i') }
-                    }
-                )
+                Catalogo.aggregate()
                 .match({ "isActive": true })
+                .match({ "desc": regText })
+                // .match({ "title": regText })
                 .skip(Number(offset))
                 .limit(Number(limit))
             )
         }).catch(err => console.log(err))
 
-        // unimos las dos busquedas en un solo object
-    
-        return Promise.all([ p1, p2, c1, c2 ]).then( res => {
+        const data = Promise.all([ c1 ])
+        .then((res => res[0]))
 
-            const totalesArray = res[2].concat(res[3])
-            const count = totalesArray.reduce((acc, val) => acc.total + val.total )
-            
-            const respArra = res[0].concat(res[1])
-
-            return { response: respArra, info: { total: count} }
-        })
-        .catch(res => console.log(res))
+        return data
             
     },
     // PRODUCTOS
