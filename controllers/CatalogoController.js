@@ -137,7 +137,8 @@ module.exports = {
     getFamiliaByID: async(req, res) => {
         
         const { id } = req.params
-        
+        console.log(id)
+
         try {
 
             const response = await CatalogoServices.getFamiliaByID(id)
@@ -384,10 +385,7 @@ module.exports = {
             res.status(400).json({ error })
         }
     },
-    getAllProductsBylabelId: async(req, res) => {
-
-        console.log(req)
-        
+    getAllProductsBylabelId: async(req, res) => {        
         const { id } = req.params
 
         try{
@@ -398,6 +396,19 @@ module.exports = {
 
         }catch(error){
             res.status(400).json({ error })
+        }
+    },
+    getListFamiliaByBrandId: async({ params }, res) => {
+
+        console.log(params.id)
+        
+        try{
+
+            const responseData = await CatalogoServices.getListFamiliaByBrandId(params.id)
+            return res.status(200).json({ message: responseData })
+
+        }catch(err){
+            res.status(400).json({ message: "error "})
         }
     }
 

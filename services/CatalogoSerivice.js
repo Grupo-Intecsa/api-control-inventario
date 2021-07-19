@@ -88,6 +88,7 @@ module.exports =  {
 
     },
     getFamiliaByID: (id) => {
+        console.log(id)
         const catRes =  Familia.findById(id)
         return catRes
     },
@@ -357,6 +358,35 @@ module.exports =  {
 
         return consulta
 
+    },
+    getListFamiliaByBrandId: async(id) => {
+        // extraer la informacion y solo regresa los nombres de la familias sin repetirse
+        // ENDPOINT PARA FILTAR DE BRANDS => LABELS => PRODUCTOS
+
+        const query = new Promise((resolve) => {
+            resolve(
+                Catalogo.aggregate()
+                .match({ "brand.brand_id": mongoose.Types.ObjectId(id) })
+                
+            )
+        })
+        
+        return Promise.all([ query ]).then(res => {
+
+            const valoresUnicos = []
+            const img = []
+            res[0].forEach(({ familia, urlfoto, label }) => {
+                let etiqueta = label[0].label_id
+
+                if(!valoresUnicos.includes(familia)){
+                    valoresUnicos.push(familia)
+                    img.push({ familia, img: urlfoto[0], label: etiqueta })
+                }
+            })
+
+            return img
+        })
+        
     }
 
 }

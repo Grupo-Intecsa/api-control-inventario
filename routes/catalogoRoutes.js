@@ -41,6 +41,9 @@ router.patch('/api/v1/catalog/product/:id', CatalogoController.updateOneModel)
 router.get('/api/v1/catalog/detalle/product/:id', CatalogoController.getCatalogByID)
 router.get('/api/v1/familia/detalle/product/:id', CatalogoController.getFamiliaByID)
 
+// una ruta para obtener en una lista de familias segun el id de la marca
+router.get('/api/v1/products/brand/:id', CatalogoController.getListFamiliaByBrandId)
+
 router.post('/api/v1/catalog/insertall', verifyToken, CatalogoController.insertMany)
 router.post('/api/v1/catalog/create', verifyToken, CatalogoController.create)
 
