@@ -12,7 +12,6 @@ function customizer(objValue, srcValue) {
 module.exports =  {
     
     findByQueryText: async({ limit, text, offset }) => {
-
         const regText = new RegExp(`${text}`, 'i')
         
         const c1 = new Promise(( resolve, _ ) => {
@@ -26,9 +25,17 @@ module.exports =  {
             )
         }).catch(err => console.log(err))
 
-        const data = Promise.all([ c1 ])
-        .then((res => res[0]))
+        const count = new Promise((resolve) => {
+            resolve(
+                Catalogo.aggregate()
+                .match({ "isActive": true })
+                .match({ "title": regText })
+                .count("title")
+            )
+        })
 
+        const data = Promise.all([ c1, count ])
+        .then((res => res[0].concat(res[1]) ))
         return data
             
     },
