@@ -95,7 +95,6 @@ module.exports =  {
 
     },
     getFamiliaByID: (id) => {
-        console.log(id)
         const catRes =  Familia.findById(id)
         return catRes
     },
@@ -378,20 +377,48 @@ module.exports =  {
             )
         })
         
-        return Promise.all([ query ]).then(res => {
+        return Promise.all([ query ]).then((res) => {
+            
+            // extraemos las inciciales 
+            const inidice = res[0]
+                .map(({ familia }) => familia.charAt(0))
+                .reduce((array, item) => array.includes(item) ? array : [...array, item ], [])
+                .sort()
 
+            // extraemos la familia, label y foto colo en valores unicos
             const valoresUnicos = []
-            const img = []
-            res[0].forEach(({ familia, urlfoto, label }) => {
+            const imgData = []
+
+            const brandsValues = res[0].forEach(({ familia, urlfoto, label }) => {
                 let etiqueta = label[0].label_id
 
                 if(!valoresUnicos.includes(familia)){
                     valoresUnicos.push(familia)
-                    img.push({ familia, img: urlfoto[0], label: etiqueta })
+                    imgData.push({ familia, img: urlfoto[0], label: etiqueta })
                 }
             })
 
-            return img
+            // acomodamos en orden alfabetico
+            function helperAcomodador(letter, dataPayload){
+                let prodStartsWhth = []
+              
+                dataPayload.forEach(({familia, img, label }) => {
+                  if(familia.startsWith(letter)){
+                    prodStartsWhth.push({ familia, img, label })
+                  }      
+                })
+              
+              return prodStartsWhth
+              }
+
+            //   acomodamos todos!!!!!
+             const payload = inidice.map(letter => {
+                  return { payload: helperAcomodador(letter, imgData), indice: letter }
+              })
+
+              return payload
+
+            
         })
         
     }
