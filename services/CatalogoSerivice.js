@@ -14,13 +14,20 @@ module.exports =  {
     findByQueryText: async({ limit, text, offset }) => {
         const regText = new RegExp(`${text}`, 'i')
         
-        const c1 = new Promise(( resolve, _ ) => {
+        const c1 = new Promise(( resolve, reject ) => {
             resolve(
                 Catalogo.aggregate()
                 .match({ "isActive": true })
                 .match({ "title": regText })
-                // .match({ "desc": regText })
-                .skip(Number(offset))
+                .sort({ "title": -1 })
+                .skip(+offset)
+                .limit(Number(limit))
+            )
+            reject(
+                Catalogo.aggregate()
+                .match({ "isActive": true })
+                .match({ "title": regText })
+                .sort({ "title": -1 })
                 .limit(Number(limit))
             )
         }).catch(err => console.log(err))
@@ -30,12 +37,14 @@ module.exports =  {
                 Catalogo.aggregate()
                 .match({ "isActive": true })
                 .match({ "title": regText })
-                .count("title")
+                .count("pages")
             )
         })
 
         const data = Promise.all([ c1, count ])
-        .then((res => res[0].concat(res[1]) ))
+        .then((res => {
+            return { payload: res[0], pages: res[1] }
+        } ))
         return data
             
     },
