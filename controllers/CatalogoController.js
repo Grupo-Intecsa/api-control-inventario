@@ -137,8 +137,6 @@ module.exports = {
     getFamiliaByID: async(req, res) => {
         
         const { id } = req.params
-        console.log(id)
-
         try {
 
             const response = await CatalogoServices.getFamiliaByID(id)
@@ -328,8 +326,6 @@ module.exports = {
     updateByTaskFile: async(req, res) =>  {
 
         const task = req.body
-        console.log(task)
-
         // TODO falta terminar el de return ok 
         const modified = []
         const noModified = []
@@ -338,11 +334,9 @@ module.exports = {
             return Promise.resolve(
                 CatalogoServices.updateOneByModel(item)
                 ).then(res => {
-                    console.log(res, "por cada respuesta")
                         noModified.push(1)
                     
                     if(res?.nModified > 0){
-                        console.log(res.nModified + "es muchio")
                         modified.push(res.n)
                     }
                 })
@@ -362,8 +356,6 @@ module.exports = {
 
             const sumaModified = modified.reduce((prev, current) => prev + current)
             const sumaNomodified = modified.reduce((prev, current) => prev + current)
-
-            console.log(sumaModified, sumaNomodified)
             
             if(job) res.status(200).json({ message: { modified: sumaModified, noModified: sumaNomodified } })
             
@@ -399,8 +391,6 @@ module.exports = {
         }
     },
     getListFamiliaByBrandId: async({ params }, res) => {
-
-        console.log(params.id)
         
         try{
 

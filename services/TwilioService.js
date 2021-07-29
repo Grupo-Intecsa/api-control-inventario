@@ -87,9 +87,7 @@ module.exports = {
             .then(res => res.json())
             .then(res => res)
             )
-        })
-            // .then(res => console.log(JSON.stringify(res, null, 2)));
-            
+        })            
             const p1 = Promise.all([response]).then(res => res[0])
             
             return p1

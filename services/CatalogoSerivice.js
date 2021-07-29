@@ -11,41 +11,104 @@ function customizer(objValue, srcValue) {
 
 module.exports =  {
     
-    findByQueryText: async({ limit, text, offset }) => {
-        const regText = new RegExp(`${text}`, 'i')
+    findByQueryText: async({ text }) => {
         
-        const c1 = new Promise(( resolve, reject ) => {
-            resolve(
-                Catalogo.aggregate()
-                .match({ "isActive": true })
-                .match({ "title": regText })
-                .sort({ "title": -1 })
-                .skip(+offset)
-                .limit(Number(limit))
-            )
-            reject(
-                Catalogo.aggregate()
-                .match({ "isActive": true })
-                .match({ "title": regText })
-                .sort({ "title": -1 })
-                .limit(Number(limit))
-            )
-        }).catch(err => console.log(err))
+        console.log(text)
+        
+        // obtener lista de familias
+        function familiasFilter(obj){
+            const values = []
+            obj.forEach(({ familia }) => {
+                if(!values.includes(familia)){
+                    values.push(familia)
+                }
+            })
+            return values
+        }
+        
+        const valoresUnicos = (payload) => {
+            
+            let capacidad = payload.map(({capacidad}) =>  capacidad )
+            
+            const key = []
+            let sufijo = []
+            let valores = []
+            
+            //  Sufijos
+            Object.values(capacidad).map((val) => {
+                Object.entries(val).forEach(([key, val]) => {
+                    if(!sufijo.includes(key)){
+                        sufijo.push(key)
+                    }
+                })
+            })
+            
+            //   obtener los valores 
+            Object.values(capacidad).map((val) => {
+                Object.entries(val).forEach(([key, val]) => {
+                    sufijo.map(sufijo => {
+                        if(key === sufijo){
+                            if(!valores.includes(val)){
+                                valores.push(val)
+                            }
+                        }
+                    })
+                })
+            })
+            
+            
+            return { sufijo, valores }  
+            
+        }
+        
+        const arrayUnico = ( payload ) => {
+            const cheValues = []
+            const valoresUnicos = []
+            
+            payload.forEach(item => {
+                if(!cheValues.includes(item.model)){
+                    cheValues.push(item.model)
+                    valoresUnicos.push(item)
+                }
+            })
+            
+            return valoresUnicos 
+        }
 
-        const count = new Promise((resolve) => {
+        let regText = text.split(" ").map(item => new RegExp(`${item}.*`, 'i'))        
+        // la consulta a title
+        const dataTitle = new Promise((resolve) => {
             resolve(
                 Catalogo.aggregate()
                 .match({ "isActive": true })
-                .match({ "title": regText })
-                .count("pages")
-            )
+                .match({ "title": { "$all": regText }})
+                .sort({ "title": -1 })
+                )
+            })
+            
+            const dataDesc = new Promise((resolve) => {
+                resolve(
+                    Catalogo.aggregate()
+                    .match({ "isActive": true })
+                    .match({ "desc": { "$all": regText }})
+                    .sort({ "desc": -1 })
+                    )
+                })
+
+        return Promise.all([ dataTitle, dataDesc ])
+        .then(res => {
+
+            const bruto = res[0].concat(res[1])
+            const flat = bruto.reduce((arr, current ) =>  arr.concat(current), [])
+            const payload = arrayUnico(flat)
+
+            // estos valores salen del concat que hare 
+            let pages = payload.length
+            let familias = familiasFilter(payload)
+            let valoresFiltros = valoresUnicos(payload)
+
+            return { payload, pages, familias, valoresFiltros }
         })
-
-        const data = Promise.all([ c1, count ])
-        .then((res => {
-            return { payload: res[0], pages: res[1] }
-        } ))
-        return data
             
     },
     // PRODUCTOS
