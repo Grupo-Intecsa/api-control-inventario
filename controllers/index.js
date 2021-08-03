@@ -10,5 +10,5 @@ module.exports = {
     MessageController,
     CatalogoController,
     UserController,
-    FamiliasController
+    FamiliasController,
 }
