@@ -1,4 +1,4 @@
-const { TwilioService, PDFServices  } = require('../services')
+const { TwilioService, PDFServices, MacbettyService  } = require('../services')
 const puppeteer = require("puppeteer")
 const fetch = require('node-fetch')
 
@@ -139,5 +139,28 @@ module.exports = {
         } catch (error) {
             res.status(400).json({ message: error })
         }
+    },
+    createCodigoCien: async(req, res) => {
+        const { body } = req
+
+        try {
+            const query = await MacbettyService.createCodigoCien(body)
+            if(!query) throw new Error("error en el servidor")
+            console.log(query)
+
+            return res.status(200).json({ message: query })
+            
+        } catch (error) {
+
+            console.log(error)
+            return res.status(400).json({ error: JSON.stringify(error)})
+        }
+
+    },
+    findByAutor: () => {
+
+    },
+    findByTextDescription: () => {
+
     }
 }

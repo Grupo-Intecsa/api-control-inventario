@@ -5,6 +5,7 @@ const { Brand }  = require('./Brand')
 const { User } = require('./User')
 const { Familia } = require('./Familia')
 const { InvoiceStorage } = require('./InvoiceStorage')
+const { Mackbetty } = require('./MacBetty')
 
 
 module.exports = {
@@ -14,5 +15,6 @@ module.exports = {
     Label,
     User,
     Familia,
-    InvoiceStorage
+    InvoiceStorage,
+    Mackbetty
 }
