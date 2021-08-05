@@ -146,13 +146,11 @@ module.exports = {
         try {
             const query = await MacbettyService.createCodigoCien(body)
             if(!query) throw new Error("error en el servidor")
-            console.log(query)
-
+            
             return res.status(200).json({ message: query })
             
         } catch (error) {
 
-            console.log(error)
             return res.status(400).json({ error: JSON.stringify(error)})
         }
 
@@ -160,7 +158,33 @@ module.exports = {
     findByAutor: () => {
 
     },
-    findByTextDescription: () => {
+    findByTextDescription: async (req, res) => {
+
+    const { text } = req.query
+
+    try {
+        const response = await MacbettyService.findByTextDescription(text)
+
+        if(response)
+        res.status(200).json({ message: response })
+
+    } catch (error) {
+        res.status(400).json({ message: error })
+    }
+
+    },
+    ultimos: async(req, res) => {
+
+        try {
+            const payload = await MacbettyService.ultimos(req.query)
+            if(!payload) throw new Error("Error en el servidor")
+
+            return res.status(200).json({ message: payload })
+
+        } catch (error) {
+            return res.status(404).json({ error })
+        }   
+
 
     }
 }

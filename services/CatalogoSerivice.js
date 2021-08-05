@@ -12,9 +12,7 @@ function customizer(objValue, srcValue) {
 module.exports =  {
     
     findByQueryText: async({ text }) => {
-        
-        console.log(text)
-        
+                
         // obtener lista de familias
         function familiasFilter(obj){
             const values = []

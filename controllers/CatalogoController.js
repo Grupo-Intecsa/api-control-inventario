@@ -360,7 +360,6 @@ module.exports = {
             if(job) res.status(200).json({ message: { modified: sumaModified, noModified: sumaNomodified } })
             
         } catch (error) {
-            console.log(error)
             res.status(400).json({ error })
         }
 
