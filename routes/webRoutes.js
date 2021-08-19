@@ -16,13 +16,11 @@ router.post('/api/v1/pdf', MessageController.createInvoice)
 router.post('/api/v1/save-pdf', MessageController.saveInvoice)
 router.get('/api/v1/invoice/:folio', MessageController.getInvoiceId)
 
-
 // MackbettySchema
 router.post('/api/v1/mcbetty/codigo100', MessageController.createCodigoCien)
 router.get('/api/v1/mcbetty/ultimos', MessageController.ultimos)
 
 // TODO router.get('/api/v1/mcbetty/find/:autor', MessageController.findByAutor)
-
 router.get('/api/v1/mcbetty/find', MessageController.findByTextDescription)
 
 

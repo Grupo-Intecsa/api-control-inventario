@@ -3,15 +3,20 @@ const { InvoiceStorage } = require('../models')
 module.exports = {
   createInvoice: (body, query) => {
 
-    const { name, address, cpostal, phone, email, cotizar, carrito, total, date } = body
+    const { name, razonsocial, codigopostalRcf, phone, email, cotizar, carrito, total, date, rfc } = body
     const { folio } = query
 
+    const cantidadString = (precio) => new Intl.NumberFormat('es-MX', { style:"currency", currency: "MXN"}).format(precio)
+    const dateFormat = (date) => new Intl.DateTimeFormat('es-MX', { dateStyle: 'full'}).format(new Date(date))
+    const direccionCompleta = `${body.direccionRfc}, ${body.alcaldiaRfc}, ${body.estadoRfc}, ${body.ciudadRfc}`
+
+    
     const carritoMap = carrito.map(item => {
       return( 
         `<tr>
           <td>${item.cantidad}</td>
           <td>${item.title}</td>
-          <td>${ item.precio === 0 ? "<p>*Por cotizar</p>" : item.precio }</td>
+          <td>${cantidadString(item.precio)}</td>
           <td>${item?.foto && `<img src="${item.foto}" class="fotoMini"}></img>`}</td>
         </tr>  
         `
@@ -21,7 +26,7 @@ module.exports = {
     const envioCotizar = `
     <tr>
       <td>1</td>
-      <td>Cotizar servicio de envio al codigo postal: ${cpostal}</td>
+      <td>Cotizar servicio de envio al codigo postal: ${codigopostalRcf}</td>
       <td>*Por Cotizar</td>
       <td></td>
     </tr>  
@@ -226,8 +231,10 @@ module.exports = {
                       <h2 class="client-company-name">Instalaciónes Tecnólogicas Aplicadas <br/> S.A. de C.V.</h2>
                       <h6 class="client-address">La Montaña, 28 A, CP: 53340 <br/>México</h6>
                       <h4 class="font-weight-bold">Datos del Cliente</h4>
-                      <h5>${name}</h5> 
-                      <span class="invoice-datos-cliente">${email}<br/>${address} C.P.: ${cpostal}<br />${phone}</span>
+                      <h5>${razonsocial}</h5> 
+                      <h5>${rfc}</h5>
+                      <h6>Atención: ${name}</h6>
+                      <span class="invoice-datos-cliente">${email}<br/>${direccionCompleta} C.P.: ${codigopostalRcf}<br />${phone}</span>
                     </div>
                   </div>
                   <div class="col-6">
@@ -238,7 +245,7 @@ module.exports = {
                         <img src="https://grupointecsa.com/web-logo.webp" class="img-responsive pull-right logo" alt="Logo del invoice"/>
                       </div>
                         <div>
-                          <p class="mt-3 w-100 invoice-date">${date}</p>
+                          <p class="mt-3 w-100 invoice-date">${dateFormat(date)}</p>
                         </div>
                     </div>
                   </div>
@@ -281,7 +288,7 @@ module.exports = {
                             <th>Total</th>
                             <th></th>
                             <th></th>
-                            <th>${total}</th>
+                            <th>${cantidadString(total)}</th>
                             
                           </tr>
                         </thead>
@@ -333,6 +340,33 @@ module.exports = {
 
     return web
   },
-  saveInvoice: (payload) => InvoiceStorage.create(payload),
+  saveInvoice: async (payload) => {
+
+    const genFolioIncremental = await new Promise((resolve) => {
+      resolve(InvoiceStorage.countDocuments())
+    })
+    .then(res => {
+       const data = {
+         ...payload,
+         folio: `W-${Math.floor(Math.random() * 1000)}-${res + 1}`
+       }
+       return data
+    })
+
+    const saveInfoInvoiceData = (data) => new Promise((resolve) => {
+      resolve(InvoiceStorage(data).save())
+    })
+    .then(res => res)
+
+
+    const query = await Promise.all([genFolioIncremental])
+      .then(res => {
+        return saveInfoInvoiceData(res[0])
+      })
+      .then(res => res)
+
+      return query
+  },
+
   getInvoiceId: (id) => InvoiceStorage.findById(id)
 }

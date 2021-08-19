@@ -1,4 +1,4 @@
-const { User } = require('../models')
+const { User, InvoiceStorage } = require('../models')
 
 module.exports = {
 
@@ -20,5 +20,8 @@ module.exports = {
             if(err) throw new Error('Bad Error user')
             doc.is_Acvive = body
             doc.save()
-        }).then( doc => doc )
+        }).then( doc => doc ),
+    getPedidosByEmail: (email) => {
+        return InvoiceStorage.find({ email })
+    }
 } 

@@ -114,5 +114,18 @@ module.exports = {
         }
 
     },
+    getPedidosByEmail: async(req, res) => {
+        const { email } = req.query        
+        try {
+            const query = await UserService.getPedidosByEmail(email)
+            if (!query) throw new Error('Error en on email user data')
+
+            res.status(200).json({ message: query })
+
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({ message: error })
+        }
+    }
 
 }

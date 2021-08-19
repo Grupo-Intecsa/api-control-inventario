@@ -77,13 +77,15 @@ module.exports = {
 
     },
     saveInvoice: async(req, res) => {
-
         try {
             
-            const invoice = await PDFServices.saveInvoice(req.body)
+            const invoice = await PDFServices.saveInvoice(req.body.data)
             if(invoice) return res.status(200).json({ message: invoice })
 
+            res.status(200).json({ message: invoice })
+
         } catch (error) {
+            console.log(error)
             res.status(500).json({ message: error })
         }
 
@@ -126,16 +128,12 @@ module.exports = {
         }
     },
     getInvoiceId: async(req, res) => {
-
         const { folio } = req.params
-
         try {   
-
             const pdfData = await PDFServices.getInvoiceId(folio)
-            
             if(pdfData) return res.status(200).json({ message: pdfData })
 
-            
+            res.status(200).json({ message: pdfData })
         } catch (error) {
             res.status(400).json({ message: error })
         }

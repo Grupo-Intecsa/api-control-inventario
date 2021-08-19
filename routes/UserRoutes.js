@@ -18,4 +18,7 @@ router.get('/api/v1/user/:id', verifyToken, UserController.findUserById);
 router.patch('/api/v1/user/:id', verifyToken, UserController.findByIdAndUpdate);
 router.delete('/api/v1/user/:id', verifyToken, UserController.findByIdAndDelete);
 
+// Pedidos
+router.get('/api/v1/pedidos', UserController.getPedidosByEmail)
+
 module.exports = router;
