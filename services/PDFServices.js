@@ -55,8 +55,7 @@ module.exports = {
     <style>
 
       body{
-        font-size: 12px;
-        height: 100vh;  
+        font-size: 12px;  
       }
 
       .fotoMini{
@@ -221,12 +220,6 @@ module.exports = {
         font-size: small;
         font-weight: bold;
       }
-
-      .tabla--content{
-        border-bottom: 100px;
-        min-height: 30vh;
-      }
-
       
     </style>
 
