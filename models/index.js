@@ -6,6 +6,9 @@ const { User } = require('./User')
 const { Familia } = require('./Familia')
 const { InvoiceStorage } = require('./InvoiceStorage')
 const { Mackbetty } = require('./MacBetty')
+const { EmpleadosRH } = require('./EmpleadosRH')
+const { RegistrosRH } = require('./RegistrosRH')
+const { DeptosRH } = require('./DeptosRH')
 
 
 module.exports = {
@@ -16,5 +19,8 @@ module.exports = {
     User,
     Familia,
     InvoiceStorage,
-    Mackbetty
+    Mackbetty,
+    EmpleadosRH,
+    RegistrosRH,
+    DeptosRH
 }
