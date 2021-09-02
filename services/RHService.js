@@ -12,5 +12,11 @@ module.exports = {
   },
   getEmployees: async () => {
     return await EmpleadosRH.find()
+  },
+  postSalidaCheck: async (body) => {
+    return RegistrosRH(body).save()
+  },
+  getActiveRegistros: async () => {
+    return await RegistrosRH.find({ isActive: true })
   }
 }

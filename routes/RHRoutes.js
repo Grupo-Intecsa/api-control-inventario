@@ -18,6 +18,12 @@ router.get('/api/v1/rrhh/find-user', RHController.findUser)
 router.get('/api/v1/rrhh/employees', RHController.getEmployees)
 
 
+// crear salida
+router.post('/api/v1/rrhh/salidasactive', RHController.postSalidaCheck)
+
+// leer saldidas
+router.get('/api/v1/rrhh/registrosget', RHController.getActiveRegistros)
+
 
 
 module.exports = router 

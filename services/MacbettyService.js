@@ -61,7 +61,6 @@ module.exports = {
 
       const query = Promise.all([dataTitle, dataDesc])   
       .then(res => {
-          console.log(res)
 
           const bruto = res[0].concat(res[1])
           const flat = bruto.reduce((arr, current ) =>  arr.concat(current), [])

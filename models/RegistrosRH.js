@@ -2,13 +2,24 @@ const mongoose = require('mongoose')
 const { Schema } = mongoose
 
 const RegistrosSchemaRH = new Schema({
-  date: {
-    type: Date,
+  isActive: {
+    type: Boolean,
+    default: true
   },
   empleado: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'empleadosrrhh'
+    ref: 'empleadosrhs'
   },
+  nameEmployee: {
+    type: String
+  },
+  destino: {
+    type: String,
+  },
+  dateFinish: {
+    type: Date
+  }
+
 
 },{
   timestamps: true
