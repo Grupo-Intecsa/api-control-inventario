@@ -75,5 +75,19 @@ module.exports = {
       return res.status(400).json({ message: error })
     }
     
+  },
+  patchRemoveRegistro: async (req, res) => {
+
+    const { body } = req
+    const { id } = req.params
+
+    try {
+      const mutation = await RHService.patchRemoveRegistro(body, id)
+      if (!mutation) throw new Error('Error en la creacion del elemento')
+
+      return res.status(200).json({ message: mutation })
+    } catch (error) {
+      return res.status(400).json({ message: error })
+    }
   }
 }

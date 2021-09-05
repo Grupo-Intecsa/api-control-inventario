@@ -24,6 +24,9 @@ router.post('/api/v1/rrhh/salidasactive', RHController.postSalidaCheck)
 // leer saldidas
 router.get('/api/v1/rrhh/registrosget', RHController.getActiveRegistros)
 
+// remover salida
+router.patch('/api/v1/rrhh/removeregistro/:id', RHController.patchRemoveRegistro)
+
 
 
 module.exports = router 

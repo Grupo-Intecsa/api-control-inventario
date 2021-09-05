@@ -18,5 +18,8 @@ module.exports = {
   },
   getActiveRegistros: async () => {
     return await RegistrosRH.find({ isActive: true })
+  },
+  patchRemoveRegistro: async (body, id) => {
+    return await RegistrosRH.findByIdAndUpdate(id, body)
   }
 }
