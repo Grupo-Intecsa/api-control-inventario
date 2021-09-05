@@ -78,8 +78,8 @@ module.exports = {
   },
   patchRemoveRegistro: async (req, res) => {
 
+    const { id } = req.params 
     const { body } = req
-    const { id } = req.params
 
     try {
       const mutation = await RHService.patchRemoveRegistro(body, id)
