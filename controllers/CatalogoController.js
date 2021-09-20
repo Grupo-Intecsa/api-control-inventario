@@ -394,9 +394,14 @@ module.exports = {
         try{
 
             const responseData = await CatalogoServices.getListFamiliaByBrandId(params.id)
-            return res.status(200).json({ message: responseData })
+            
+            console.log(typeof responseData)
+            while (Array.isArray(responseData)) {
+                return res.status(200).json({ message: responseData })
+            }
 
         }catch(err){
+            console.log(responseData)
             res.status(400).json({ message: "error "})
         }
     }

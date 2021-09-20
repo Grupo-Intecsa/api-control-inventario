@@ -24,4 +24,8 @@ router.get('/api/v1/mcbetty/ultimos', MessageController.ultimos)
 router.get('/api/v1/mcbetty/find', MessageController.findByTextDescription)
 
 
+// TIPO DE CAMBIO MEXICO DOLAR
+router.get('/api/v1/tipodecambiodolar/', MessageController.getDolarCurrency)
+
+
 module.exports = router

@@ -1,5 +1,6 @@
 const { TwilioService, PDFServices, MacbettyService  } = require('../services')
 const puppeteer = require("puppeteer")
+const { JSDOM } = require("jsdom")
 const fetch = require('node-fetch')
 
 module.exports = {
@@ -185,5 +186,34 @@ module.exports = {
         }   
 
 
+    },
+    getDolarCurrency: async (req, res) => {
+
+        const URL = 'https://www.eldolar.info/en/mexico/dia/hoy'
+        
+        try {   
+            
+            const browser = await puppeteer.launch()
+            const page = await browser.newPage()
+            
+            await page.goto(URL, {
+                waitUntil: 'networkidle0'
+            })
+            
+            const data = await page
+            .evaluateHandle(() => {
+                const currey = document
+                .querySelectorAll("span.xTimes")
+
+                return currey
+            })
+
+            const result = await page.evaluate(els => els[1].innerHTML, data)
+            res.status(200).json({ dolarhoy: result })
+
+        } catch(error) {
+            console.log(error)
+            res.status(400).json({ error: error })
+        }
     }
 }

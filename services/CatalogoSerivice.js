@@ -448,18 +448,20 @@ module.exports =  {
         })
         
         return Promise.all([ query ]).then((res) => {
-            
+
             // extraemos las inciciales 
             const inidice = res[0]
-                .map(({ familia }) => familia.charAt(0))
-                .reduce((array, item) => array.includes(item) ? array : [...array, item ], [])
-                .sort()
+            .map(({ familia }) => familia.charAt(0))
+            .reduce((array, item) => array.includes(item) ? array : [...array, item ], [])
+            .sort()
 
             // extraemos la familia, label y foto colo en valores unicos
+            console.log({ inidice })
+
             const valoresUnicos = []
             const imgData = []
 
-            const brandsValues = res[0].forEach(({ familia, urlfoto, label }) => {
+            const brandsValues = () =>  res[0].forEach(({ familia, urlfoto, label }) => {
                 let etiqueta = label[0].label_id
 
                 if(!valoresUnicos.includes(familia)){
@@ -467,6 +469,8 @@ module.exports =  {
                     imgData.push({ familia, img: urlfoto[0], label: etiqueta })
                 }
             })
+
+            brandsValues()          
 
             // acomodamos en orden alfabetico
             function helperAcomodador(letter, dataPayload){
