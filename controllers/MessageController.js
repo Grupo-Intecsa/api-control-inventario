@@ -194,7 +194,8 @@ module.exports = {
         try {   
             
             const browser = await puppeteer.launch({
-                ignoreDefaultArgs: ['--no-sandbox']
+                args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu'],
+                headless: true
             })
             const page = await browser.newPage()
             
