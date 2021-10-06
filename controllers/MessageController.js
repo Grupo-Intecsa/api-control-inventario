@@ -193,7 +193,9 @@ module.exports = {
         
         try {   
             
-            const browser = await puppeteer.launch()
+            const browser = await puppeteer.launch({
+                ignoreDefaultArgs: ['--no-sandbox']
+            })
             const page = await browser.newPage()
             
             await page.goto(URL, {
