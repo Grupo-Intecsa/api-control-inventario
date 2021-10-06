@@ -212,11 +212,11 @@ module.exports = {
             })
 
             const result = await page.evaluate(els => els[1].innerHTML, data)
-            res.status(200).json({ dolarhoy: result })
+            return res.status(200).json({ dolarhoy: result })
 
         } catch(error) {
             console.log(error)
-            res.status(400).json({ error: error })
+            return res.status(400).json({ error: error })
         }
     }
 }
