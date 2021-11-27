@@ -218,5 +218,18 @@ module.exports = {
             console.log(error)
             return res.status(400).json({ error: error })
         }
+    },
+    postCounterAgent: async ({ body }, res) => {
+        
+        try {
+            const saveCounter = await TwilioService.postCounterAgent(body)
+            if (!saveCounter) throw new Error({ 
+                error: 'No se pudieron guardar los datos'
+            })
+
+            return res.status(200).json({ message: 'Datos guardados con exito'})
+        } catch (error) {
+            
+        }
     }
 }

@@ -1,5 +1,6 @@
 require('dotenv').config()
 const fetch = require('node-fetch');
+const { Counter } = require("../models")
 
 // de twilio whatsapp
 
@@ -92,6 +93,8 @@ module.exports = {
             
             return p1
 
-    }
+    },
+    postCounterAgent: async ({ contador, agent }) => new Counter({ contador, agent }).save(),
+
 }
 

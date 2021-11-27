@@ -27,5 +27,8 @@ router.get('/api/v1/mcbetty/find', MessageController.findByTextDescription)
 // TIPO DE CAMBIO MEXICO DOLAR
 router.get('/api/v1/tipodecambiodolar/', MessageController.getDolarCurrency)
 
+// Counter xml test nodo
+router.post('/api/v1/counter/agent', MessageController.postCounterAgent)
+
 
 module.exports = router
