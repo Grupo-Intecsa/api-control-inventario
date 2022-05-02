@@ -40,8 +40,7 @@ module.exports = {
     return flotilla
   },
   getEmpresas: async () => {
-    const empresas = await Bussiness.find({});
-    console.log(empresas)
+    const empresas = await Bussiness.find({});    
     return empresas
   },
   createEmpresa: async (body) => {
@@ -53,9 +52,6 @@ module.exports = {
     return empresa
   }, 
   getDocumentsByIdBussiness: async (idBussiness) => {
-
-    console.log(idBussiness)
-
     const agg = [
       [
         {
@@ -80,8 +76,7 @@ module.exports = {
       ]
     ]
 
-    const documents = await Bussiness.aggregate(agg);
-    console.log(documents)
+    const documents = await Bussiness.aggregate(agg);    
     return documents
 
   }
