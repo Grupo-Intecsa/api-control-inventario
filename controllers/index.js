@@ -4,6 +4,7 @@ const CatalogoController = require('./CatalogoController')
 const UserController = require('./UserController')
 const FamiliasController = require('./FamiliasController');
 const RHController = require('./RHController')
+const FlotillasController = require('./FlotillasController')
 
 
 module.exports = {
@@ -12,5 +13,6 @@ module.exports = {
     CatalogoController,
     UserController,
     FamiliasController,
-    RHController
+    RHController,
+    FlotillasController
 }

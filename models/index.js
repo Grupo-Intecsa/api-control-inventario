@@ -10,6 +10,9 @@ const { EmpleadosRH } = require('./EmpleadosRH')
 const { RegistrosRH } = require('./RegistrosRH')
 const { DeptosRH } = require('./DeptosRH')
 const { Counter } = require('./Counter')
+const { Traslado } = require('./Traslado')
+const { Flete } = require('./Flete')
+const { Flotilla } = require('./Flotilla')
 
 
 module.exports = {
@@ -24,5 +27,8 @@ module.exports = {
     EmpleadosRH,
     RegistrosRH,
     DeptosRH,
-    Counter
+    Counter,
+    Traslado,
+    Flete,
+    Flotilla
 }
