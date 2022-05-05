@@ -37,6 +37,7 @@ module.exports = {
     }
   },
   get: (req, res) => {
+    // TODO fallo al no tener query indicado de tipo de registro
     const { type } = req.query
     try {
       const response = FlotillasServices.get(type)
@@ -84,6 +85,16 @@ module.exports = {
       }
     } catch(error){
       console.log(error)
+      return res.status(400).json({ message: error })
+    }
+  },
+  getVehiculo: async(req, res) => {    
+    try {
+      const response = await FlotillasServices.getVehicles()
+      if (response) {
+        return res.status(200).json({ vehicles: response })
+      }
+    } catch(error){
       return res.status(400).json({ message: error })
     }
   }

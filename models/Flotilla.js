@@ -17,9 +17,9 @@ const FlotillasSchema = new Schema({
     documentacion: {
       type: JSON,      
     }, 
-    empresa: {
+    bussiness_cost: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'bussiness',
+      ref: 'bussinesses',
     }
 }, { timestamps: true });
 

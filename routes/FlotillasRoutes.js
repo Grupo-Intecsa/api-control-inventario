@@ -9,6 +9,7 @@ router.get('/api/v1/flotilla/get', FlotillasController.get)
 
 // vehiculos
 router.post('/api/v1/flotilla/vehiculo/insert', FlotillasController.createVehiculo)
+router.get('/api/v1/flotilla/vehicles', FlotillasController.getVehiculo)
 
 // get empresas 
 router.get('/api/v1/flotilla/empresas/get', FlotillasController.getEmpresas)

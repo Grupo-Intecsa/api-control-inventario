@@ -36,6 +36,9 @@ module.exports = {
       case 'flete':
         const flotillas = await Flete.find({});
         return flotillas
+      case 'renta':
+        const rentas = await Rentas.find({});
+        return rentas
     }
   }, 
   createVehiculo: async (body) => {
@@ -76,6 +79,13 @@ module.exports = {
             'foreignField': 'bussiness_cost', 
             'as': 'traslado'
           }
+        }, {
+          '$lookup': {
+            'from': 'rentas',
+            'localField': '_id',
+            'foreignField': 'bussiness_cost',
+            'as': 'rentas'
+          }
         }
       ]
     ]
@@ -83,5 +93,9 @@ module.exports = {
     const documents = await Bussiness.aggregate(agg);    
     return documents
 
+  },
+  getVehicles: () => {
+      const vehicles = Flotilla.find({});
+      return vehicles
   }
 }
