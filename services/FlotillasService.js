@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { Traslado, Flete, Flotilla } = require('../models');
+const { Traslado, Flete, Flotilla, Rentas } = require('../models');
 
 const Bussiness = mongoose.model('bussiness', new mongoose.Schema({
   name: {
@@ -22,6 +22,10 @@ module.exports = {
         const flete = new Flete(body);
         await flete.save();
         return flete
+      case 'renta': 
+        const renta = new Rentas(body);
+        await renta.save();
+        return renta
     }
   },
   get: async (type) => {

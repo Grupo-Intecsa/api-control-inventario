@@ -13,7 +13,7 @@ module.exports = {
       })
     }
 
-    if ([ 'traslado', 'flete' ].indexOf(type) === -1) {
+    if ([ 'traslado', 'flete', 'renta' ].indexOf(type) === -1) {
       return res.status(400).json({
         success: false,
         message: 'El tipo de registro es inválido'

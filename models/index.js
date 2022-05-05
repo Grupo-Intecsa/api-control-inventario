@@ -13,7 +13,7 @@ const { Counter } = require('./Counter')
 const { Traslado } = require('./Traslado')
 const { Flete } = require('./Flete')
 const { Flotilla } = require('./Flotilla')
-
+const { Rentas } = require('./Rentas')
 
 module.exports = {
     Inventario,
@@ -30,5 +30,6 @@ module.exports = {
     Counter,
     Traslado,
     Flete,
-    Flotilla
+    Flotilla,
+    Rentas
 }
