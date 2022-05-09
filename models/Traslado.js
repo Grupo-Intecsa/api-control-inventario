@@ -7,7 +7,11 @@ const TrasladoSchema = new Schema({
     }, 
     folio: {
         type: Number,
-    }, 
+    },
+    type: {
+        type: String,
+        default: 'traslado',
+    },
     request_date: {
         type: Date,        
     },
@@ -46,6 +50,9 @@ const TrasladoSchema = new Schema({
         ref: 'bussinesses',
     },
     route: {
+        type: JSON,
+    },
+    description: {
         type: JSON,
     }
 }, { timestamps: true })

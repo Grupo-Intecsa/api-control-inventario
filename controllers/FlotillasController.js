@@ -1,5 +1,6 @@
 
-const { FlotillasServices } = require('../services');
+const { FlotillasServices, PDFServices } = require('../services');
+const puppeteer = require("puppeteer");
 
 module.exports = {
   create: async(req, res) => {
@@ -96,6 +97,88 @@ module.exports = {
       }
     } catch(error){
       return res.status(400).json({ message: error })
+    }
+  },
+  createPlan: async(req, res) => {
+    const { body } = req
+   
+    try {
+      const response = await FlotillasServices.createPlan(body)
+      if (response) {
+        const planesById = await FlotillasServices.getPlanByObjectId(body.flotilla)
+        return res.status(200).json({ planes: planesById })
+      } else {
+        console.log(response)
+        return res.status(400).json({ message: 'No se pudo crear el plan' })
+      }
+    } catch(error){
+      console.log(error)
+      return res.status(500).json({ message: error })
+    }
+  }, 
+  getPlanesByFlotilla: async(req, res) => {
+    const { idFlotilla } = req.params
+    try {
+      const response = await FlotillasServices.getPlanByObjectId(idFlotilla)
+      if (response) {
+        return res.status(200).json({ planes: response })
+      }
+    } catch(error){
+      return res.status(400).json({ message: error })
+    }
+  }, 
+  getPlanesBySlug: async(req, res) => {
+    const { slug } = req.params
+    try {
+      const response = await FlotillasServices.getPlanesBySlug(slug)
+      if (response) {
+        return res.status(200).json({ planes: response })
+      }
+    } catch(error){
+      return res.status(400).json({ message: error })
+    }
+  }, 
+  printPlan: async(req, res) => {
+
+    // [ 'traslado', 'flete', 'renta' ]
+    const { type } = req.query
+    const { idDocument } = req.params
+    console.log(type, idDocument)
+
+    const browser = await puppeteer.launch({
+      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu'],
+      headless: true
+    })
+
+    const page = await browser.newPage()
+    try {
+      // taer datos del dociumento
+      // // [ 'traslado', 'flete', 'renta' ]
+      const getDocumentData = await FlotillasServices.getDocument(idDocument, type)
+      console.log(getDocumentData)
+      // se envia al modelo html para obtener el html
+      const getPDFdata = await PDFServices.flotillaInvoice(getDocumentData)
+      await page.setContent(getPDFdata)
+
+      const pdf = await page.pdf({
+        format: 'letter',
+        printBackground: true,
+        scale: 0.8,
+        margin: {
+          left: '0px',
+          top: '0px',
+          right: '0px',
+          bottom: '0px'
+        }
+      })
+
+      await browser.close()
+      res.contentType('application/pdf')
+
+      return res.send(pdf)
+      
+    } catch (error) {
+      return res.status(400).json({})
     }
   }
 

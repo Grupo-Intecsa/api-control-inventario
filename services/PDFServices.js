@@ -360,5 +360,385 @@ module.exports = {
       return query
   },
 
-  getInvoiceId: (id) => InvoiceStorage.findById(id)
+  getInvoiceId: (id) => InvoiceStorage.findById(id),
+  flotillaInvoice: (data) => {  
+    // destructuring data
+    const dateFormat = (date) => new Intl.DateTimeFormat('es-MX', { dateStyle: 'full'}).format(new Date(date))
+    const {
+      type,
+      email_sent,
+      _id,
+      request_date,
+      delivery_date,
+      driver,
+      route,
+      kilometer_out,
+      kilometer_in,
+      fuel_level,
+      document_id,
+      project_id,
+      fuel_card,
+      folio,
+      description,
+      vehicle,      
+      bussiness_cost,
+      createdAt,
+      updatedAt,
+    } = data
+
+    const empresaLogos = [
+      {
+        "_id": "626e223ffe9887654db63c37",
+        "name": "Instalaciones Tecnologicas Aplicadas",
+        "slug": "ita"
+      },
+      {
+        "_id": "626e22ebfe9887654db63c38",
+        "name": "Inmobiliaria Eguel",
+        "slug": "eguel"
+      },
+      {
+        "_id": "626e2305fe9887654db63c39",
+        "name": "Instalaciones y Tecnica",
+        "slug": "ite"
+      },
+      {
+        "_id": "626e2324fe9887654db63c3a",
+        "name": "Canalizacion y Soporteria",
+        "slug": "csm"
+      }
+    ]
+
+    const currentEmpresa = empresaLogos.find(empresa => empresa._id === bussiness_cost.toString()).name
+    
+    const invoicePDF = `
+    <!doctype html>
+    <html lang="en">
+      <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    
+        <style>
+          
+          .fotoMini{
+            height: 50px;
+            width: auto;
+    
+          }
+    
+    
+          .back{
+            width: 100%;
+          }
+    
+          .invoice-wrapper{
+            margin: 20px auto;
+            width: 100%;
+            
+          }
+          .invoice-top{
+            background-color: #fafafa;
+            padding: 40px 60px;
+          }
+    
+          .invoice-top-left{
+            margin-top: 10px;
+            
+          }
+          .invoice-top-left h2 , .invoice-top-left h6{
+            line-height: 1.5;
+            font-family: 'Montserrat', sans-serif;
+          }
+          .invoice-top-left h4{
+            margin-top: 30px;
+            font-size: 12px;
+            font-family: 'Montserrat', sans-serif;
+          }
+          .invoice-top-left h5{
+            line-height: 1.4;
+            font-size: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+          }
+          .client-company-name{
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 0;
+          }
+          .client-address{
+            font-size: 14px;
+            margin-top: 5px;
+            color: rgba(0,0,0,0.75);
+          }
+    
+    
+          .invoice-top-right h2 , .invoice-top-right h6{
+            text-align: right;
+            line-height: 1.5;
+            font-family: 'Montserrat', sans-serif;
+          }
+          .invoice-top-right h5{
+            line-height: 1.4;
+              font-family: 'Montserrat', sans-serif;
+              font-weight: 400;
+              text-align: right;
+              margin-top: 0;
+          }
+          .our-company-name{
+            font-size: 16px;
+              font-weight: 600;
+              margin-bottom: 0;
+          }
+          .our-address{
+            font-size: 13px;
+            margin-top: 0;
+            color: rgba(0,0,0,0.75);
+          }
+    
+          .logo-wrapper{ 
+            overflow: auto;
+            display: flex;
+            justify-content: flex-end;
+            
+          }
+    
+          .invoice-bottom{
+            background-color: #ffffff;
+            padding: 40px 60px;
+            position: relative;
+          }
+          .invoice-title{
+            font-size: x-large;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            
+          }
+    
+          .invoice-bottom-left{
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            
+          }
+    
+          .invoice-bottom-left > h5{
+            font-family: 'Montserrat', sans-serif;
+            width: 100px;
+          }
+          
+          .invoice-bottom-left > h4{
+            font-family: 'Montserrat', sans-serif;
+            width: 100%;
+          }
+          .invoice-bottom-left h4{
+            font-weight: 400;
+            font-size: large;
+          }
+          .terms{
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            margin-top: 40px;
+          }
+          .divider{
+            margin-top: 50px;
+              margin-bottom: 5px;
+          }
+    
+          
+          .invoice-bottom-bar{
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 26px;
+            background-color: #3B5998;
+          }
+    
+          .invoice-datos-cliente{
+            font-size: medium;
+          }
+    
+          .invoice-button-send {
+            
+              border: none;
+              border-radius: 4px;
+              font-weight: bold;
+              width: 12rem;
+              padding: 0.86rem;
+              color: #ffffff;
+              border: 1px solid slategrey;
+              background-color: rgb(223, 80, 80);  
+          }
+    
+          .invoice-button-send:hover{
+            color: rgb(223, 80, 80);
+            border: 1px solid rgb(223, 80, 80);;
+            background-color: white;  
+          }
+    
+          .invoice-date{
+            text-align: right;
+            text-transform: uppercase;
+            font-size: small;
+            font-weight: bold;
+          }
+          
+        </style>
+    
+    
+    
+      </head>
+      <body>
+        
+        <section class="back">
+          
+          <div class="container-xl">
+            <div>
+              <div >
+                <div class="invoice-wrapper">
+                  <div class="invoice-top">
+                    <div class="row">
+                      <div class="col-6">
+                        <div class="invoice-top-left">
+                          <h1 class="invoice-title">${type.toUpperCase()}</h1>
+                          <h3>${currentEmpresa || ''}</h3>                   
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="invoice-top-right">
+                          <h2 class="our-company-name">Grupo Intecsa</h2>
+                          <div class="logo-wrapper">                        
+                          </div>
+                            <div>
+                              <p class="mt-3 w-100 invoice-date">${dateFormat(createdAt)}</p>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="invoice-bottom">
+                    <div class="row">
+                      <div class="col-12">
+                      </div>
+                      <div class="clearfix"></div>
+
+                      <hr/>
+                      <div>
+                          <h2>Folio: ${folio}</h2>
+                      </div>
+                      <hr/>
+
+                      <div class="col-offset-1 col-12 col-9 w-100">
+                        <div class="invoice-bottom-right tabla--content">
+    
+                          <hr />
+                          <h5>
+                            Datos de ${type}
+                          </h5>
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th>Chofer</th>                            
+                                <th>KM salida</th>
+                                <th>KM entrada</th>
+                                <th>Combustible</th>
+                                <th>Tarjeta Combustible</th>                        
+                              </tr>                          
+                            </thead>
+                            <tbody>                                
+                              <tr>
+                                <td>${driver}</td>                            
+                                <td>${kilometer_out}</td>
+                                <td>${kilometer_in}</td>
+                                <td>${fuel_level}</td>
+                                <td>${fuel_card}</td>                            
+                              </tr>
+                            </tbody>
+                          </table>
+    
+                          <hr />
+                          <h5>
+                            Destino
+                          </h5>
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th>Ruta</th>    
+                                <th>Placas del vehiculo</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <td>${route}</td>
+                              <td>${vehicle}</td>                      
+                            </tbody>
+                          </table>
+    
+                          <hr />
+                          <h5>
+                            Control Interno
+                          </h5>
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th>ADMINPAQ</th>
+                                <th>Proyecto</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <td>${document_id}</td>
+                              <td>${project_id}</td>
+                            </tbody>
+                          </table>
+    
+                            <hr/>
+                            <h5>Plan de ${type}</h5>
+                          
+                            <table class="table">
+                            <thead>
+                              <tr>
+                                <th>Plan</th>
+                                <th>Descripcion</th>
+                                <th>Costo</th>                            
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>${description.planName}</td>
+                                <td>${description.planDescription}</td>
+                                <td>${description.planPrice}</td>   
+                              </tr>
+                            </tbody>                       
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+            </div>
+            </div>
+      
+        <!-- Optional JavaScript; choose one of the two! -->
+    
+        <!-- Option 1: Bootstrap Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    
+        <!-- Option 2: Separate Popper and Bootstrap JS -->
+        
+        <!--
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js" integrity="sha384-lpyLfhYuitXl2zRZ5Bn2fqnhNAKOAaM/0Kr9laMspuaMiZfGmfwRNFh8HlMy49eQ" crossorigin="anonymous"></script>
+        -->
+      </body>
+    </html>
+    `
+      return invoicePDF
+    }  
 }

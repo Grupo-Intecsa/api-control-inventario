@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { Traslado, Flete, Flotilla, Rentas } = require('../models');
+const { Traslado, Flete, Flotilla, Rentas, Planes } = require('../models');
 
 const Bussiness = mongoose.model('bussiness', new mongoose.Schema({
   name: {
@@ -97,5 +97,37 @@ module.exports = {
   getVehicles: () => {
       const vehicles = Flotilla.find({});
       return vehicles
-  }
+  }, 
+  createPlan: async (body) => {
+    const plan = new Planes(body);
+    await plan.save();
+    return plan
+  },
+  getPlanByObjectId: async (id) => {
+    const plan = await Planes.find({ flotilla: id });
+    return plan
+  }, 
+  getPlanesBySlug: async (slug) => {    
+    try {
+      const vehicle = await Flotilla.find({ placas: slug });
+      const planes = await Planes.find({ flotilla: vehicle[0]._id });
+      return planes
+    } catch (error) {
+      throw new Error("No se encontró el vehículo")
+    }    
+  },
+  getDocument: async (id, type) => {
+    switch (type) {
+      case 'flete':
+        const flotilla = await Flete.findById(id);
+        return flotilla;
+      case 'traslado':
+        const traslado = await Traslado.findById(id);
+        return traslado;
+      case 'renta':
+        const renta = await Rentas.findById(id);
+        return renta;
+
+    }
+  },
 }

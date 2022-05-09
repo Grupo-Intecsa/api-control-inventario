@@ -18,4 +18,17 @@ router.get('/api/v1/flotilla/empresas/get', FlotillasController.getEmpresas)
 router.get('/api/v1/flotilla/documentos/:idBussines', FlotillasController.getDocumentsByIdBussiness)
 
 
+// save plans by flotilla
+router.post('/api/v1/flotilla/plan/insert', FlotillasController.createPlan)
+// get planes by flotilla id
+router.get('/api/v1/flotilla/planes/:idFlotilla', FlotillasController.getPlanesByFlotilla)
+//  get planes by slug flotilla
+router.get('/api/v1/flotilla/planes/slug/:slug', FlotillasController.getPlanesBySlug)
+
+
+// imprimir plan MODELOS RENTA, FLETE O TRASLADO
+// pasar el tipo de plan
+router.get('/api/v1/flotilla/plan/print/:idDocument', FlotillasController.printPlan)
+
+
 module.exports = router

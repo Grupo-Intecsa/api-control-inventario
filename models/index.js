@@ -14,6 +14,7 @@ const { Traslado } = require('./Traslado')
 const { Flete } = require('./Flete')
 const { Flotilla } = require('./Flotilla')
 const { Rentas } = require('./Rentas')
+const { Planes } = require('./Planes.js')
 
 module.exports = {
     Inventario,
@@ -31,5 +32,6 @@ module.exports = {
     Traslado,
     Flete,
     Flotilla,
-    Rentas
+    Rentas,
+    Planes
 }

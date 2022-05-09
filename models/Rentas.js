@@ -4,7 +4,11 @@ const { Schema } = mongoose
 const RentasSchema = new Schema({
     is_active: {
         type: Boolean,
-    }, 
+    },
+    type: {
+        type: String,
+        default: 'renta',
+    },
     folio: {
         type: Number,
     }, 
@@ -46,6 +50,9 @@ const RentasSchema = new Schema({
         ref: 'bussinesses',
     },
     route: {
+        type: JSON,
+    },
+    description: {
         type: JSON,
     }
 }, { timestamps: true })

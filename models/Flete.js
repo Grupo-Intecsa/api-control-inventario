@@ -7,7 +7,11 @@ const FleteSchema = new Schema({
     },
     folio: {
         type: Number,
-    }, 
+    },
+    type: {
+        type: String,
+        default: 'flete',
+    },
     request_date: {
         type: Date,        
     },
@@ -51,7 +55,10 @@ const FleteSchema = new Schema({
     }],
     route: {
         type: JSON,
-    }  
+    },
+    description: {
+        type: JSON,
+    }
 }, { timestamps: true })
 
 FleteSchema.pre('save', function (next) {

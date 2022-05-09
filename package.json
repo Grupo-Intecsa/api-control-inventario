@@ -39,7 +39,8 @@
     "phoenix": "^1.6.7",
     "puppeteer": "^9.1.1",
     "rendertron-middleware": "^0.1.5",
-    "twilio": "^3.56.0"
+    "twilio": "^3.56.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "jest": "^27.0.5"
