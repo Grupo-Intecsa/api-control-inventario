@@ -145,6 +145,12 @@ module.exports = {
     const { idDocument } = req.params
     console.log(type, idDocument)
 
+    if(!type || !idDocument) {
+      return res.status(400).json({
+        message: 'No se especificó el tipo de registro o el id del documento'
+      })
+    }
+
     const browser = await puppeteer.launch({
       args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu'],
       headless: true

@@ -18,7 +18,7 @@ app.use((req, res, next) => {
         next();
     });
 
-    var allowedOrigins = ['http://localhost:3001', 'https://logistica-chi.vercel.app', 'https://itamx.com'];
+    var allowedOrigins = ['http://localhost:3001', 'https://logistica-chi.vercel.app', 'https://itamx.com', 'https://laughing-torvalds-9cd368.netlify.app'];
     app.use(cors({
         origin: function(origin, callback){
         // allow requests with no origin 
