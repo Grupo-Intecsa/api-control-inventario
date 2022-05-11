@@ -28,7 +28,7 @@ router.get('/api/v1/flotilla/planes/slug/:slug', FlotillasController.getPlanesBy
 
 // imprimir plan MODELOS RENTA, FLETE O TRASLADO
 // pasar el tipo de plan
-router.get('/api/v1/flotilla/plan/print/:idDocument', FlotillasController.printPlan)
+router.post('/api/v1/flotilla/plan/print/:idDocument', FlotillasController.printPlan)
 
 
 module.exports = router
