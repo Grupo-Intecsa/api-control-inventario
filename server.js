@@ -8,7 +8,7 @@ const PORT = process.env.PORT
 const { MONGO_URI } = require('./config')
 
 // MIDDLEWARES
-app.use(cors({ origin: true }))
+app.use(cors())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json({ extended: true }))
 
