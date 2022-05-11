@@ -8,7 +8,16 @@ const PORT = process.env.PORT
 const { MONGO_URI } = require('./config')
 
 // MIDDLEWARES
-app.use(cors())
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader(
+        'Access-Control-Allow-Methods',
+        'OPTIONS', // what matters here is that OPTIONS is present
+        );
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        next();
+    });
+app.use(cors({ origin: true }))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json({ extended: true }))
 
