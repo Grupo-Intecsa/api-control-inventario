@@ -37,6 +37,7 @@
     "node-fetch": "^2.6.1",
     "nodemon": "^2.0.7",
     "phoenix": "^1.6.7",
+    "playwright": "^1.21.1",
     "puppeteer": "^9.1.1",
     "rendertron-middleware": "^0.1.5",
     "twilio": "^3.56.0",

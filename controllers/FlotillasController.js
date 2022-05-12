@@ -179,9 +179,9 @@ module.exports = {
       })
 
       await browser.close()
+      
       res.contentType('application/pdf')
-
-      return res.send(pdf)
+      return res.send(pdf)      
       
     } catch (error) {
       return res.status(400).json({})
