@@ -152,7 +152,7 @@ module.exports = {
     }
 
     const browser = await puppeteer.launch({
-      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu'],
+      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--unhandled-rejections=strict'],
       headless: true
     })
 

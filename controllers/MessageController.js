@@ -14,11 +14,11 @@ module.exports = {
             const twilioMessage = await TwilioService.whatspapp(messageBody)
             
             if(twilioMessage){
-                res.status(200).json(twilioMessage)
+                return res.status(200).json(twilioMessage)
             }
             
         } catch (error) {
-            res.status(404).json({ message: error })
+            return res.status(404).json({ message: error })
         }
 
     },
@@ -35,7 +35,7 @@ module.exports = {
             if(twilioMail) res.status(200).json({ message: 'Email sent' })
 
         } catch (error) {
-            res.status(400).json({ error })  
+            return res.status(400).json({ error })  
         }
     },
     createItemOnBoard: async(req, res) => {
@@ -48,7 +48,7 @@ module.exports = {
             return res.status(200).json({ message: query })
             
         } catch (error) {
-            res.status(400).json({ error })
+            return res.status(400).json({ error })
         }
         
     },
@@ -83,11 +83,11 @@ module.exports = {
             const invoice = await PDFServices.saveInvoice(req.body.data)
             if(invoice) return res.status(200).json({ message: invoice })
 
-            res.status(200).json({ message: invoice })
+            return res.status(200).json({ message: invoice })
 
         } catch (error) {
             console.log(error)
-            res.status(500).json({ message: error })
+           return res.status(500).json({ message: error })
         }
 
 
@@ -121,11 +121,10 @@ module.exports = {
 
             await browser.close()
             res.contentType("application/pdf")
-
             return res.send(pdf)
 
         } catch (error) {
-            
+            return res.status(500).json({ message: error })
         }
     },
     getInvoiceId: async(req, res) => {
@@ -134,10 +133,9 @@ module.exports = {
             const pdfData = await PDFServices.getInvoiceId(folio)
             if(pdfData) return res.status(200).json({ message: pdfData })
 
-            res.status(200).json({ message: pdfData })
-            
+            return res.status(200).json({ message: pdfData })        
         } catch (error) {
-            res.status(400).json({ message: error })
+            return res.status(400).json({ message: error })
         }
     },
     createCodigoCien: async(req, res) => {
@@ -166,10 +164,10 @@ module.exports = {
         const response = await MacbettyService.findByTextDescription(text)
 
         if(response)
-        res.status(200).json({ message: response })
+        return res.status(200).json({ message: response })
 
     } catch (error) {
-        res.status(400).json({ message: error })
+        return res.status(400).json({ message: error })
     }
 
     },
@@ -229,7 +227,7 @@ module.exports = {
 
             return res.status(200).json({ message: 'Datos guardados con exito'})
         } catch (error) {
-            
+            return res.status(400).json({ error })
         }
     }
 }
