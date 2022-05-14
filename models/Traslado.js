@@ -7,6 +7,7 @@ const TrasladoSchema = new Schema({
     }, 
     folio: {
         type: Number,
+        default: 10,
     },
     type: {
         type: String,
@@ -54,12 +55,18 @@ const TrasladoSchema = new Schema({
     },
     description: {
         type: JSON,
+    },
+    client: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'businesses',
     }
 }, { timestamps: true })
 
-TrasladoSchema.pre('save', function (next) {
-    folio = this.folio + 1
+TrasladoSchema.pre('save', async function (next) {
+    // count the number of traslado set nuew folio
+    this.folio = await Traslado.countDocuments({}) + 1
     next()
+    
 })
 
 // prev folio consecutive

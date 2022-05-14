@@ -179,7 +179,6 @@ module.exports = {
       })
 
       await browser.close()
-      
       res.contentType('application/pdf')
       return res.send(pdf)      
       

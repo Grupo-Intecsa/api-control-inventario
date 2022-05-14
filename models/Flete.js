@@ -7,13 +7,14 @@ const FleteSchema = new Schema({
     },
     folio: {
         type: Number,
+        default: 0,
     },
     type: {
         type: String,
         default: 'flete',
     },
     request_date: {
-        type: Date,        
+        type: Date,
     },
     delivery_date: {
         type: Date,
@@ -58,11 +59,16 @@ const FleteSchema = new Schema({
     },
     description: {
         type: JSON,
+    },
+    client: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'businesses',
     }
 }, { timestamps: true })
 
-FleteSchema.pre('save', function (next) {
-    folio = this.folio + 1
+FleteSchema.pre('save', async function (next) {
+    // count the number of traslado
+    this.folio = await Flete.countDocuments({}) + 1
     next()
 })
 

@@ -367,6 +367,7 @@ module.exports = {
     const {
       type,
       email_sent,
+      client,
       _id,
       request_date,
       delivery_date,
@@ -410,6 +411,8 @@ module.exports = {
     ]
 
     const currentEmpresa = empresaLogos.find(empresa => empresa._id === bussiness_cost.toString()).name
+    const currentClient = empresaLogos.find(empresa => empresa._id.toString() === client.toString()).name
+    console.log(currentEmpresa)
     
     const invoicePDF = `
     <!doctype html>
@@ -613,26 +616,29 @@ module.exports = {
                           <h2 class="our-company-name">Grupo Intecsa</h2>
                           <div class="logo-wrapper">                        
                           </div>
-                            <div>
+                          <div>
+                              <h2>Folio: ${folio}</h2>
                               <p class="mt-3 w-100 invoice-date">${dateFormat(createdAt)}</p>
                             </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="invoice-bottom">
+                  <div class="invoice-bottom">                  
                     <div class="row">
-                      <div class="col-12">
+                      <div class="col-12">                        
                       </div>
                       <div class="clearfix"></div>
 
                       <hr/>
                       <div>
-                          <h2>Folio: ${folio}</h2>
+                          <h5>Cliente: ${currentClient || ''}</h5>
                       </div>
+
                       <hr/>
 
                       <div class="col-offset-1 col-12 col-9 w-100">
+
                         <div class="invoice-bottom-right tabla--content">
     
                           <hr />

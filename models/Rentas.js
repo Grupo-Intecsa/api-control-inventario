@@ -11,6 +11,7 @@ const RentasSchema = new Schema({
     },
     folio: {
         type: Number,
+        default: 0,
     }, 
     request_date: {
         type: Date,        
@@ -54,11 +55,16 @@ const RentasSchema = new Schema({
     },
     description: {
         type: JSON,
+    },
+    client: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'businesses',
     }
 }, { timestamps: true })
 
-RentasSchema.pre('save', function (next) {
-    folio = this.folio + 1
+RentasSchema.pre('save', async function (next) {
+    // count the number of traslado
+    this.folio = await Rentas.countDocuments({}) + 1
     next()
 })
 
