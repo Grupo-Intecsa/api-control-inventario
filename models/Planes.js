@@ -19,7 +19,7 @@ const PlanesSchema = new Schema({
     required: true,
   }, 
   planPrice: {
-    type: Number,
+    type: String,
     required: true,
   },
   flotilla: {

@@ -161,9 +161,11 @@ module.exports = {
       // taer datos del dociumento
       // // [ 'traslado', 'flete', 'renta' ]
       const getDocumentData = await FlotillasServices.getDocument(idDocument, type)
-      console.log(getDocumentData)
+      // obtener datos de la flotilla
+      const getFlotillaData = await FlotillasServices.getPlanesByPlacas(getDocumentData.vehicle)
+  
       // se envia al modelo html para obtener el html
-      const getPDFdata = await PDFServices.flotillaInvoice(getDocumentData)
+      const getPDFdata = await PDFServices.flotillaInvoice(getDocumentData, getFlotillaData)
       await page.setContent(getPDFdata)
 
       const pdf = await page.pdf({
@@ -183,7 +185,19 @@ module.exports = {
       return res.send(pdf)      
       
     } catch (error) {
+      console.log(error)
       return res.status(400).json({})
+    }
+  },
+  getPlanesByPlacas: async(req, res) => {
+    const { placas } = req.params
+    try {
+      const response = await FlotillasServices.getPlanesByPlacas(placas)
+      if (response) {
+        return res.status(200).json({ vehicle: response })
+      }
+    } catch(error){
+      return res.status(400).json({ message: error })
     }
   }
 

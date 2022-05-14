@@ -130,4 +130,26 @@ module.exports = {
 
     }
   },
+  getPlanesByPlacas: (placas) => {
+    const agg = [
+      {
+        '$match': {
+          'placas': placas
+        }
+      }, {
+        '$lookup': {
+          'from': 'planes', 
+          'localField': '_id', 
+          'foreignField': 'flotilla', 
+          'as': 'planes'
+        }
+      }, {
+        '$unwind': {
+          'path': '$planes'
+        }
+      }
+    ]
+    const planes = Flotilla.aggregate(agg)
+    return planes
+  }
 }

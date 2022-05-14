@@ -18,17 +18,16 @@ const FleteSchema = new Schema({
     },
     delivery_date: {
         type: Date,
-    }, 
-    // vehicle: [{
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'vehiculo',
-    // }],
+    },
     vehicle: {
         type: String        
     },
     driver: {
         type: String,
-    }, 
+    },
+    subject: {
+        type: String,
+    },
     document_id: {
         type: String,
     }, 
@@ -46,7 +45,13 @@ const FleteSchema = new Schema({
     },
     fuel_card: {
         type: String,
-    }, 
+    },
+    fuel_amount: {
+        type: String,
+    },
+    recorrido_km: {
+        type: String,
+    },
     email_sent: {
         type: Array,
     }, 
@@ -63,12 +68,17 @@ const FleteSchema = new Schema({
     client: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'businesses',
+    },
+    link_googlemaps: {
+        type: String,
     }
 }, { timestamps: true })
 
 FleteSchema.pre('save', async function (next) {
     // count the number of traslado
-    this.folio = await Flete.countDocuments({}) + 1
+    this.folio = await Flete.find({
+        bussiness_cost: this.bussiness_cost,
+    }).countDocuments() + 1
     next()
 })
 

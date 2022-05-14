@@ -21,7 +21,10 @@ const TrasladoSchema = new Schema({
     }, 
     vehicle: {
         type: String,
-    }, 
+    },
+    subject: {
+        type: String,
+    },
     driver: {
         type: String,
     }, 
@@ -42,7 +45,13 @@ const TrasladoSchema = new Schema({
     },
     fuel_card: {
         type: String,
-    }, 
+    },
+    fuel_amount: {
+        type: String,
+    },
+    recorrido_km: {
+        type: String,
+    },
     email_sent: {
         type: Array,
     }, 
@@ -59,12 +68,17 @@ const TrasladoSchema = new Schema({
     client: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'businesses',
+    },
+    link_googlemaps: {
+        type: String,
     }
 }, { timestamps: true })
 
 TrasladoSchema.pre('save', async function (next) {
     // count the number of traslado set nuew folio
-    this.folio = await Traslado.countDocuments({}) + 1
+    this.folio = await Traslado.find({
+        bussiness_cost: this.bussiness_cost,
+    }).countDocuments() + 1
     next()
     
 })

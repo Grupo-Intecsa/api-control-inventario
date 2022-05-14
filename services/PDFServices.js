@@ -361,7 +361,7 @@ module.exports = {
   },
 
   getInvoiceId: (id) => InvoiceStorage.findById(id),
-  flotillaInvoice: (data) => {  
+  flotillaInvoice: (data, flotillasData) => {  
     // destructuring data
     const dateFormat = (date) => new Intl.DateTimeFormat('es-MX', { dateStyle: 'full'}).format(new Date(date))
     const {
@@ -385,7 +385,18 @@ module.exports = {
       bussiness_cost,
       createdAt,
       updatedAt,
+      // 
+      fuel_amount,
+      recorrido_km,
+      subject,
+      link_googlemaps
     } = data
+
+    const {
+      modelo,
+      placas,
+      planes,
+    } = flotillasData[0]    
 
     const empresaLogos = [
       {
@@ -432,8 +443,6 @@ module.exports = {
             width: auto;
     
           }
-    
-    
           .back{
             width: 100%;
           }
@@ -632,7 +641,8 @@ module.exports = {
 
                       <hr/>
                       <div>
-                          <h5>Cliente: ${currentClient || ''}</h5>
+                          <h4>Cliente: ${currentClient || ''}</h4>
+                          <h4>${subject || ''}</h4>
                       </div>
 
                       <hr/>
@@ -640,85 +650,86 @@ module.exports = {
                       <div class="col-offset-1 col-12 col-9 w-100">
 
                         <div class="invoice-bottom-right tabla--content">
-    
-                          <hr />
+                        <hr />
                           <h5>
-                            Datos de ${type}
+                            Datos Vehiculo
                           </h5>
                           <table class="table">
                             <thead>
                               <tr>
-                                <th>Chofer</th>                            
-                                <th>KM salida</th>
-                                <th>KM entrada</th>
-                                <th>Combustible</th>
-                                <th>Tarjeta Combustible</th>                        
-                              </tr>                          
-                            </thead>
-                            <tbody>                                
-                              <tr>
-                                <td>${driver}</td>                            
-                                <td>${kilometer_out}</td>
-                                <td>${kilometer_in}</td>
-                                <td>${fuel_level}</td>
-                                <td>${fuel_card}</td>                            
+                                <th>Vehiculo</th>
+                                <th>Placas</th>
+                                <th>Chofer</th>
+                                <th>Tarjeta Gas</th>
+                                <th>Carga de Gas</th>
                               </tr>
+                            </thead>
+                            <tbody>                              
+                              <td>${modelo}</td>
+                              <td>${placas}</td>
+                              <td>${driver}</td>
+                              <td>${fuel_card}</td>
+                              <td>$ ${fuel_amount}</td>
                             </tbody>
-                          </table>
-    
-                          <hr />
+                          </table>                        
+                        <hr />
                           <h5>
-                            Destino
+                             Plan del Vehiculo
                           </h5>
                           <table class="table">
                             <thead>
                               <tr>
-                                <th>Ruta</th>    
-                                <th>Placas del vehiculo</th>
+                                <th>Nombre del plan</th>                                
+                                <th>Costo</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <td>${planes?.planDescription}</td>                              
+                              <td>$ ${planes?.planPrice}</td>
+                            </tbody>
+                          </table>    
+                        <hr/>
+                        <hr />
+                          <h5>
+                             Datos de Ruta
+                          </h5>
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th>Recorrido</th>
+                                <th>Km Salida</th>
+                                <th>Gas Salida</th>
+                                <th>Distancia Recorrido</th>
                               </tr>
                             </thead>
                             <tbody>
                               <td>${route}</td>
-                              <td>${vehicle}</td>                      
+                              <td>${kilometer_out}</td>
+                              <td>${fuel_level}%</td>
+                              <td>${recorrido_km} KM aprox</td>
                             </tbody>
-                          </table>
-    
-                          <hr />
+                          </table>    
+                        <hr/>
+                        <hr />
                           <h5>
-                            Control Interno
+                             Observaciones
                           </h5>
                           <table class="table">
                             <thead>
-                              <tr>
-                                <th>ADMINPAQ</th>
+                              <tr>                                
+                                <th>Google maps</th>
+                                <th>Salida de almacén <br/> (ADMIN/COMERCIAL)</th>
                                 <th>Proyecto</th>
                               </tr>
                             </thead>
                             <tbody>
-                              <td>${document_id}</td>
-                              <td>${project_id}</td>
+                              <td>${link_googlemaps || ''}</td>
+                              <td>${document_id || ''}</td>
+                              <td>${project_id || ''}</td>
                             </tbody>
-                          </table>
-    
-                            <hr/>
-                            <h5>Plan de ${type}</h5>
-                          
-                            <table class="table">
-                            <thead>
-                              <tr>
-                                <th>Plan</th>
-                                <th>Descripcion</th>
-                                <th>Costo</th>                            
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>${description.planName}</td>
-                                <td>${description.planDescription}</td>
-                                <td>${description.planPrice}</td>   
-                              </tr>
-                            </tbody>                       
-                          </table>
+                          </table>    
+                        <hr/>
+                                                    
                         </div>
                       </div>
                     </div>
@@ -743,7 +754,7 @@ module.exports = {
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js" integrity="sha384-lpyLfhYuitXl2zRZ5Bn2fqnhNAKOAaM/0Kr9laMspuaMiZfGmfwRNFh8HlMy49eQ" crossorigin="anonymous"></script>
         -->
       </body>
-    </html>
+    </html>    
     `
       return invoicePDF
     }  
