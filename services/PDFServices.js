@@ -387,7 +387,7 @@ module.exports = {
       updatedAt,
       // 
       fuel_amount,
-      recorrido_km,
+      recorrido_km = '0',
       subject,
       link_googlemaps
     } = data
@@ -423,6 +423,7 @@ module.exports = {
 
     const currentEmpresa = empresaLogos.find(empresa => empresa._id === bussiness_cost.toString()).name
     const currentClient = empresaLogos.find(empresa => empresa._id.toString() === client.toString()).name
+    const cantidadString = (precio) => new Intl.NumberFormat('es-MX', { style:"currency", currency: "MXN"}).format(precio)
     console.log(currentEmpresa)
     
     const invoicePDF = `
@@ -616,7 +617,8 @@ module.exports = {
                     <div class="row">
                       <div class="col-6">
                         <div class="invoice-top-left">
-                          <h1 class="invoice-title">${type.toUpperCase()}</h1>
+                          <h3>RECURSOS LOGÍSTICA</h3>
+                          <h3 class="invoice-title">${type.toUpperCase()}</h3>
                           <h3>${currentEmpresa || ''}</h3>                   
                         </div>
                       </div>
@@ -639,14 +641,13 @@ module.exports = {
                       </div>
                       <div class="clearfix"></div>
 
-                      <hr/>
+                      <br/>
                       <div>
                           <h4>Cliente: ${currentClient || ''}</h4>
-                          <h4>${subject || ''}</h4>
+                          <h5>${subject || ''}</h5>
                       </div>
 
-                      <hr/>
-
+                      <br/>
                       <div class="col-offset-1 col-12 col-9 w-100">
 
                         <div class="invoice-bottom-right tabla--content">
@@ -669,26 +670,9 @@ module.exports = {
                               <td>${placas}</td>
                               <td>${driver}</td>
                               <td>${fuel_card}</td>
-                              <td>$ ${fuel_amount}</td>
+                              <td>${(cantidadString(parseFloat(fuel_amount)))}</td>
                             </tbody>
-                          </table>                        
-                        <hr />
-                          <h5>
-                             Plan del Vehiculo
-                          </h5>
-                          <table class="table">
-                            <thead>
-                              <tr>
-                                <th>Nombre del plan</th>                                
-                                <th>Costo</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <td>${planes?.planDescription}</td>                              
-                              <td>$ ${planes?.planPrice}</td>
-                            </tbody>
-                          </table>    
-                        <hr/>
+                          </table> 
                         <hr />
                           <h5>
                              Datos de Ruta
@@ -709,7 +693,26 @@ module.exports = {
                               <td>${recorrido_km} KM aprox</td>
                             </tbody>
                           </table>    
-                        <hr/>
+                        <br/>                       
+                        <hr />
+                          <h5>
+                             Plan del Vehiculo
+                          </h5>
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th>Nombre del plan</th>                                
+                                <th>Costo unitario</th>
+                                <th>Subtotal del recorrido</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <td>${planes?.planDescription}</td>                              
+                              <td>$ ${planes?.planPrice}</td>                              
+                              <td>${cantidadString(parseFloat(planes?.planPrice) * parseFloat(recorrido_km))}</td>
+                            </tbody>
+                          </table>    
+                        <br/>                        
                         <hr />
                           <h5>
                              Observaciones
@@ -723,12 +726,14 @@ module.exports = {
                               </tr>
                             </thead>
                             <tbody>
-                              <td>${link_googlemaps || ''}</td>
+                              <td>
+                                <a target="_blank" href="${link_googlemaps || '#'}">Ver recorrido</a>
+                              </td>
                               <td>${document_id || ''}</td>
                               <td>${project_id || ''}</td>
                             </tbody>
                           </table>    
-                        <hr/>
+                        <br/>
                                                     
                         </div>
                       </div>
