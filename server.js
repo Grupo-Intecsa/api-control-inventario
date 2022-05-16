@@ -8,7 +8,7 @@ const PORT = process.env.PORT
 const { MONGO_URI } = require('./config')
 
 // MIDDLEWARES
-var allowedOrigins = ['http://localhost:3001', 'https://logistica-chi.vercel.app', 'https://itamx.com', 'https://laughing-torvalds-9cd368.netlify.app'];
+var allowedOrigins = ['http://localhost:3001', 'https://control-fletes.vercel.app', 'https://itamx.com', 'https://laughing-torvalds-9cd368.netlify.app'];
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json({ extended: true }))
