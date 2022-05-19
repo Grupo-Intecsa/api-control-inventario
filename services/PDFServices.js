@@ -385,6 +385,7 @@ module.exports = {
       bussiness_cost,
       createdAt,
       updatedAt,
+      subtotal_travel = 0,
       // 
       fuel_amount,
       recorrido_km = '0',
@@ -709,7 +710,7 @@ module.exports = {
                             <tbody>
                               <td>${planes?.planDescription}</td>                              
                               <td>$ ${planes?.planPrice}</td>                              
-                              <td>${cantidadString(parseFloat(planes?.planPrice) * parseFloat(recorrido_km))}</td>
+                              <td>${cantidadString(parseFloat(subtotal_travel || 0 ))}</td>
                             </tbody>
                           </table>    
                         <br/>                        

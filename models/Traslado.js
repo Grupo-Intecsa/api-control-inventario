@@ -54,7 +54,10 @@ const TrasladoSchema = new Schema({
     },
     email_sent: {
         type: Array,
-    }, 
+    },
+    subtotal_travel: {
+        type: String,
+    },
     bussiness_cost: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'bussinesses',

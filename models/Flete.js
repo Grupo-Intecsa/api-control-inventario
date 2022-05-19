@@ -34,6 +34,9 @@ const FleteSchema = new Schema({
     project_id: {
         type: String,
     }, 
+    subtotal_travel: {
+        type: String,
+    },
     kilometer_out: {
         type: Number,
     }, 

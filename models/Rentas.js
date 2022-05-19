@@ -39,7 +39,10 @@ const RentasSchema = new Schema({
     }, 
     kilometer_in: {
         type: Number,
-    }, 
+    },
+    subtotal_travel: {
+        type: String,
+    },
     fuel_level: {
         type: Number,
     },
