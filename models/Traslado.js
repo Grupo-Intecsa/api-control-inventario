@@ -74,6 +74,12 @@ const TrasladoSchema = new Schema({
     },
     link_googlemaps: {
         type: String,
+    },
+    casetas: {
+        type: String
+    },
+    tarjeta_deposito: {
+        type: String
     }
 }, { timestamps: true })
 
