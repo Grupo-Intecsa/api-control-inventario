@@ -390,7 +390,9 @@ module.exports = {
       fuel_amount,
       recorrido_km = '0',
       subject,
-      link_googlemaps
+      link_googlemaps,
+      casetas,
+      tarjeta_deposito,
     } = data
 
     const {
@@ -425,6 +427,27 @@ module.exports = {
     const currentEmpresa = empresaLogos.find(empresa => empresa._id === bussiness_cost.toString()).name
     const currentClient = empresaLogos.find(empresa => empresa._id.toString() === client.toString()).name
     const cantidadString = (precio) => new Intl.NumberFormat('es-MX', { style:"currency", currency: "MXN"}).format(precio)
+    const casetasBody = casetas 
+      ? `
+      <br/>
+      <h5>
+        Casetas
+      </h5>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Costo casetas</th>                                
+            <th>TARJETA / BANCO</th>
+          </tr>
+        </thead>
+        <tbody>
+          <td>${cantidadString(parseFloat(casetas))}</td>                              
+          <td>${tarjeta_deposito}</td>
+        </tbody>
+      </table>      
+    `
+    : ''
+
     console.log(currentEmpresa)
     
     const invoicePDF = `
@@ -439,6 +462,10 @@ module.exports = {
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
     
         <style>
+
+          h5{
+            background-color: #f5f5f5;
+          }
           
           .fotoMini{
             height: 50px;
@@ -652,7 +679,7 @@ module.exports = {
                       <div class="col-offset-1 col-12 col-9 w-100">
 
                         <div class="invoice-bottom-right tabla--content">
-                        <hr />
+                        <br />
                           <h5>
                             Datos Vehiculo
                           </h5>
@@ -674,7 +701,7 @@ module.exports = {
                               <td>${(cantidadString(parseFloat(fuel_amount)))}</td>
                             </tbody>
                           </table> 
-                        <hr />
+                          <br />
                           <h5>
                              Datos de Ruta
                           </h5>
@@ -694,8 +721,8 @@ module.exports = {
                               <td>${recorrido_km} KM aprox</td>
                             </tbody>
                           </table>    
-                        <br/>                       
-                        <hr />
+                          ${casetasBody}
+                          <br/>                                         
                           <h5>
                              Plan del Vehiculo
                           </h5>
@@ -712,9 +739,8 @@ module.exports = {
                               <td>$ ${planes?.planPrice}</td>                              
                               <td>${cantidadString(parseFloat(subtotal_travel || 0 ))}</td>
                             </tbody>
-                          </table>    
-                        <br/>                        
-                        <hr />
+                          </table>                          
+                        <br />
                           <h5>
                              Observaciones
                           </h5>
