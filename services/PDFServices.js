@@ -424,6 +424,8 @@ module.exports = {
       }
     ]
 
+    console.log(description)
+
     const currentEmpresa = empresaLogos.find(empresa => empresa._id === bussiness_cost.toString()).name
     const currentClient = empresaLogos.find(empresa => empresa._id.toString() === client.toString()).name
     const cantidadString = (precio) => new Intl.NumberFormat('es-MX', { style:"currency", currency: "MXN"}).format(precio)
@@ -735,8 +737,8 @@ module.exports = {
                               </tr>
                             </thead>
                             <tbody>
-                              <td>${planes?.planDescription}</td>                              
-                              <td>$ ${planes?.planPrice}</td>                              
+                              <td>${description?.planDescription}</td>                              
+                              <td>$ ${description?.planPrice}</td>                              
                               <td>${cantidadString(parseFloat(subtotal_travel || 0 ))}</td>
                             </tbody>
                           </table>                          
