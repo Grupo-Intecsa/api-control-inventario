@@ -33,5 +33,10 @@ router.post('/api/v1/flotilla/plan/print/:idDocument', FlotillasController.print
 // servicio para obtener los planes de una flotilla por placas
 router.get('/api/v1/flotilla/planes/placas/:placas', FlotillasController.getPlanesByPlacas)
 
+router.put('/api/v1/flotilla/update/:id', FlotillasController.update)
+
+// and type on query
+router.get('/api/v1/flotilla/get/:id', FlotillasController.getById)
+
 
 module.exports = router

@@ -10,17 +10,20 @@ const { MONGO_URI } = require('./config')
 // MIDDLEWARES
 var allowedOrigins = ['http://localhost:3001', 'https://control-fletes.vercel.app', 'https://itamx.com', 'https://laughing-torvalds-9cd368.netlify.app'];
 
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json({ extended: true }))
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader(
       'Access-Control-Allow-Methods',
-      'OPTIONS', // what matters here is that OPTIONS is present
+      'OPTIONS, GET, POST, PUT, PATCH, DELETE'
     );
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');    
+
     next();
   });
+  
   
   app.use(require('./routes'))
   
@@ -34,7 +37,7 @@ app.use((req, res, next) => {
         },
     };
     
-    app.use(cors(corsOptions));
+app.use(cors(corsOptions));
     
 
 // conexión con mongoose

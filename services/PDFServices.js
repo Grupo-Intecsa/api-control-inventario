@@ -423,9 +423,6 @@ module.exports = {
         "slug": "csm"
       }
     ]
-
-    console.log(description)
-
     const currentEmpresa = empresaLogos.find(empresa => empresa._id === bussiness_cost.toString()).name
     const currentClient = empresaLogos.find(empresa => empresa._id.toString() === client.toString()).name
     const cantidadString = (precio) => new Intl.NumberFormat('es-MX', { style:"currency", currency: "MXN"}).format(precio)
@@ -449,8 +446,6 @@ module.exports = {
       </table>      
     `
     : ''
-
-    console.log(currentEmpresa)
     
     const invoicePDF = `
     <!doctype html>
@@ -718,9 +713,9 @@ module.exports = {
                             </thead>
                             <tbody>
                               <td>${route}</td>
-                              <td>${kilometer_out}</td>
-                              <td>${fuel_level}%</td>
-                              <td>${recorrido_km} KM aprox</td>
+                              <td>${kilometer_out || ''}</td>
+                              <td>${fuel_level || ''}%</td>
+                              <td>${recorrido_km || ''} KM aprox</td>
                             </tbody>
                           </table>    
                           ${casetasBody}

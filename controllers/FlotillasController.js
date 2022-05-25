@@ -85,7 +85,6 @@ module.exports = {
         return res.status(200).json({ documents: response })
       }
     } catch(error){
-      console.log(error)
       return res.status(400).json({ message: error })
     }
   },
@@ -108,11 +107,9 @@ module.exports = {
         const planesById = await FlotillasServices.getPlanByObjectId(body.flotilla)
         return res.status(200).json({ planes: planesById })
       } else {
-        console.log(response)
         return res.status(400).json({ message: 'No se pudo crear el plan' })
       }
     } catch(error){
-      console.log(error)
       return res.status(500).json({ message: error })
     }
   }, 
@@ -143,7 +140,6 @@ module.exports = {
     // [ 'traslado', 'flete', 'renta' ]
     const { type } = req.query
     const { idDocument } = req.params
-    console.log(type, idDocument)
 
     if(!type || !idDocument) {
       return res.status(400).json({
@@ -184,8 +180,7 @@ module.exports = {
       res.contentType('application/pdf')
       return res.send(pdf)      
       
-    } catch (error) {
-      console.log(error)
+    } catch (error) {      
       return res.status(400).json({})
     }
   },
@@ -195,6 +190,35 @@ module.exports = {
       const response = await FlotillasServices.getPlanesByPlacas(placas)
       if (response) {
         return res.status(200).json({ vehicle: response })
+      }
+    } catch(error){
+      return res.status(400).json({ message: error })
+    }
+  }, update: async(req, res) => {
+      const { body } = req
+      const { id } = req.params
+      const { type } = req.query	
+
+    try {
+        const response = await FlotillasServices.update(id, body, type)
+        if (response) {
+          return res.status(200).json({ message: response })
+        } else {
+          throw new Error('No se pudo actualizar el registro')
+        }
+
+
+      } catch (error) {
+        return res.status(400).json({ message: error.message })
+      }
+  }, getById: async(req, res) => {
+    const { id } = req.params
+    const { type } = req.query
+
+    try {
+      const response = await FlotillasServices.getById(id, type)
+      if (response) {
+        return res.status(200).json({ [type]: response })
       }
     } catch(error){
       return res.status(400).json({ message: error })

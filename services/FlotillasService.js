@@ -151,5 +151,33 @@ module.exports = {
     ]
     const planes = Flotilla.aggregate(agg)
     return planes
+  }, 
+  update: async (_id, body, type) => {    
+    switch (type) {
+      case 'flete':
+        const flotilla = await Flete.findByIdAndUpdate(_id, { ...body });
+        return flotilla;
+      case 'traslado':
+        const traslado = await Traslado.findByIdAndUpdate(_id, { ...body });
+        return traslado;
+      case 'renta':
+        const renta = await Rentas.findByIdAndUpdate(_id, { ...body });
+        return renta;
+
+    }
+  },
+  getById: async (id, type) => {
+    switch (type) {
+      case 'flete':
+        const flotilla = await Flete.findById({ _id: id });
+        return flotilla;
+      case 'traslado':
+        const traslado = await Traslado.findById({ _id: id });
+        return traslado;
+      case 'renta':
+        const renta = await Rentas.findById({ _id: id });
+        return renta;
+
+    }
   }
 }
