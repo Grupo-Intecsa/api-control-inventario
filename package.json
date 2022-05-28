@@ -3,10 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "engines": {
-    "node": "14.17.1",
-    "npm": "8.1.1"
-  },
   "scripts": {
     "test": "jest --verbose",
     "start": "node server.js",
