@@ -1,4 +1,5 @@
 const { Mackbetty } = require('../models')
+const { Flotilla } = require('../models')
 
 module.exports = {
   createCodigoCien: async (body) => {
@@ -97,6 +98,11 @@ module.exports = {
         .then(res => res)
 
         return payload
-  } 
+  }, uploadFile: async (id, data) => {
+     const response = await Flotilla.findOneAndUpdate({ _id: id }, { picture: data })
+     console.log(response)
+     if (!response) throw new Error('Error en el servidor')
+     return response
+  }
 
 }

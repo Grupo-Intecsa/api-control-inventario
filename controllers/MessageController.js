@@ -229,5 +229,19 @@ module.exports = {
         } catch (error) {
             return res.status(400).json({ error })
         }
+    }, uploadFile: async (req, res) => {
+        console.log(req.file, req.body)
+        const { path } = req.file
+        const { flotilla } = req.body
+
+        try {
+            const upload = await MacbettyService.uploadFile(flotilla, path)
+            if(!upload) throw new Error({ error: 'No se pudo subir el archivo' })
+
+            return res.status(200).json({ message: 'Archivo subido con exito' })
+        } catch (error) {
+            console.log(error)
+            return res.status(400).json('Error al subir el archivo')
+        }
     }
 }

@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const { MessageController } = require('../controllers')
+const { imageStorage } = require('../util/imageStorage')
 
 // twilio
 router.post('/api/v1/whatsapp', MessageController.whatspapp)
@@ -23,12 +24,14 @@ router.get('/api/v1/mcbetty/ultimos', MessageController.ultimos)
 // TODO router.get('/api/v1/mcbetty/find/:autor', MessageController.findByAutor)
 router.get('/api/v1/mcbetty/find', MessageController.findByTextDescription)
 
-
 // TIPO DE CAMBIO MEXICO DOLAR
 router.get('/api/v1/tipodecambiodolar/', MessageController.getDolarCurrency)
 
 // Counter xml test nodo
 router.post('/api/v1/counter/agent', MessageController.postCounterAgent)
+
+// UPLOAD FILE
+router.post('/api/v1/storage/upload', [imageStorage.single('bucket')], MessageController.uploadFile)
 
 
 module.exports = router
