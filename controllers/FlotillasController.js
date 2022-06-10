@@ -223,6 +223,19 @@ module.exports = {
     } catch(error){
       return res.status(400).json({ message: error })
     }
+  }, 
+  updateVehiculo: async(req, res) => {
+    const { body } = req
+    
+    try {
+      const response = await FlotillasServices.updateVehiculo(body)
+      if (response) {
+        return res.status(200).json({ message: response })
+      }
+
+    } catch (error) {
+      return res.status(400).json({ message: error })
+    }
   }
 
 }

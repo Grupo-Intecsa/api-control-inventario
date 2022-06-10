@@ -23,6 +23,12 @@ const FlotillasSchema = new Schema({
     },
     picture: {
       type: String,      
+    },
+    expiration_card: {
+      type: Date
+    },
+    expiration_verify: {
+      type: Date
     }
 }, { timestamps: true });
 

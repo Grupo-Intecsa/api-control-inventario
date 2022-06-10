@@ -179,5 +179,11 @@ module.exports = {
         return renta;
 
     }
+  }, 
+  updateVehiculo: async (body) => {
+    console.log(body)
+    const flotilla = await Flotilla.findByIdAndUpdate(body._id, { ...body });
+    console.log(flotilla)
+    return flotilla
   }
 }

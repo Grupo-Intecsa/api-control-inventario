@@ -12,6 +12,9 @@ router.post('/api/v1/flotilla/vehiculo/insert', FlotillasController.createVehicu
 // todos los vehiculos
 router.get('/api/v1/flotilla/vehicles', FlotillasController.getVehiculo)
 
+// editar vehiculo
+router.put('/api/v1/flotilla/vehiculo/update', FlotillasController.updateVehiculo)
+
 // get empresas 
 router.get('/api/v1/flotilla/empresas/get', FlotillasController.getEmpresas)
 
