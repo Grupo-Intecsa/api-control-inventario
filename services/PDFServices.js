@@ -401,28 +401,32 @@ module.exports = {
       planes,
     } = flotillasData[0]    
 
-    const empresaLogos = [
-      {
-        "_id": "626e223ffe9887654db63c37",
-        "name": "Instalaciones Tecnologicas Aplicadas",
-        "slug": "ita"
-      },
-      {
-        "_id": "626e22ebfe9887654db63c38",
-        "name": "Inmobiliaria Eguel",
-        "slug": "eguel"
-      },
-      {
-        "_id": "626e2305fe9887654db63c39",
-        "name": "Instalaciones y Tecnica",
-        "slug": "ite"
-      },
-      {
-        "_id": "626e2324fe9887654db63c3a",
-        "name": "Canalizacion y Soporteria",
-        "slug": "csm"
-      }
-    ]
+    const empresaLogos = [{
+      "_id": "626e223ffe9887654db63c37",
+      "name": "Instalaciones Tecnológicas Aplicadas",
+      "slug": "ita"
+    },{
+      "_id": "626e22ebfe9887654db63c38",
+      "name": "Inmobiliaria Eguel",
+      "slug": "eguel"
+    },{
+      "_id": "626e2305fe9887654db63c39",
+      "name": "Instalaciones y Técnica",
+      "slug": "ite"
+    },{
+      "_id": "626e2324fe9887654db63c3a",
+      "name": "Canalizaciòn y Soporteria",
+      "slug": "csm"
+    },{
+      "_id": "62a75bab9ec0343efa92406e",
+      "name": "Inmobiliaria del Reino",
+      "slug": "reino"   
+    },{
+      "_id": "62a75bbf9ec0343efa92406f",
+      "name": "Iglesia del 3er día",
+      "slug": "I3D"
+    }]
+
     const currentEmpresa = empresaLogos.find(empresa => empresa._id === bussiness_cost.toString()).name
     const currentClient = empresaLogos.find(empresa => empresa._id.toString() === client.toString()).name
     const cantidadString = (precio) => new Intl.NumberFormat('es-MX', { style:"currency", currency: "MXN"}).format(precio)
