@@ -80,6 +80,10 @@ const TrasladoSchema = new Schema({
     },
     tarjeta_deposito: {
         type: String
+    },
+    isCancel_status: {
+        type: String,
+        default: null,
     }
 }, { timestamps: true })
 

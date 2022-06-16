@@ -81,6 +81,10 @@ const RentasSchema = new Schema({
     tarjeta_deposito: {
         type: String,
     },    
+    isCancel_status: {
+        type: String,
+        default: null,
+    }
 }, { timestamps: true })
 
 RentasSchema.pre('save', async function (next) {
