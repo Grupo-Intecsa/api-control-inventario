@@ -236,6 +236,20 @@ module.exports = {
     } catch (error) {
       return res.status(400).json({ message: error })
     }
+  },
+  updatePlanById: async(req, res) => {
+    const { _id } = req.params
+    const { body } = req
+
+    try {
+      const response = await FlotillasServices.updatePlanById(_id, body)
+      if (response) {
+        return res.status(200).json({ message: response })
+      }
+    } catch (error) {
+      return res.status(400).json({ message: error })
+    }
+
   }
 
 }

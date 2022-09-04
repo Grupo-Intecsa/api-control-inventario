@@ -42,5 +42,8 @@ router.put('/api/v1/flotilla/update/:id', FlotillasController.update)
 // and type on query
 router.get('/api/v1/flotilla/get/:id', FlotillasController.getById)
 
+// update plan de vehiculo
+router.put('/api/v1/fotilla/plan/update/:_id', FlotillasController.updatePlanById)
+
 
 module.exports = router

@@ -185,5 +185,9 @@ module.exports = {
     const flotilla = await Flotilla.findByIdAndUpdate(body._id, { ...body });
     console.log(flotilla)
     return flotilla
+  }, 
+  updatePlanById: async (_id, body) => {
+    const plan = await Planes.findByIdAndUpdate(_id, { ...body });
+    return plan
   }
 }
