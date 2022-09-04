@@ -110,7 +110,7 @@ module.exports = {
   getPlanesBySlug: async (slug) => {    
     try {
       const vehicle = await Flotilla.find({ placas: slug });
-      const planes = await Planes.find({ flotilla: vehicle[0]._id });
+      const planes = await Planes.find({ flotilla: vehicle[0]._id, isActive: true });
       return planes
     } catch (error) {
       throw new Error("No se encontró el vehículo")
