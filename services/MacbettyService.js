@@ -93,7 +93,7 @@ module.exports = {
                 }
               })
               .sort({ createdAt: -1})
-              .project({ UNIDAD: 1, DESCRIPCION: 1, AUTOR: 1, _id: 0, CODIGO: 1 })
+              .project({ UNIDAD: 1, DESCRIPCION: 1, AUTOR: 1, _id: 0, CODIGO: 1, UMED: 1, ALTERNO: 1 })
         })
         .then(res => res)
 
