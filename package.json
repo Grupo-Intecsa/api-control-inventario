@@ -39,6 +39,7 @@
     "playwright": "^1.21.1",
     "puppeteer": "^9.1.1",
     "rendertron-middleware": "^0.1.5",
+    "sweetalert2": "^11.4.29",
     "twilio": "^3.56.0",
     "uuid": "^8.3.2"
   },
