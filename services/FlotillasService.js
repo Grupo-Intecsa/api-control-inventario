@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Traslado, Flete, Flotilla, Rentas, Planes } = require('../models');
+const { viewDocumentsCanceled, viewDocumentsNormal } = require('../util/aggregatios');
 
 const Bussiness = mongoose.model('bussiness', new mongoose.Schema({
   name: {
@@ -58,40 +59,17 @@ module.exports = {
     await empresa.save();
     return empresa
   }, 
-  getDocumentsByIdBussiness: async (idBussiness) => {
-    const agg = [
-      [
-        {
-          '$match': {
-            '_id': mongoose.Types.ObjectId(idBussiness)
-          }
-        }, {
-          '$lookup': {
-            'from': 'fletes', 
-            'localField': '_id', 
-            'foreignField': 'bussiness_cost', 
-            'as': 'fletes'
-          }
-        }, {
-          '$lookup': {
-            'from': 'traslados', 
-            'localField': '_id', 
-            'foreignField': 'bussiness_cost', 
-            'as': 'traslado'
-          }
-        }, {
-          '$lookup': {
-            'from': 'rentas',
-            'localField': '_id',
-            'foreignField': 'bussiness_cost',
-            'as': 'rentas'
-          }
-        }
-      ]
-    ]
+  getDocumentsByIdBussiness: async ({ idBussines, query }) => {
+    
+    const aggCanceled = viewDocumentsCanceled(mongoose.Types.ObjectId(idBussines))
+    const aggNormal = viewDocumentsNormal(mongoose.Types.ObjectId(idBussines))
 
-    const documents = await Bussiness.aggregate(agg);    
-    return documents
+    if (query === 'cancel') {
+      const documents = await Bussiness.aggregate(aggCanceled);        
+      return documents
+    }
+
+    return await Bussiness.aggregate(aggNormal);
 
   },
   getVehicles: () => {

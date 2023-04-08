@@ -79,8 +79,10 @@ module.exports = {
   }, 
   getDocumentsByIdBussiness: async(req, res) => {
     const { idBussines } = req.params
+    const { type } = req.query    
+    
     try {
-      const response = await FlotillasServices.getDocumentsByIdBussiness(idBussines)
+      const response = await FlotillasServices.getDocumentsByIdBussiness({ idBussines, query: type })
       if (response) {
         return res.status(200).json({ documents: response })
       }
