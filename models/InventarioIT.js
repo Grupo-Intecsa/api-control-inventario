@@ -59,6 +59,11 @@ const InventarioITSchema = new Schema({
     mac: {
         type: String,
         required: false,
+    },
+    type: {
+        type: String,
+        required: false,
+        enum: ['PC', 'Laptop', 'Impresora', 'Monitor', 'Otro']
     }
 
 
