@@ -58,13 +58,13 @@ module.exports = {
   findEquipo: async (req, res) => {
     const { equipo } = req.query
     try {
-      const response = await InventarioIT
+      const [response] = await InventarioIT
       .find({ _id: equipo })      
       .populate('mantenimiento')
       .populate('usuariosequipos')
 
       if (response) {
-        return res.status(200).json({ equipos: response })
+        return res.status(200).json({ equipo: response })
       }
     } catch(error){
       return res.status(400).json({ message: error })
