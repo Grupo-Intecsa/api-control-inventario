@@ -38,7 +38,7 @@ app.use((req, res, next) => {
         },
     };
     
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
     
 
 // conexión con mongoose

@@ -10,6 +10,7 @@ router.use(require('./UserRoutes'))
 router.use(require('./FamiliaRoutes'))
 router.use(require('./RHRoutes'))
 router.use(require('./FlotillasRoutes'))
+router.use(require('./inventarioITRoutes'))
 
 
 module.exports = router

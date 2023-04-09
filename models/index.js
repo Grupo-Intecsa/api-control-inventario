@@ -15,6 +15,9 @@ const { Flete } = require('./Flete')
 const { Flotilla } = require('./Flotilla')
 const { Rentas } = require('./Rentas')
 const { Planes } = require('./Planes.js')
+const { InventarioIT } = require('./InventarioIT')
+const { Mantenimiento } = require('./Mantenimiento')
+const { UsuariosEquipos } = require('./UsuariosEquipos')
 
 module.exports = {
     Inventario,
@@ -33,5 +36,8 @@ module.exports = {
     Flete,
     Flotilla,
     Rentas,
-    Planes
+    Planes,
+    InventarioIT,
+    Mantenimiento,
+    UsuariosEquipos
 }
