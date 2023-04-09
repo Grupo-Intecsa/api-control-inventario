@@ -55,6 +55,10 @@ const InventarioITSchema = new Schema({
     descripcion: {
         type: Object,
         required: false,
+    },
+    mac: {
+        type: String,
+        required: false,
     }
 
 

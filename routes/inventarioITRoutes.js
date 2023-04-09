@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const multer = require('multer')
 const { InventarioITController } = require('../controllers')
 
 // añadir equipo a inventario
@@ -18,6 +19,11 @@ router.post('/api/v1/inventarioIT/addmant', InventarioITController.postAddMant)
 
 // // crear salida de mantenimiento
 // router.post('/api/v1/inventarioIT/salidamant', InventarioITController.postSalidaMant)
+
+
+const upload = multer({ storage: multer.memoryStorage() })
+// para subir archivos a cloudinary
+router.post('/api/v1/inventarioIT/upload', upload.single('formData'), InventarioITController.postUpload)
 
 
 

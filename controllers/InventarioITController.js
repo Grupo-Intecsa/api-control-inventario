@@ -1,5 +1,7 @@
+const datauri = require('datauri/parser');
 const { InventarioIT, UsuariosEquipos, Mantenimiento  } = require('../models')
-
+const { uploader } = require('../database/cloudinary')
+const path = require('path')
 
 module.exports = {
   postAddEquipo: async (req, res) => {
@@ -95,5 +97,32 @@ module.exports = {
       console.log(error)
       return res.status(400).json({ message: error })
     }
-  }
+  },
+  postUpload: async (req, res) => {
+    console.log(req.file)
+    const validTypes = ['image/png', 'image/jpg', 'image/jpeg']
+    if (!validTypes.includes(req.file.mimetype)) {
+      return res.status(400).json({ message: 'Invalid file type' })
+    }
+
+    const dUri = new datauri()
+    // buffer to base64
+    const file =  dUri.format(path.extname(req.file.originalname).toString(), req.file.buffer)
+    
+    try {
+      return uploader.upload(file.content)
+      .then(async (result) => {
+        console.log('Uploaded a blob or file!');        
+        return res.json({ message: 'File saved successfully', url: result.url, metadata: result })        
+      })
+      .catch((err) => {
+        console.log(err)
+        return res.status(500).json({ message: 'Error uploading file' })        
+      })
+    } catch (error) {
+      console.log(error)
+      return res.status(500).json({ message: 'Error uploading file' })
+    }
+  
+}
 }
