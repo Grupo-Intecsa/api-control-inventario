@@ -7,9 +7,9 @@ const { getFirestore } = require("firebase/firestore");
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const config = JSON.parse(process.env.FIREBASE_CONFIG)
+const config = process.env.FIREBASE_CONFIG
 const firebaseConfig = {
-  ...config,
+  ...JSON.parse(config)
 }
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
