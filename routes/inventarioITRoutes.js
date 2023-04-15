@@ -25,6 +25,8 @@ const upload = multer({ storage: multer.memoryStorage() })
 // para subir archivos a cloudinary
 router.post('/api/v1/inventarioIT/upload', upload.single('formData'), InventarioITController.postUpload)
 
+// firebase storage
+router.post('/api/v1/firebase-upload', upload.single('formData'), InventarioITController.postFirebaseUpload)
 
 
 

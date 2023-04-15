@@ -1,6 +1,9 @@
 const datauri = require('datauri/parser');
 const { InventarioIT, UsuariosEquipos, Mantenimiento  } = require('../models')
 const { uploader } = require('../database/cloudinary')
+const { ref, uploadBytes, getDownloadURL, getMetadata } = require('firebase/storage')
+const { v4: uuidv4 } = require('uuid');
+const { storage } = require('../database/firebase')
 const path = require('path')
 
 module.exports = {
@@ -124,5 +127,16 @@ module.exports = {
       return res.status(500).json({ message: 'Error uploading file' })
     }
   
-}
+  },
+  postFirebaseUpload: async (req, res) => {
+    const { mimetype, buffer } = req.file
+    const storageRef = ref(storage, '/storage' + `${uuidv4()}.${mimetype?.split('/')[1]}`)
+    return uploadBytes(storageRef, buffer)
+      .then(async (snapshot) => {        
+        console.log('Uploaded a blob or file!');
+        const metadata = await getMetadata(storageRef)
+        const url = await getDownloadURL(storageRef)          
+        return res.json({ message: 'File saved successfully', url, metadata })
+      })
+  }
 }
