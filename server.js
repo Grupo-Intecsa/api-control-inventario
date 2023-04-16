@@ -10,8 +10,6 @@ const { cloudinaryConfig } = require('./database/cloudinary')
 
 // MIDDLEWARES
 const allowedOrigins = process.env.ALLOWED_ORIGINS.split(',');
-console.log("🚀 ~ file: server.js ~ line 12 ~ allowedOrigins", allowedOrigins)
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use('*', cloudinaryConfig);    

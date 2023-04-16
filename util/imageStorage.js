@@ -18,8 +18,7 @@ const googleStorage = new multerGoogleStorage.storageEngine({
   keyFilename: 'gcpstorage.json',
   projectId: process.env.GCLOUD_PROJECT,
   bucket: process.env.GCS_BUCKET,
-  filename: (req, filename, cb) => {
-    console.log(filename.mimetype);
+  filename: (req, filename, cb) => {    
     const folder = bucketPath;
     const extension = filename.mimetype.split('/')[1];
     // // const extension = filename?.split('.').pop();
