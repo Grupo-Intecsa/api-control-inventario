@@ -4,6 +4,9 @@ const { uploader } = require('../database/cloudinary')
 const { ref, uploadBytes, getDownloadURL, getMetadata } = require('firebase/storage')
 const { v4: uuidv4 } = require('uuid');
 const { storage } = require('../database/firebase')
+const { responsivaGenerate } = require('../util/responsiva')
+const puppeteer = require("puppeteer")
+
 const path = require('path')
 
 module.exports = {
@@ -138,5 +141,39 @@ module.exports = {
         const url = await getDownloadURL(storageRef)          
         return res.json({ message: 'File saved successfully', url, metadata })
       })
-  }
+  },
+  createFormat: async(req, res) => {
+    const browser = await puppeteer.launch({
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu'],
+        headless: true
+        
+    });
+    const page = await browser.newPage()
+
+    try {
+        
+        const pdfString = responsivaGenerate(req.body)
+        await page.setContent(pdfString)
+
+        const pdf = await page.pdf({
+            
+            format: "letter",
+            printBackground: true,
+            scale: 0.9,
+            margin: {
+                left: "0px",
+                top: "0px",
+                right: "0px",
+                bottom: "0px"
+            }
+        })
+
+        await browser.close()
+        res.contentType("application/pdf")
+        return res.send(pdf)
+
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
+  },
 }
