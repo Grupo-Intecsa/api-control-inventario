@@ -11,8 +11,7 @@ const UsuariosEquiposSchema = new Schema({
         required: true,
     },
     responsiva: {
-        type: String,
-        required: true,
+        type: String        
     },
     unidad: {
         type: Object,

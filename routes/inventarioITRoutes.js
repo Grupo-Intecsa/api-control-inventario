@@ -32,6 +32,9 @@ router.post('/api/v1/firebase-upload', upload.single('formData'), InventarioITCo
 // Crear formato de salida de asignación de equipo
 router.post('/api/v1/inventarioIT/responsiva', InventarioITController.createFormat)
 
+// añadir responsiva actualizada
+router.post('/api/v1/inventarioIT/addresponsiva', InventarioITController.postAddResponsiva)
+
 
 
 module.exports = router

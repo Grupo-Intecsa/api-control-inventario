@@ -176,4 +176,17 @@ module.exports = {
         return res.status(500).json({ message: error.message })
     }
   },
+  postAddResponsiva: async (req, res) => {
+    const { id } = req.query
+    const { url } = req.body
+    try {
+      const response = await InventarioIT.findOneAndUpdate({ _id: id }, { $set: { responsiva: url } })
+      if (response) {
+        return res.status(200).json({ message: response })
+      }
+    } catch (error) {
+      console.log(error.message)
+      return res.status(500).json({ message: error.message })
+    }
+  }
 }
