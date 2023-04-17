@@ -18,13 +18,9 @@ const responsivaGenerate = (payload) => {
             font-family: 'Montserrat', sans-serif;
           }
 
-
           body{
-            background-image: url('https://res.cloudinary.com/dlvyxzwjd/image/upload/v1681640146/Mesa_de_trabajo_1_djen8u.png');        
-            background-repeat: no-repeat;
-            background-size: cover;        
-            background-attachment: fixed;
-            background-size: 100vw 100vh;
+            background-image: url('https://res.cloudinary.com/dlvyxzwjd/image/upload/v1681717068/membrete_ita_vom5mb.png');                                
+            background-size: 100vw 100%;
             height: 100vh;
             width: 100vw;        
             display: flex;
@@ -34,8 +30,8 @@ const responsivaGenerate = (payload) => {
           }
 
           .header {
-            padding: 10px;
-            margin: 0 auto;
+            margin-left: 30px;
+            padding: 10px;            
             /* position: absolute;
             top: 0; */
             display: flex;
@@ -49,6 +45,7 @@ const responsivaGenerate = (payload) => {
 
           .header small {
             width: 320px;
+            font-size: 8px;
             color: #c8c8c8
           }
 
@@ -125,7 +122,9 @@ const responsivaGenerate = (payload) => {
               <p>Control de inventario: ${equipoId}</p>
               ${Object.entries(descripcion).map(([key, value]) => {
                 return `<small>${key}: ${value}</small>`
-              })}</td>
+              })}
+              <p>Obra: ${obra}</p>
+              </td>
               </tr>
             </tbody>
         </table>
@@ -137,8 +136,6 @@ const responsivaGenerate = (payload) => {
         </small>
       
       </div>
-      
-      
       <div class="signature">
         <table>
           <thead>
