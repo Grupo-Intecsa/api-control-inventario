@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const datauri = require('datauri/parser');
 const { InventarioIT, UsuariosEquipos, Mantenimiento  } = require('../models')
 const { uploader } = require('../database/cloudinary')
@@ -51,10 +52,13 @@ module.exports = {
     }
     
     try {
-      const { equipo } = req.query      
-      const newUsuario = new UsuariosEquipos({ ...body })
-      const userAssing = await newUsuario.save()
+      const { equipo } = req.query
 
+      // updateMany usuariosequipos para cambiar is_active a false
+      await UsuariosEquipos.updateMany({ equipoid: equipo }, { is_active: false })
+
+      const newUsuario = new UsuariosEquipos({ ...body })      
+      const userAssing = await newUsuario.save()
       const response = await InventarioIT.findOneAndUpdate({ _id: equipo }, { $push: { usuariosequipos: userAssing._id } })
       if (response) {
         return res.status(200).json({ message: response })
@@ -190,11 +194,29 @@ module.exports = {
     }
   },
   getLastAssignments: async (req, res) => {
+
     try {
-      const response = await InventarioIT.find().sort({ createdAt: -1 }).limit(10)
-      if (response) {
-        return res.status(200).json({ equipos: response })
-      }
+      const response = await UsuariosEquipos
+        .find({ is_active: true, equipoid: { $ne: null } })
+        .sort({ createdAt: -1 })
+
+
+      const equiposActivos = response.map(async (item) => {        
+        const id = mongoose.Types.ObjectId(item.equipoid)        
+        const equipo = await InventarioIT
+        .findOne({ _id: id })
+        .populate('usuariosequipos')        
+
+        return {
+          equipo,
+          ...item._doc
+        }
+
+      })
+
+      const equipos = await Promise.all(equiposActivos)
+      return res.status(200).json({ equipos })
+
     } catch(error){
       return res.status(400).json({ message: error })
     }
