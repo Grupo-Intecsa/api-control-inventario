@@ -35,6 +35,9 @@ router.post('/api/v1/inventarioIT/responsiva', InventarioITController.createForm
 // añadir responsiva actualizada
 router.post('/api/v1/inventarioIT/addresponsiva', InventarioITController.postAddResponsiva)
 
+// ultimas asignaciones
+router.get('/api/v1/inventarioIT/lastassignments', InventarioITController.getLastAssignments)
+
 
 
 module.exports = router

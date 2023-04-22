@@ -188,5 +188,15 @@ module.exports = {
       console.log(error.message)
       return res.status(500).json({ message: error.message })
     }
+  },
+  getLastAssignments: async (req, res) => {
+    try {
+      const response = await InventarioIT.find().sort({ createdAt: -1 }).limit(10)
+      if (response) {
+        return res.status(200).json({ equipos: response })
+      }
+    } catch(error){
+      return res.status(400).json({ message: error })
+    }
   }
 }

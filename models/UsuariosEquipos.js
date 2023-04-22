@@ -16,6 +16,10 @@ const UsuariosEquiposSchema = new Schema({
     unidad: {
         type: Object,
         required: true,
+    },
+    equipoid: {
+        type: String,
+        required: true,
     }
 }, { timestamps: true })
 
