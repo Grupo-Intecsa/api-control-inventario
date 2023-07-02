@@ -7,6 +7,7 @@ const PDFServices = require('./PDFServices')
 const MacbettyService = require('./MacbettyService')
 const RHService = require('./RHService')
 const FlotillasServices = require('./FlotillasService')
+const AllFoliosService = require('./AllFoliosService')
 
 module.exports = {
     AlmacenServices,
@@ -17,5 +18,6 @@ module.exports = {
     PDFServices,
     MacbettyService,
     RHService,
-    FlotillasServices
+    FlotillasServices,
+    AllFoliosService,
 }

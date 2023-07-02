@@ -1,4 +1,4 @@
-const { TwilioService, PDFServices, MacbettyService  } = require('../services')
+const { TwilioService, PDFServices, MacbettyService, AllFoliosService  } = require('../services')
 const puppeteer = require("puppeteer")
 const { JSDOM } = require("jsdom")
 const fetch = require('node-fetch')
@@ -243,5 +243,18 @@ module.exports = {
             console.log(error)
             return res.status(400).json('Error al subir el archivo')
         }
+    },
+    getFolios: async (req, res) => {
+        const { empresa } = req.params
+
+        try {
+            const getAllFolio = await AllFoliosService.getAllFolios(empresa)            
+            if(!getAllFolio) throw new Error({ error: 'No se pudieron obtener los folios' })
+            
+            return res.status(200).json({ message: getAllFolio })
+        } catch (error) {            
+            return res.status(400).json({ error })
+        }
+
     }
 }

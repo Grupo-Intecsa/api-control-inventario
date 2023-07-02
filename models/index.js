@@ -39,5 +39,6 @@ module.exports = {
     Planes,
     InventarioIT,
     Mantenimiento,
-    UsuariosEquipos
+    UsuariosEquipos,
+
 }

@@ -34,4 +34,7 @@ router.post('/api/v1/counter/agent', MessageController.postCounterAgent)
 router.post('/api/v1/storage/upload', [imageStorage.single('bucket')], MessageController.uploadFile)
 
 
+// TODOS LOS FOLIOS POR EMPRESA Y TIPO
+router.get('/api/v1/folios/:empresa/', MessageController.getFolios)
+
 module.exports = router
