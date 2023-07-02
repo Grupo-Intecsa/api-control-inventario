@@ -8,9 +8,7 @@ module.exports = {
             const fletes = await Flete.find({ bussiness_cost: empresa }).countDocuments()
             const flotillas = await Traslado.find({ bussiness_cost: empresa }).countDocuments()
             const rentas = await Rentas.find({ bussiness_cost: empresa }).countDocuments()
-
-
-            return { fletes, flotillas, rentas }
+            return { fletes, traslados, rentas }
 
         } catch(error){
             return { message: error }
