@@ -1,6 +1,8 @@
 
 const { FlotillasServices, PDFServices } = require('../services');
 const puppeteer = require("puppeteer");
+const { snapShotService } = require('../util/snaphostService')
+
 
 module.exports = {
   create: async(req, res) => {
@@ -161,9 +163,12 @@ module.exports = {
       const getDocumentData = await FlotillasServices.getDocument(idDocument, type)
       // obtener datos de la flotilla
       const getFlotillaData = await FlotillasServices.getPlanesByPlacas(getDocumentData.vehicle)
+
+      // maps link to png
+      const getMapImage = await snapShotService(getDocumentData.link_googlemaps)      
   
-      // se envia al modelo html para obtener el html
-      const getPDFdata = await PDFServices.flotillaInvoice(getDocumentData, getFlotillaData)
+      // se envia al modelo html para obtener el html      
+      const getPDFdata = await PDFServices.flotillaInvoice(getDocumentData, getFlotillaData, getMapImage)
       await page.setContent(getPDFdata)
 
       const pdf = await page.pdf({
@@ -183,6 +188,7 @@ module.exports = {
       return res.send(pdf)      
       
     } catch (error) {      
+      console.log("🚀 ~ file: FlotillasController.js:192 ~ printPlan:async ~ error:", error)
       return res.status(400).json({})
     }
   },

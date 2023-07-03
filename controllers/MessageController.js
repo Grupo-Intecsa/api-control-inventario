@@ -253,8 +253,7 @@ module.exports = {
             if(!getAllFolio) throw new Error({ error: 'No se pudieron obtener los folios' })
             
             return res.status(200).json({ message: getAllFolio })
-        } catch (error) {            
-            console.log("🚀 ~ file: MessageController.js:256 ~ getFolios: ~ error:", error)
+        } catch (error) {
             return res.status(400).json({ error })
         }
 

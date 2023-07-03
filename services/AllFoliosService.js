@@ -3,7 +3,6 @@ const { Flete, Traslado, Rentas } = require('../models')
 
 module.exports = {
     getAllFolios: async (empresa) => {      
-
         try {
             const fletes = await Flete.find({ bussiness_cost: empresa }).countDocuments()
             const traslados = await Traslado.find({ bussiness_cost: empresa }).countDocuments()
