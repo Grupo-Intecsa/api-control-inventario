@@ -246,6 +246,7 @@ module.exports = {
     },
     getFolios: async (req, res) => {
         const { empresa } = req.params
+        console.log("🚀 ~ file: MessageController.js:249 ~ getFolios: ~ empresa:", empresa)
 
         try {
             const getAllFolio = await AllFoliosService.getAllFolios(empresa)            
@@ -253,6 +254,7 @@ module.exports = {
             
             return res.status(200).json({ message: getAllFolio })
         } catch (error) {            
+            console.log("🚀 ~ file: MessageController.js:256 ~ getFolios: ~ error:", error)
             return res.status(400).json({ error })
         }
 
