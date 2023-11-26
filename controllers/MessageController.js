@@ -233,6 +233,7 @@ module.exports = {
         console.log(req.file, req.body)
         const { path } = req.file
         const { flotilla } = req.body
+        console.log({ flotilla })
 
         try {
             const upload = await MacbettyService.uploadFile(flotilla, path)

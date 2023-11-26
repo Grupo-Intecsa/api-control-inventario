@@ -234,7 +234,6 @@ module.exports = {
   }, 
   updateVehiculo: async(req, res) => {
     const { body } = req
-    
     try {
       const response = await FlotillasServices.updateVehiculo(body)
       if (response) {

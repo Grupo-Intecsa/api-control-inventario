@@ -73,7 +73,7 @@ module.exports = {
 
   },
   getVehicles: () => {
-      const vehicles = Flotilla.find({});
+      const vehicles = Flotilla.find({}).sort({ createdAt: -1 });
       return vehicles
   }, 
   createPlan: async (body) => {
@@ -158,10 +158,8 @@ module.exports = {
 
     }
   }, 
-  updateVehiculo: async (body) => {
-    console.log(body)
-    const flotilla = await Flotilla.findByIdAndUpdate(body._id, { ...body });
-    console.log(flotilla)
+  updateVehiculo: async (body) => {        
+    const flotilla = await Flotilla.findByIdAndUpdate(body._id, { ...body });        
     return flotilla
   }, 
   updatePlanById: async (_id, body) => {
