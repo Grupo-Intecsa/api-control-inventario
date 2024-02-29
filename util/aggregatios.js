@@ -69,23 +69,25 @@ const viewDocumentsCanceled = (id) => {
   
 }
 
-
 const viewDocumentsNormal = (id) => {
   return [
     {
-      $match: {
-        _id: id
+      '$match': {
+        '_id': id
       }
-    },
+    }, 
     {
-      $lookup: {
-        from: "traslados",
-        let: { "bussinessCostId": "$_id" },
-        pipeline: [
+      '$lookup': {
+        'from': 'fletes', 
+        'let': { 'bussinessCostId': '$_id' },
+        'pipeline': [
           {
-            $match: {
-              $expr: {
-                $and: [
+            '$unwind': '$bussiness_cost'
+          },
+          {
+            '$match': {
+              '$expr': {
+                '$and': [
                   { '$eq': ['$bussiness_cost', '$$bussinessCostId'] },
                   { '$eq': ['$isCancel_status', null] }
                 ]
@@ -115,25 +117,19 @@ const viewDocumentsNormal = (id) => {
               as: 'vehicle_info'
             }
           },
-          {
-            $unwind: {
-              path: "$vehicle_info",
-              preserveNullAndEmptyArrays: true
-            }
-          }
         ],
-        as: "traslados"
+        'as': 'fletes'
       }
-    },
+    }, 
     {
-      $lookup: {
-        from: "fletes",
-        let: { "bussinessCostId": "$_id" },
-        pipeline: [
+      '$lookup': {
+        'from': 'traslados', 
+        'let': { 'bussinessCostId': '$_id' },
+        'pipeline': [
           {
-            $match: {
-              $expr: {
-                $and: [
+            '$match': {
+              '$expr': {
+                '$and': [
                   { '$eq': ['$bussiness_cost', '$$bussinessCostId'] },
                   { '$eq': ['$isCancel_status', null] }
                 ]
@@ -163,25 +159,19 @@ const viewDocumentsNormal = (id) => {
               as: 'vehicle_info'
             }
           },
-          {
-            $unwind: {
-              path: "$vehicle_info",
-              preserveNullAndEmptyArrays: true
-            }
-          }
         ],
-        as: "fletes"
+        'as': 'traslado'
       }
-    },
+    }, 
     {
-      $lookup: {
-        from: "rentas",
-        let: { "bussinessCostId": "$_id" },
-        pipeline: [
+      '$lookup': {
+        'from': 'rentas',
+        'let': { 'bussinessCostId': '$_id' },
+        'pipeline': [
           {
-            $match: {
-              $expr: {
-                $and: [
+            '$match': {
+              '$expr': {
+                '$and': [
                   { '$eq': ['$bussiness_cost', '$$bussinessCostId'] },
                   { '$eq': ['$isCancel_status', null] }
                 ]
@@ -211,19 +201,13 @@ const viewDocumentsNormal = (id) => {
               as: 'vehicle_info'
             }
           },
-          {
-            $unwind: {
-              path: "$vehicle_info",
-              preserveNullAndEmptyArrays: true
-            }
-          }
         ],
-        as: "rentas"
+        'as': 'rentas'
       }
     }
-  ]  
+  ]
+  
 }
-
 
 const viewAllDocuments = (id) => {
   return [
