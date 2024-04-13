@@ -155,10 +155,7 @@ module.exports = {
       // // [ 'traslado', 'flete', 'renta' ]
       const getDocumentData = await FlotillasServices.getDocument(idDocument, type)      
       // obtener datos de la flotilla
-      const getFlotillaData = await FlotillasServices.getPlanesByPlacas(getDocumentData.vehicle)      
-      // maps link to png
-      const getMapImage = await snapShotService(getDocumentData.link_googlemaps)      
-  
+      const getFlotillaData = await FlotillasServices.getPlanesByPlacas(getDocumentData.vehicle)                    
       // se envia al modelo html para obtener el html      
       const invoiceData = PDFServices.vehicleData(getDocumentData, getFlotillaData, getMapImage)                         
       const response = await axios.post(process.env.PDF_SERVICE+'/vehicle-invoice/', invoiceData, {
