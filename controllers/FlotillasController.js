@@ -149,14 +149,7 @@ module.exports = {
       return res.status(400).json({
         message: 'No se especificó el tipo de registro o el id del documento'
       })
-    }
-
-    const browser = await puppeteer.launch({
-      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--unhandled-rejections=strict'],
-      headless: true
-    })
-
-    const page = await browser.newPage()
+    }    
     try {
       // taer datos del dociumento
       // // [ 'traslado', 'flete', 'renta' ]
@@ -168,24 +161,14 @@ module.exports = {
       const getMapImage = await snapShotService(getDocumentData.link_googlemaps)      
   
       // se envia al modelo html para obtener el html      
-      const getPDFdata = await PDFServices.flotillaInvoice(getDocumentData, getFlotillaData, getMapImage)
+      const getPDFdata = await PDFServices.vehicleData(getDocumentData, getFlotillaData, getMapImage)
       await page.setContent(getPDFdata)
 
-      const pdf = await page.pdf({
-        format: 'letter',
-        printBackground: true,
-        scale: 0.8,
-        margin: {
-          left: '0px',
-          top: '0px',
-          right: '0px',
-          bottom: '0px'
-        }
-      })
+      console.log("🚀 ~ file: FlotillasController.js:175 ~ printPlan:async ~ getPDFdata", getPDFdata)
 
       await browser.close()
       res.contentType('application/pdf')
-      return res.send(pdf)      
+      return res.send('ok')      
       
     } catch (error) {      
       console.log("🚀 ~ file: FlotillasController.js:192 ~ printPlan:async ~ error:", error)
