@@ -1,7 +1,7 @@
 
 const { FlotillasServices, PDFServices } = require('../services');
-const puppeteer = require("puppeteer");
 const { snapShotService } = require('../util/snaphostService')
+const axios = require('axios')
 
 
 module.exports = {
@@ -153,22 +153,21 @@ module.exports = {
     try {
       // taer datos del dociumento
       // // [ 'traslado', 'flete', 'renta' ]
-      const getDocumentData = await FlotillasServices.getDocument(idDocument, type)
+      const getDocumentData = await FlotillasServices.getDocument(idDocument, type)      
       // obtener datos de la flotilla
-      const getFlotillaData = await FlotillasServices.getPlanesByPlacas(getDocumentData.vehicle)
-
+      const getFlotillaData = await FlotillasServices.getPlanesByPlacas(getDocumentData.vehicle)      
       // maps link to png
       const getMapImage = await snapShotService(getDocumentData.link_googlemaps)      
   
       // se envia al modelo html para obtener el html      
-      const getPDFdata = await PDFServices.vehicleData(getDocumentData, getFlotillaData, getMapImage)
-      await page.setContent(getPDFdata)
+      const invoiceData = PDFServices.vehicleData(getDocumentData, getFlotillaData, getMapImage)                         
+      const response = await axios.post(process.env.PDF_SERVICE+'/vehicle-invoice/', invoiceData, {
+        responseType: 'arraybuffer', // Importante para recibir un PDF binario
+      });
 
-      console.log("🚀 ~ file: FlotillasController.js:175 ~ printPlan:async ~ getPDFdata", getPDFdata)
 
-      await browser.close()
       res.contentType('application/pdf')
-      return res.send('ok')      
+      return res.send(response.data)      
       
     } catch (error) {      
       console.log("🚀 ~ file: FlotillasController.js:192 ~ printPlan:async ~ error:", error)

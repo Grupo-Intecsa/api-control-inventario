@@ -99,8 +99,7 @@ module.exports = {
 
         return payload
   }, uploadFile: async (id, data) => {
-     const response = await Flotilla.findOneAndUpdate({ _id: id }, { picture: data })
-     console.log(response)
+     const response = await Flotilla.findOneAndUpdate({ _id: id }, { picture: data })     
      if (!response) throw new Error('Error en el servidor')
      return response
   }
