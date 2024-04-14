@@ -866,7 +866,7 @@ module.exports = {
     return invoicePDF;
   },
 
-  vehicleData: (data, flotillasData, getMapImage) => {
+  vehicleData: (data, flotillasData) => {
     // destructuring data
     const dateFormat = (date) =>
       new Intl.DateTimeFormat("es-MX", { dateStyle: "full" }).format(
