@@ -157,7 +157,7 @@ module.exports = {
       // obtener datos de la flotilla
       const getFlotillaData = await FlotillasServices.getPlanesByPlacas(getDocumentData.vehicle)                    
       // se envia al modelo html para obtener el html      
-      const invoiceData = PDFServices.vehicleData(getDocumentData, getFlotillaData, getMapImage)                         
+      const invoiceData = PDFServices.vehicleData(getDocumentData, getFlotillaData)                         
       const response = await axios.post(process.env.PDF_SERVICE+'/vehicle-invoice/', invoiceData, {
         responseType: 'arraybuffer', // Importante para recibir un PDF binario
       });
