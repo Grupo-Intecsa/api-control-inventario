@@ -965,7 +965,7 @@ module.exports = {
       created_day: dateFormat(createdAt),      
       request_day: dateFormat(request_date),
       delivery_day: dateFormat(delivery_date),
-      currentClient: currentClient,
+      currentClient: currentClient.toUpperCase(),
       subject,
       vehicle: {
         name: flotillaData.modelo,
