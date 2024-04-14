@@ -903,8 +903,16 @@ module.exports = {
       tarjeta_deposito,
     } = data;
     
-    const { modelo, placas, planes } = flotillasData[0];
-    
+    let flotillaData = {
+      modelo: "Sin modelo",
+      placas: "Sin placas",
+      planes: "Sin planes",
+    }
+
+    if (flotillasData.length > 0) {
+      flotillaData = flotillasData[0]
+    }
+        
     const empresaLogos = [
       {
         _id: "626e223ffe9887654db63c37",
@@ -952,7 +960,7 @@ module.exports = {
 
     return {
       type: type.toUpperCase(),
-      currentEmpresa: currentEmpresa,
+      currentEmpresa: currentEmpresa.toUpperCase(),
       folio: folio,
       created_day: dateFormat(createdAt),      
       request_day: dateFormat(request_date),
@@ -960,14 +968,14 @@ module.exports = {
       currentClient: currentClient,
       subject,
       vehicle: {
-        name: modelo,
-        placas,
+        name: flotillaData.modelo,
+        placas: flotillaData.placas,
         driver,
         fuel_card,
         fuel_amount: cantidadString(parseFloat(fuel_amount)),
       },
       route,
-      kilometer_out,
+      kilometer_out: parseInt(kilometer_out || 0),
       fuel_level: fuel_level || 0,
       recorrido_km,
       subtotal_travel: cantidadString(parseFloat(subtotal_travel || 0)),

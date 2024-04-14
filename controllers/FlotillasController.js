@@ -155,9 +155,10 @@ module.exports = {
       // // [ 'traslado', 'flete', 'renta' ]
       const getDocumentData = await FlotillasServices.getDocument(idDocument, type)      
       // obtener datos de la flotilla
-      const getFlotillaData = await FlotillasServices.getPlanesByPlacas(getDocumentData.vehicle)                    
+      const getFlotillaData = await FlotillasServices.getPlanesByPlacas(getDocumentData.vehicle)                          
       // se envia al modelo html para obtener el html      
       const invoiceData = PDFServices.vehicleData(getDocumentData, getFlotillaData)                         
+      console.log("🚀 ~ printPlan:async ~ invoiceData:", invoiceData)
       const response = await axios.post(process.env.PDF_SERVICE+'/vehicle-invoice/', invoiceData, {
         responseType: 'arraybuffer', // Importante para recibir un PDF binario
       });
@@ -166,8 +167,7 @@ module.exports = {
       res.contentType('application/pdf')
       return res.send(response.data)      
       
-    } catch (error) {      
-      console.log("🚀 ~ file: FlotillasController.js:192 ~ printPlan:async ~ error:", error)
+    } catch (error) {
       return res.status(400).json({})
     }
   },
@@ -188,7 +188,7 @@ module.exports = {
 
     try {
         const response = await FlotillasServices.update(id, body, type)
-        if (response) {
+        if (response) {          
           return res.status(200).json({ message: response })
         } else {
           throw new Error('No se pudo actualizar el registro')
