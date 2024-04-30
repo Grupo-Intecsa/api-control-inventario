@@ -154,6 +154,7 @@ module.exports = {
       // taer datos del dociumento
       // // [ 'traslado', 'flete', 'renta' ]
       const getDocumentData = await FlotillasServices.getDocument(idDocument, type)      
+      console.log("🚀 ~ printPlan:async ~ getDocumentData:", getDocumentData)
       // obtener datos de la flotilla
       const getFlotillaData = await FlotillasServices.getPlanesByPlacas(getDocumentData.vehicle)                          
       // se envia al modelo html para obtener el html      
@@ -168,6 +169,7 @@ module.exports = {
       return res.send(response.data)      
       
     } catch (error) {
+      console.log("🚀 ~ printPlan:async ~ error:", error)
       return res.status(400).json({})
     }
   },

@@ -984,7 +984,7 @@ module.exports = {
         project_id,
         document_id,
         planPrice: cantidadString(parseFloat(subtotal_travel || 0)),
-        planDescription: description?.planDescription,
+        planDescription: description?.planDescription || "Sin descripción",
       }
     };
   },
