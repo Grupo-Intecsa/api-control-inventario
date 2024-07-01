@@ -159,7 +159,7 @@ module.exports = {
       res.contentType('application/pdf')
       return res.send(response.data)
     } catch (error) {
-      return res.status(400).json({})
+      return res.status(400).json({ message: error })
     }
   },
   getPlanesByPlacas: async (req, res) => {

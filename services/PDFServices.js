@@ -960,7 +960,7 @@ module.exports = {
 
     return {
       type: type.toUpperCase(),
-      isCancel_status: data.isCancel_status,
+      isCancel_status: data?.isCancel_status || "",
       currentEmpresa: currentEmpresa.toUpperCase(),
       folio,
       created_day: dateFormat(createdAt),
