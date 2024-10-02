@@ -41,7 +41,7 @@ app.use((req, res, next) => {
 app.use(cors(corsOptions));
 
 // conexión con mongoose
-mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false })
+mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Conectado a la base de datos'))
     .catch((err) => console.log(`Error en la conexion de la base de datos ${err}`))
 
