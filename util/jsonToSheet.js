@@ -1,5 +1,9 @@
 const XLSX = require("xlsx");
 const dayjs = require("dayjs");
+const utc = require("dayjs/plugin/utc");
+const timezone = require("dayjs/plugin/timezone"); // Extender dayjs con los plugins
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const jsonToSheet = (data = []) => {
   if (!Array.isArray(data) || data.length === 0) {
@@ -11,12 +15,12 @@ const jsonToSheet = (data = []) => {
       day.registers.map((register) => ({
         Date: day.date,
         EmployeeName: register.employeeName,
-        PrimerAcceso: dayjs(register.records.firstEntry.timestamp).format(
-          "YYYY-MM-DD HH:mm:ss",
-        ),
-        UltimoAcceso: dayjs(register.records.lastEntry.timestamp).format(
-          "YYYY-MM-DD HH:mm:ss",
-        ),
+        PrimerAcceso: dayjs(register.records.firstEntry.timestamp)
+          .tz("America/Mexico_City")
+          .format("YYYY-MM-DD HH:mm:ss"),
+        UltimoAcceso: dayjs(register.records.lastEntry.timestamp)
+          .tz("America/Mexico_City")
+          .format("YYYY-MM-DD HH:mm:ss"),
       })),
     )
     .flat();
