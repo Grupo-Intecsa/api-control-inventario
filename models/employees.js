@@ -15,12 +15,10 @@ const employeesSchema = new Schema({
   },
   employeeId: {    
     type: String,
-    required: true,
     unique: true
   },
   qrCode: {
     type: String,
-    required: true,
   },
   role: {
     type: String,
