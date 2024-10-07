@@ -202,7 +202,7 @@ module.exports = {
 
 
       const equiposActivos = response.map(async (item) => {        
-        const id = mongoose.Types.ObjectId(item.equipoid)        
+        const id = new mongoose.Types.ObjectId(item.equipoid)        
         const equipo = await InventarioIT
         .findOne({ _id: id })
         .populate('usuariosequipos')        

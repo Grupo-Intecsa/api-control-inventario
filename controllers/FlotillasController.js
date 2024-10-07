@@ -87,6 +87,7 @@ module.exports = {
         return res.status(200).json({ documents: response })
       }
     } catch (error) {
+      console.log(error)
       return res.status(400).json({ message: error })
     }
   },

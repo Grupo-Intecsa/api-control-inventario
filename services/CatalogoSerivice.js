@@ -168,7 +168,7 @@ module.exports =  {
         const catRes =  Familia.findById(id)
         return catRes
     },
-    getProductsByParentId: (id) => Familia.aggregate().match({ "parent.catalogo_id": mongoose.Types.ObjectId(id) }).sort({ "capacidad": 1 }),
+    getProductsByParentId: (id) => Familia.aggregate().match({ "parent.catalogo_id": new mongoose.Types.ObjectId(id) }).sort({ "capacidad": 1 }),
     // Brands
     createBrand: (props) => new Brand(props).save(),
 
@@ -212,7 +212,7 @@ module.exports =  {
                 resolve(
                     Catalogo.aggregate()
                         .match({
-                            $and: [ ({ "brand.brand_id": mongoose.Types.ObjectId(id) }), { "isActive": true }]
+                            $and: [ ({ "brand.brand_id": new mongoose.Types.ObjectId(id) }), { "isActive": true }]
                         })
                         .count('total')
 
@@ -225,7 +225,7 @@ module.exports =  {
     
             resolve(
                 Catalogo.aggregate()
-                    .match({ '$and': [ { "brand.brand_id": mongoose.Types.ObjectId(id) }, { "isActive": true } ] })
+                    .match({ '$and': [ { "brand.brand_id": new mongoose.Types.ObjectId(id) }, { "isActive": true } ] })
                     .skip(Number(offset))
                     .limit(Number(limit))
             )
@@ -260,7 +260,7 @@ module.exports =  {
                 resolve(
                     Familia.aggregate()
                         .match({
-                            $and: [ ({ "brand.brand_id": mongoose.Types.ObjectId(id) }), { "isActive": true }]
+                            $and: [ ({ "brand.brand_id": new mongoose.Types.ObjectId(id) }), { "isActive": true }]
                         })
                         .count('total')
 
@@ -273,7 +273,7 @@ module.exports =  {
     
             resolve(
                 Familia.aggregate()
-                    .match({ '$and': [ { "brand.brand_id": mongoose.Types.ObjectId(id) }, { "isActive": true } ] })
+                    .match({ '$and': [ { "brand.brand_id": new mongoose.Types.ObjectId(id) }, { "isActive": true } ] })
                     .sort({ 'createdAt': -1 })
                     .skip(Number(offset)) 
                     .limit(Number(limit))
@@ -294,7 +294,7 @@ module.exports =  {
         let p1 =  new Promise((resolve, reject) => {
             resolve(
                 Familia.aggregate()
-                    .match({ '$and' : [ { "brand.brand_id": mongoose.Types.ObjectId(id)}, { "isActive": true } ] })
+                    .match({ '$and' : [ { "brand.brand_id": new mongoose.Types.ObjectId(id)}, { "isActive": true } ] })
                     .project({ 'familia': 1, 'urlfoto': 1, '_id': 0 })
                     
             )
@@ -347,7 +347,7 @@ module.exports =  {
         let p0 = new Promise((resolve, reject) => {
             resolve(
                 Catalogo.aggregate()
-                    .match({ '$and': [{ "label.label_id": mongoose.Types.ObjectId(id)}, { "isActive": true } ]})
+                    .match({ '$and': [{ "label.label_id": new mongoose.Types.ObjectId(id)}, { "isActive": true } ]})
                     .count('total')
             )
         }) 
@@ -356,7 +356,7 @@ module.exports =  {
         let p1 = new Promise((resolve, reject) => {
             resolve(
                 Familia.aggregate()
-                    .match({ '$and': [ { "label.label_id": mongoose.Types.ObjectId(id) }, { "isActive": true } ] })
+                    .match({ '$and': [ { "label.label_id": new mongoose.Types.ObjectId(id) }, { "isActive": true } ] })
                     .skip(Number(offset))
                     .limit(Number(limit))
 
@@ -379,7 +379,7 @@ module.exports =  {
         let p0 = new Promise((resolve, reject) => {
             resolve(
                 Familia.aggregate()
-                    .match({ '$and': [{ "label.label_id": mongoose.Types.ObjectId(id)}, { "isActive": true } ]})
+                    .match({ '$and': [{ "label.label_id": new mongoose.Types.ObjectId(id)}, { "isActive": true } ]})
                     .count('total')
             )
         }) 
@@ -388,7 +388,7 @@ module.exports =  {
         let p1 = new Promise((resolve, reject) => {
             resolve(
                 Familia.aggregate()
-                    .match({ '$and': [ { "label.label_id": mongoose.Types.ObjectId(id) }, { "isActive": true } ] })
+                    .match({ '$and': [ { "label.label_id": new mongoose.Types.ObjectId(id) }, { "isActive": true } ] })
                     .skip(Number(offset))
                     .limit(Number(limit))
 
@@ -427,7 +427,7 @@ module.exports =  {
         const consulta = new Promise(( resolve ) => {
             resolve(
                 Catalogo.aggregate()
-                .match({ "label.label_id": mongoose.Types.ObjectId(id) })
+                .match({ "label.label_id": new mongoose.Types.ObjectId(id) })
             )
         })
         .then(res => res)
@@ -442,7 +442,7 @@ module.exports =  {
         const query = new Promise((resolve) => {
             resolve(
                 Catalogo.aggregate()
-                .match({ "brand.brand_id": mongoose.Types.ObjectId(id) })
+                .match({ "brand.brand_id": new mongoose.Types.ObjectId(id) })
                 
             )
         })

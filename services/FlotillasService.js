@@ -60,8 +60,8 @@ module.exports = {
     return empresa
   },
   getDocumentsByIdBussiness: async ({ idBussines, query }) => {
-    const aggCanceled = viewDocumentsCanceled(mongoose.Types.ObjectId(idBussines))
-    const aggNormal = viewDocumentsNormal(mongoose.Types.ObjectId(idBussines))
+    const aggCanceled = viewDocumentsCanceled(new mongoose.Types.ObjectId(idBussines))
+    const aggNormal = viewDocumentsNormal(new mongoose.Types.ObjectId(idBussines))
 
     if (query === 'cancel') {
       const documents = await Bussiness.aggregate(aggCanceled)
