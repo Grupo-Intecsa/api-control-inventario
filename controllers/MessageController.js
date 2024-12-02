@@ -7,6 +7,7 @@ const {
 const puppeteer = require("puppeteer");
 const { JSDOM } = require("jsdom");
 const fetch = require("node-fetch");
+const Paqueteria = require("../services/Paqueteria");
 
 module.exports = {
   whatspapp: async (req, res) => {
@@ -244,5 +245,17 @@ module.exports = {
     //   console.log(error);
     //   return res.status(400).json("Error al subir el archivo");
     // }
+  },
+  paqueteria: async (req, res) => {
+    const { body } = req;
+
+    try {
+      const query = await Paqueteria.paqueteria(body);
+      if (!query) throw new Error("error en el servidor");
+
+      return res.status(200).json({ message: query, success_id: query._id });
+    } catch (error) {
+      return res.status(400).json({ error: JSON.stringify(error) });
+    }
   },
 };

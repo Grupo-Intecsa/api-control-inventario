@@ -47,4 +47,7 @@ router.post(
 // TODOS LOS FOLIOS POR EMPRESA Y TIPO
 router.get("/api/v1/folios/:empresa/", MessageController.getFolios);
 
+// Paqueteria
+router.post("/api/v1/paqueteria", MessageController.paqueteria);
+
 module.exports = router;
