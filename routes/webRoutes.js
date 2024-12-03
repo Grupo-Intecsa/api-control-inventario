@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
+  
 const { MessageController } = require("../controllers");
 const { imageStorage } = require("../util/imageStorage");
 
@@ -49,5 +49,7 @@ router.get("/api/v1/folios/:empresa/", MessageController.getFolios);
 
 // Paqueteria
 router.post("/api/v1/paqueteria", MessageController.paqueteria);
+router.get("/api/v1/paqueteria/get", MessageController.getPaqueteria);
+router.patch("/api/v1/paqueteria/update", MessageController.updatePaqueteria);
 
 module.exports = router;

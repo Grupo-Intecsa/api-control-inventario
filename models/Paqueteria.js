@@ -40,6 +40,26 @@ const PaqueteriaSchema = new Schema(
       type: String,
       required: true,
     },
+    shipping_status: {
+      type: String,
+      default: "Solicitado",
+    },
+    shipping_date: {
+      type: Date,
+    },
+    shipping_code: {
+      type: String,
+    },
+    shipping_cost: {
+      type: Number,
+    },
+    shipping_arrival_date: {
+      type: Date,
+    },
+    lastUpdate: {
+      type: String,
+    },
+
   },
   { timestamps: true },
 );

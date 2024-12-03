@@ -217,7 +217,7 @@ module.exports = {
     const { empresa } = req.params;
     console.log(
       "🚀 ~ file: MessageController.js:249 ~ getFolios: ~ empresa:",
-      empresa
+      empresa,
     );
 
     try {
@@ -254,6 +254,31 @@ module.exports = {
       if (!query) throw new Error("error en el servidor");
 
       return res.status(200).json({ message: query, success_id: query._id });
+    } catch (error) {
+      return res.status(400).json({ error: JSON.stringify(error) });
+    }
+  },
+  getPaqueteria: async (req, res) => {
+    try {
+      const response = await Paqueteria.getPaqueteria();
+      const data = response.map((i) => ({ id: i._id, ...i._doc }));
+      if (response) return res.status(200).json({ message: data });
+    } catch (error) {
+      return res.status(400).json({ error });
+    }
+  },
+  updatePaqueteria: async (req, res) => {
+    const { body } = req;
+
+    if (body.shipping_code) {
+      body.shipping_status = "Enviado";
+    }
+
+    try {
+      const query = await Paqueteria.updatePaqueteria(body);
+      if (!query) throw new Error("error en el servidor");
+
+      return res.status(200).json({ message: query });
     } catch (error) {
       return res.status(400).json({ error: JSON.stringify(error) });
     }
