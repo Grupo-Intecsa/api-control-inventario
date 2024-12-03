@@ -59,7 +59,14 @@ const PaqueteriaSchema = new Schema(
     lastUpdate: {
       type: String,
     },
-
+    numeroContacto_recibe: {
+      type: String,
+      required: true,
+    },
+    contacto_recibe: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true },
 );
