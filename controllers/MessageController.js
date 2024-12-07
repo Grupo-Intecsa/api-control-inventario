@@ -8,6 +8,7 @@ const puppeteer = require("puppeteer");
 const { JSDOM } = require("jsdom");
 const fetch = require("node-fetch");
 const Paqueteria = require("../services/Paqueteria");
+const { dateFormat } = require("../util");
 
 module.exports = {
   whatspapp: async (req, res) => {
@@ -258,12 +259,13 @@ module.exports = {
       return res.status(400).json({ error: JSON.stringify(error) });
     }
   },
-  getPaqueteria: async (req, res) => {
+  getPaqueteria: async (_req, res) => {
     try {
       const response = await Paqueteria.getPaqueteria();
-      const data = response.map((i) => ({ id: i._id, ...i._doc }));
+      const data = response?.map((i) => ({ id: i._id, ...i._doc, createdAt: dateFormat(i.createdAt) }));
       if (response) return res.status(200).json({ message: data });
     } catch (error) {
+      console.log(error);
       return res.status(400).json({ error });
     }
   },
@@ -276,6 +278,32 @@ module.exports = {
 
     try {
       const query = await Paqueteria.updatePaqueteria(body);
+      if (!query) throw new Error("error en el servidor");
+
+      return res.status(200).json({ message: query });
+    } catch (error) {
+      return res.status(400).json({ error: JSON.stringify(error) });
+    }
+  },
+  isValidPaqueteria: async (req, res) => {
+    const { paqueteria_id } = req.params;
+    console.log(paqueteria_id);
+
+    try {
+      const query = await Paqueteria.getById(paqueteria_id);
+      if (!query) throw new Error("error en el servidor");
+
+      return res.status(200).json({ message: query });
+    } catch (error) {
+      console.log(error);
+      return res.status(400).json({ error: JSON.stringify(error) });
+    }
+  },
+  notifyPaqueteria: async (req, res) => {
+    const { body } = req;
+
+    try {
+      const query = await Paqueteria.notifyPaqueteria(body);
       if (!query) throw new Error("error en el servidor");
 
       return res.status(200).json({ message: query });

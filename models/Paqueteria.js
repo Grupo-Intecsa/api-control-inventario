@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
-const { uuid } = require("uuidv4");
+const { v4: uuidv4 } = require('uuid');
 
 const PaqueteriaSchema = new Schema(
   {
@@ -77,7 +77,9 @@ const PaqueteriaSchema = new Schema(
 // pre save
 PaqueteriaSchema.pre("save", function (next) {
   if (!this.codigo) {
-    this.codigo = uuid();
+    const shortid = uuidv4();
+    const [cutCode] = shortid.split('-');
+    this.codigo = cutCode;
   }
   next();
 });

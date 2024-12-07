@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-  
+
 const { MessageController } = require("../controllers");
 const { imageStorage } = require("../util/imageStorage");
 
@@ -34,14 +34,14 @@ router.post("/api/v1/counter/agent", MessageController.postCounterAgent);
 router.post(
   "/api/v1/storage/upload",
   [imageStorage.single("bucket")],
-  MessageController.uploadFile
+  MessageController.uploadFile,
 );
 
 // FLOTILLA FOLDER
 router.post(
   "/api/v1/flotilla/storage/upload                                                                                                                                                   ",
   [imageStorage.single("bucket")],
-  MessageController.uploadFile
+  MessageController.uploadFile,
 );
 
 // TODOS LOS FOLIOS POR EMPRESA Y TIPO
@@ -52,6 +52,11 @@ router.post("/api/v1/paqueteria", MessageController.paqueteria);
 router.get("/api/v1/paqueteria/get", MessageController.getPaqueteria);
 router.patch("/api/v1/paqueteria/update", MessageController.updatePaqueteria);
 
-router.get("/api/v1/paqueteria/_isvalid/:paqueteria_id", MessageController.isValidPaqueteria);
+router.get(
+  "/api/v1/paqueteria/isvalid/:paqueteria_id",
+  MessageController.isValidPaqueteria,
+);
+
+router.post("/api/v1/paqueteria/notify", MessageController.notifyPaqueteria);
 
 module.exports = router;
