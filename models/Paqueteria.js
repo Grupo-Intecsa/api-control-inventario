@@ -1,17 +1,12 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
-
-//const schemaForm = z.object({
-//  proyecto: z.string().min(3),
-//  paqueteria: z.string().min(3),
-//  direccion: z.string().min(3),
-//  contacto: z.string().min(3),
-//  numeroContacto: z.string().min(3),
-//  empresaEnvio: z.string().min(3)
-//})
+const { uuid } = require("uuidv4");
 
 const PaqueteriaSchema = new Schema(
   {
+    codigo: {
+      type: String,
+    },
     is_active: {
       type: Boolean,
       default: true,
@@ -33,6 +28,10 @@ const PaqueteriaSchema = new Schema(
       required: true,
     },
     numeroContacto: {
+      type: String,
+      required: true,
+    },
+    emailContacto: {
       type: String,
       required: true,
     },
@@ -67,9 +66,21 @@ const PaqueteriaSchema = new Schema(
       type: String,
       required: true,
     },
+    contacto_recibe_email: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true },
 );
+
+// pre save
+PaqueteriaSchema.pre("save", function (next) {
+  if (!this.codigo) {
+    this.codigo = uuid();
+  }
+  next();
+});
 
 const Paqueteria = mongoose.model("Paqueteria", PaqueteriaSchema);
 module.exports = {

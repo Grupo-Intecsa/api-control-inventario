@@ -52,4 +52,6 @@ router.post("/api/v1/paqueteria", MessageController.paqueteria);
 router.get("/api/v1/paqueteria/get", MessageController.getPaqueteria);
 router.patch("/api/v1/paqueteria/update", MessageController.updatePaqueteria);
 
+router.get("/api/v1/paqueteria/_isvalid/:paqueteria_id", MessageController.isValidPaqueteria);
+
 module.exports = router;
