@@ -5,10 +5,10 @@ const {
   AllFoliosService,
 } = require("../services");
 const puppeteer = require("puppeteer");
-const { JSDOM } = require("jsdom");
 const fetch = require("node-fetch");
 const Paqueteria = require("../services/Paqueteria");
 const { dateFormat } = require("../util");
+const { sendNotification } = require("./EmailController");
 
 module.exports = {
   whatspapp: async (req, res) => {
@@ -232,20 +232,8 @@ module.exports = {
     }
   },
   flotillaArchive: async (req, res) => {
-    console.log(req.file, req.body);
-    const { path } = req.file;
     const { flotilla } = req.body;
     console.log({ flotilla });
-
-    // try {
-    //   const upload = await MacbettyService.uploadFile(flotilla, path);
-    //   if (!upload) throw new Error({ error: "No se pudo subir el archivo" });
-
-    //   return res.status(200).json({ message: "Archivo subido con exito" });
-    // } catch (error) {
-    //   console.log(error);
-    //   return res.status(400).json("Error al subir el archivo");
-    // }
   },
   paqueteria: async (req, res) => {
     const { body } = req;
@@ -254,6 +242,7 @@ module.exports = {
       const query = await Paqueteria.paqueteria(body);
       if (!query) throw new Error("error en el servidor");
 
+      await sendNotification("paqueteria", query);
       return res.status(200).json({ message: query, success_id: query._id });
     } catch (error) {
       return res.status(400).json({ error: JSON.stringify(error) });
@@ -262,7 +251,11 @@ module.exports = {
   getPaqueteria: async (_req, res) => {
     try {
       const response = await Paqueteria.getPaqueteria();
-      const data = response?.map((i) => ({ id: i._id, ...i._doc, createdAt: dateFormat(i.createdAt) }));
+      const data = response?.map((i) => ({
+        id: i._id,
+        ...i._doc,
+        createdAt: dateFormat(i.createdAt),
+      }));
       if (response) return res.status(200).json({ message: data });
     } catch (error) {
       console.log(error);
