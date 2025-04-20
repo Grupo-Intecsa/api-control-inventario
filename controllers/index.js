@@ -7,6 +7,7 @@ const RHController = require("./RHController");
 const FlotillasController = require("./FlotillasController");
 const InventarioITController = require("./InventarioITController");
 const ChecaController = require("./ChecaController");
+const ControlVHController = require("./ControlVHController");
 
 module.exports = {
   AlmacenController,
@@ -18,4 +19,5 @@ module.exports = {
   FlotillasController,
   InventarioITController,
   ChecaController,
+  ControlVHController,
 };

@@ -11,6 +11,7 @@ router.use(require("./RHRoutes"));
 router.use(require("./FlotillasRoutes"));
 router.use(require("./inventarioITRoutes"));
 router.use(require("./ChecaRoutes"));
+router.use(require("./ControlVHRoute"));
 
 module.exports = router;
 router.use(errors());
