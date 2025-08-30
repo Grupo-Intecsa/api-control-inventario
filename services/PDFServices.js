@@ -1,5 +1,43 @@
-const { get } = require('lodash')
-const { InvoiceStorage } = require('../models')
+const { get } = require("lodash");
+
+const { InvoiceStorage } = require("../models");
+const empresaLogos = [
+  {
+    _id: "626e223ffe9887654db63c37",
+    name: "Instalaciones Tecnológicas Aplicadas",
+    slug: "ita",
+  },
+  {
+    _id: "626e22ebfe9887654db63c38",
+    name: "Inmobiliaria Eguel",
+    slug: "eguel",
+  },
+  {
+    _id: "626e2305fe9887654db63c39",
+    name: "Instalaciones y Técnica",
+    slug: "ite",
+  },
+  {
+    _id: "626e2324fe9887654db63c3a",
+    name: "Canalizaciòn y Soporteria",
+    slug: "csm",
+  },
+  {
+    _id: "62a75bab9ec0343efa92406e",
+    name: "Inmobiliaria del Reino",
+    slug: "reino",
+  },
+  {
+    _id: "62a75bbf9ec0343efa92406f",
+    name: "Iglesia del 3er día",
+    slug: "I3D",
+  },
+  {
+    _id: "688a680660a6125c3c242759",
+    name: "Industrial Connect",
+    slug: "ICONNECT",
+  },
+];
 
 module.exports = {
   createInvoice: (body, query) => {
@@ -13,20 +51,20 @@ module.exports = {
       carrito,
       total,
       date,
-      rfc
-    } = body
-    const { folio } = query
+      rfc,
+    } = body;
+    const { folio } = query;
 
     const cantidadString = (precio) =>
-      new Intl.NumberFormat('es-MX', {
-        style: 'currency',
-        currency: 'MXN'
-      }).format(precio)
+      new Intl.NumberFormat("es-MX", {
+        style: "currency",
+        currency: "MXN",
+      }).format(precio);
     const dateFormat = (date) =>
-      new Intl.DateTimeFormat('es-MX', { dateStyle: 'full' }).format(
-        new Date(date)
-      )
-    const direccionCompleta = `${body.direccionRfc}, ${body.alcaldiaRfc}, ${body.estadoRfc}, ${body.ciudadRfc}`
+      new Intl.DateTimeFormat("es-MX", { dateStyle: "full" }).format(
+        new Date(date),
+      );
+    const direccionCompleta = `${body.direccionRfc}, ${body.alcaldiaRfc}, ${body.estadoRfc}, ${body.ciudadRfc}`;
 
     const carritoMap = carrito.map((item) => {
       return `<tr>
@@ -37,8 +75,8 @@ module.exports = {
             item?.foto && `<img src="${item.foto}" class="fotoMini"}></img>`
           }</td>
         </tr>  
-        `
-    })
+        `;
+    });
 
     const envioCotizar = `
     <tr>
@@ -47,14 +85,14 @@ module.exports = {
       <td>*Por Cotizar</td>
       <td></td>
     </tr>  
-      `
-    const cotizacionNull = '<tr class="d-none"></tr>'
+      `;
+    const cotizacionNull = '<tr class="d-none"></tr>';
 
-    let cotizacion
+    let cotizacion;
     if (cotizar) {
-      cotizacion = envioCotizar
+      cotizacion = envioCotizar;
     } else if (!cotizar) {
-      cotizacion = cotizacionNull
+      cotizacion = cotizacionNull;
     }
 
     const web = `
@@ -270,7 +308,7 @@ module.exports = {
                           </div>
                             <div>
                               <p class="mt-3 w-100 invoice-date">${dateFormat(
-                                date
+                                date,
                               )}</p>
                             </div>
                         </div>
@@ -346,42 +384,42 @@ module.exports = {
         -->
       </body>
     </html>
-    `
+    `;
 
-    return web
+    return web;
   },
   saveInvoice: async (payload) => {
     const genFolioIncremental = await new Promise((resolve) => {
-      resolve(InvoiceStorage.countDocuments())
+      resolve(InvoiceStorage.countDocuments());
     }).then((res) => {
       const data = {
         ...payload,
-        folio: `W-${Math.floor(Math.random() * 1000)}-${res + 1}`
-      }
-      return data
-    })
+        folio: `W-${Math.floor(Math.random() * 1000)}-${res + 1}`,
+      };
+      return data;
+    });
 
     const saveInfoInvoiceData = (data) =>
       new Promise((resolve) => {
-        resolve(InvoiceStorage(data).save())
-      }).then((res) => res)
+        resolve(InvoiceStorage(data).save());
+      }).then((res) => res);
 
     const query = await Promise.all([genFolioIncremental])
       .then((res) => {
-        return saveInfoInvoiceData(res[0])
+        return saveInfoInvoiceData(res[0]);
       })
-      .then((res) => res)
+      .then((res) => res);
 
-    return query
+    return query;
   },
 
   getInvoiceId: (id) => InvoiceStorage.findById(id),
   flotillaInvoice: (data, flotillasData, getMapImage) => {
     // destructuring data
     const dateFormat = (date) =>
-      new Intl.DateTimeFormat('es-MX', { dateStyle: 'full' }).format(
-        new Date(date)
-      )
+      new Intl.DateTimeFormat("es-MX", { dateStyle: "full" }).format(
+        new Date(date),
+      );
     const {
       type,
       email_sent,
@@ -406,59 +444,25 @@ module.exports = {
       subtotal_travel = 0,
       //
       fuel_amount,
-      recorrido_km = '0',
+      recorrido_km = "0",
       subject,
       link_googlemaps,
       casetas,
-      tarjeta_deposito
-    } = data
+      tarjeta_deposito,
+    } = data;
 
-    const { modelo, placas, planes } = flotillasData[0]
-
-    const empresaLogos = [
-      {
-        _id: '626e223ffe9887654db63c37',
-        name: 'Instalaciones Tecnológicas Aplicadas',
-        slug: 'ita'
-      },
-      {
-        _id: '626e22ebfe9887654db63c38',
-        name: 'Inmobiliaria Eguel',
-        slug: 'eguel'
-      },
-      {
-        _id: '626e2305fe9887654db63c39',
-        name: 'Instalaciones y Técnica',
-        slug: 'ite'
-      },
-      {
-        _id: '626e2324fe9887654db63c3a',
-        name: 'Canalizaciòn y Soporteria',
-        slug: 'csm'
-      },
-      {
-        _id: '62a75bab9ec0343efa92406e',
-        name: 'Inmobiliaria del Reino',
-        slug: 'reino'
-      },
-      {
-        _id: '62a75bbf9ec0343efa92406f',
-        name: 'Iglesia del 3er día',
-        slug: 'I3D'
-      }
-    ]
-
+    const { modelo, placas, planes } = flotillasData[0];
     const currentEmpresa = empresaLogos.find(
-      (empresa) => empresa._id === bussiness_cost.toString()
-    ).name
+      (empresa) => empresa._id === bussiness_cost.toString(),
+    ).name;
     const currentClient = empresaLogos.find(
-      (empresa) => empresa._id.toString() === client.toString()
-    ).name
+      (empresa) => empresa._id.toString() === client.toString(),
+    ).name;
     const cantidadString = (precio) =>
-      new Intl.NumberFormat('es-MX', {
-        style: 'currency',
-        currency: 'MXN'
-      }).format(precio)
+      new Intl.NumberFormat("es-MX", {
+        style: "currency",
+        currency: "MXN",
+      }).format(precio);
     const casetasBody = casetas
       ? `
       <br/>
@@ -474,13 +478,13 @@ module.exports = {
         </thead>
         <tbody>
           <td>${cantidadString(
-            parseFloat(casetas)
+            parseFloat(casetas),
           )}</td>                              
           <td>${tarjeta_deposito}</td>
         </tbody>
       </table>      
     `
-      : ''
+      : "";
 
     const invoicePDF = `
     <!doctype html>
@@ -689,7 +693,7 @@ module.exports = {
                     <div class="invoice-top-left">
                       <h3>RECURSOS LOGÍSTICA</h3>
                       <h3 class="invoice-title">${type.toUpperCase()}</h3>
-                      <h3>${currentEmpresa || ''}</h3>                   
+                      <h3>${currentEmpresa || ""}</h3>                   
                     </div>
                   </div>
                   <div class="col-6">
@@ -700,7 +704,7 @@ module.exports = {
                       <div>
                           <h2>Folio: ${folio}</h2>
                           <p class="mt-3 w-100 invoice-date">${dateFormat(
-                            createdAt
+                            createdAt,
                           )}</p>
                       </div>
                       <br />
@@ -708,13 +712,13 @@ module.exports = {
                         <span>
                           Fecha de solicitud: 
                           <span class="mt-3 invoice-date">${dateFormat(
-                            request_date
+                            request_date,
                           )}</span>
                         </span>
                         <span>
                           Fecha de disperción
                           <span class="mt-3 invoice-date">${dateFormat(
-                            delivery_date
+                            delivery_date,
                           )}</span>
                         </span>
                       </div>
@@ -730,8 +734,8 @@ module.exports = {
 
                   <br/>
                   <div>
-                      <h4>Cliente: ${currentClient || ''}</h4>
-                      <h5>${subject || ''}</h5>
+                      <h4>Cliente: ${currentClient || ""}</h4>
+                      <h5>${subject || ""}</h5>
                   </div>
 
                   <br/>
@@ -775,9 +779,9 @@ module.exports = {
                         </thead>
                         <tbody>
                           <td>${route}</td>
-                          <td>${kilometer_out || ''}</td>
-                          <td>${fuel_level || ''}%</td>
-                          <td>${recorrido_km || ''} KM aprox</td>
+                          <td>${kilometer_out || ""}</td>
+                          <td>${fuel_level || ""}%</td>
+                          <td>${recorrido_km || ""} KM aprox</td>
                         </tbody>
                       </table>    
                       ${casetasBody}
@@ -801,7 +805,7 @@ module.exports = {
                             description?.planPrice
                           }</td>                              
                           <td>${cantidadString(
-                            parseFloat(subtotal_travel || 0)
+                            parseFloat(subtotal_travel || 0),
                           )}</td>
                         </tbody>
                       </table>                          
@@ -820,11 +824,11 @@ module.exports = {
                         <tbody>                          
                           <td>
                             <a target="_blank" href="${
-                              link_googlemaps || '#'
+                              link_googlemaps || "#"
                             }">Ver recorrido</a>
                           </td>
-                          <td>${document_id || ''}</td>
-                          <td>${project_id || ''}</td>
+                          <td>${document_id || ""}</td>
+                          <td>${project_id || ""}</td>
                         </tbody>
                     </table>    
                     <div class="recorrido">
@@ -832,7 +836,7 @@ module.exports = {
                         Recorrido
                       </h5>                      
                       <img                       
-                        src="${'data:image/png;base64,' + getMapImage}" 
+                        src="${"data:image/png;base64," + getMapImage}" 
                         alt="mapa de google" 
                       />
                     </div>
@@ -862,16 +866,16 @@ module.exports = {
   </body>
 </html>    
 
-    `
-    return invoicePDF
+    `;
+    return invoicePDF;
   },
 
   vehicleData: (data, flotillasData) => {
     // destructuring data
     const dateFormat = (date) =>
-      new Intl.DateTimeFormat('es-MX', { dateStyle: 'full' }).format(
-        new Date(date)
-      )
+      new Intl.DateTimeFormat("es-MX", { dateStyle: "full" }).format(
+        new Date(date),
+      );
     const {
       type,
       email_sent,
@@ -896,67 +900,35 @@ module.exports = {
       subtotal_travel = 0,
       //
       fuel_amount,
-      recorrido_km = '0',
+      recorrido_km = "0",
       subject,
       link_googlemaps,
       casetas,
-      tarjeta_deposito
-    } = data
+      tarjeta_deposito,
+    } = data;
 
     let flotillaData = {
-      modelo: 'Sin modelo',
-      placas: 'Sin placas',
-      planes: 'Sin planes'
-    }
+      modelo: "Sin modelo",
+      placas: "Sin placas",
+      planes: "Sin planes",
+    };
 
     if (flotillasData.length > 0) {
-      flotillaData = flotillasData[0]
+      flotillaData = flotillasData[0];
     }
 
-    const empresaLogos = [
-      {
-        _id: '626e223ffe9887654db63c37',
-        name: 'Instalaciones Tecnológicas Aplicadas',
-        slug: 'ita'
-      },
-      {
-        _id: '626e22ebfe9887654db63c38',
-        name: 'Inmobiliaria Eguel',
-        slug: 'eguel'
-      },
-      {
-        _id: '626e2305fe9887654db63c39',
-        name: 'Instalaciones y Técnica',
-        slug: 'ite'
-      },
-      {
-        _id: '626e2324fe9887654db63c3a',
-        name: 'Canalizaciòn y Soporteria',
-        slug: 'csm'
-      },
-      {
-        _id: '62a75bab9ec0343efa92406e',
-        name: 'Inmobiliaria del Reino',
-        slug: 'reino'
-      },
-      {
-        _id: '62a75bbf9ec0343efa92406f',
-        name: 'Iglesia del 3er día',
-        slug: 'I3D'
-      }
-    ]
-
-    const currentEmpresa = empresaLogos.find(
-      (empresa) => empresa._id === bussiness_cost.toString()
-    ).name
-    const currentClient = empresaLogos.find(
-      (empresa) => empresa._id.toString() === client.toString()
-    ).name
+    const currentEmpresa =
+      empresaLogos.find((empresa) => empresa._id === bussiness_cost.toString())
+        ?.name || "Empresa no encontrada";
+    const currentClient =
+      empresaLogos.find(
+        (empresa) => empresa._id.toString() === client.toString(),
+      )?.name || "Cliente no encontrado";
     const cantidadString = (precio) =>
-      new Intl.NumberFormat('es-MX', {
-        style: 'currency',
-        currency: 'MXN'
-      }).format(precio)
+      new Intl.NumberFormat("es-MX", {
+        style: "currency",
+        currency: "MXN",
+      }).format(precio);
 
     return {
       type: type.toUpperCase(),
@@ -973,7 +945,7 @@ module.exports = {
         placas: flotillaData.placas,
         driver,
         fuel_card,
-        fuel_amount: cantidadString(parseFloat(fuel_amount))
+        fuel_amount: cantidadString(parseFloat(fuel_amount)),
       },
       route,
       kilometer_out: parseInt(kilometer_out || 0),
@@ -985,8 +957,8 @@ module.exports = {
         project_id,
         document_id,
         planPrice: cantidadString(parseFloat(subtotal_travel || 0)),
-        planDescription: description?.planDescription || 'Sin descripción'
-      }
-    }
-  }
-}
+        planDescription: description?.planDescription || "Sin descripción",
+      },
+    };
+  },
+};

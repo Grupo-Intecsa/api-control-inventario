@@ -139,7 +139,6 @@ module.exports = {
     }
   },
   printPlan: async (req, res) => {
-    console.log(req.query.type)
     // [ 'traslado', 'flete', 'renta' ]
     const { type } = req.query
     const { idDocument } = req.params
@@ -160,6 +159,7 @@ module.exports = {
       res.contentType('application/pdf')
       return res.send(response.data)
     } catch (error) {
+      console.log(error)
       return res.status(400).json({ message: error })
     }
   },
