@@ -15,7 +15,7 @@ module.exports = {
             // TODO añadir controles de contraseña segura 
 
             if(Object.keys(errors).length > 0){
-                res.status(400).json(errors)
+                return res.status(400).json(errors)
             }
 
             const newUser = await UserService.create(req.body)

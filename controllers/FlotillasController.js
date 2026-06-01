@@ -31,17 +31,25 @@ module.exports = {
     try {
       const response = await FlotillasServices.create(type, req.body)
       if (response) {
-        return res.status(200).json({ message: response })
+        return res.status(200).json({
+          success: true,
+          [type]: response
+        })
       }
     } catch (error) {
-      return res.status(400).json({ message: error })
+      console.log('[flotilla/create]', error)
+      return res.status(400).json({
+        success: false,
+        message: error.message || 'No se pudo crear el registro',
+        error: error
+      })
     }
   },
-  get: (req, res) => {
+  get: async (req, res) => {
     // TODO fallo al no tener query indicado de tipo de registro
     const { type } = req.query
     try {
-      const response = FlotillasServices.get(type)
+      const response = await FlotillasServices.get(type)
       if (response) {
         return res.status(200).json({ message: response })
       }
@@ -159,8 +167,29 @@ module.exports = {
       res.contentType('application/pdf')
       return res.send(response.data)
     } catch (error) {
+      // Si el servicio externo de PDF responde 4xx/5xx, axios nos da el body como Buffer
+      // (porque pedimos responseType: 'arraybuffer'). Lo decodificamos para exponer el
+      // mensaje real al frontend en vez de devolver un error genérico.
+      if (error.response && error.response.data) {
+        const status = error.response.status || 502
+        const raw = Buffer.isBuffer(error.response.data)
+          ? error.response.data.toString('utf8')
+          : error.response.data
+        let parsed
+        try {
+          parsed = JSON.parse(raw)
+        } catch (e) {
+          parsed = { raw }
+        }
+        console.log('[printPlan] external PDF service error:', status, parsed)
+        return res.status(status).json({
+          message: parsed.message || parsed.error || 'PDF service rejected the payload',
+          errors: parsed.errors,
+          raw: parsed.raw
+        })
+      }
       console.log(error)
-      return res.status(400).json({ message: error })
+      return res.status(500).json({ message: error.message || error })
     }
   },
   getPlanesByPlacas: async (req, res) => {

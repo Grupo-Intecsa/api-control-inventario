@@ -1,4 +1,4 @@
-const { Inventario } = require("./Inventario");
+const { Inventarios } = require("./Inventario");
 const { Catalogo } = require("./Catalogo");
 const { Label } = require("./Label");
 const { Brand } = require("./Brand");
@@ -21,9 +21,10 @@ const { UsuariosEquipos } = require("./UsuariosEquipos");
 const { ChecaEmployees } = require("./employees.js");
 const { AttendanceEmployee } = require("./AttendanceEmployee");
 const { ChecaSites } = require("./ChecaSites.js")
+const { Paqueteria } = require("./Paqueteria")
 
 module.exports = {
-  Inventario,
+  Inventarios,
   Brand,
   Catalogo,
   Label,
@@ -46,4 +47,5 @@ module.exports = {
   ChecaEmployees,
   AttendanceEmployee,
   ChecaSites,
+  Paqueteria
 };

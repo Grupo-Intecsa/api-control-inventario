@@ -905,6 +905,16 @@ module.exports = {
       link_googlemaps,
       casetas,
       tarjeta_deposito,
+      cost_breakdown,
+      pre_flight,
+      profit_pct,
+      indirect_pct,
+      cargo_description,
+      origin,
+      destination,
+      stops,
+      cost_center,
+      notes,
     } = data;
 
     let flotillaData = {
@@ -929,36 +939,80 @@ module.exports = {
         style: "currency",
         currency: "MXN",
       }).format(precio);
+    const formatMoney = (value) => {
+      const num = parseFloat(value);
+      if (!Number.isFinite(num)) return "";
+      return new Intl.NumberFormat("es-MX", {
+        style: "currency",
+        currency: "MXN",
+      }).format(num);
+    };
 
     return {
+      _id,
+      __v: data?.__v ?? 0,
+      is_active: data?.is_active ?? true,
       type: type.toUpperCase(),
       isCancel_status: data?.isCancel_status || "",
       currentEmpresa: currentEmpresa.toUpperCase(),
+      bussiness_cost: bussiness_cost?.toString?.() || bussiness_cost || '',
+      client: client?.toString?.() || client || '',
       folio,
       created_day: dateFormat(createdAt),
+      updatedAt,
       request_day: dateFormat(request_date),
       delivery_day: dateFormat(delivery_date),
       currentClient: currentClient.toUpperCase(),
       subject,
+      email_sent: email_sent || [],
       vehicle: {
         name: flotillaData.modelo,
         placas: flotillaData.placas,
         driver,
         fuel_card,
-        fuel_amount: cantidadString(parseFloat(fuel_amount)),
+        fuel_amount: formatMoney(fuel_amount),
       },
       route,
       kilometer_out: parseInt(kilometer_out || 0),
+      kilometer_in: parseInt(kilometer_in || 0),
       fuel_level: fuel_level || 0,
       recorrido_km,
-      subtotal_travel: cantidadString(parseFloat(subtotal_travel || 0)),
+      subtotal_travel: formatMoney(subtotal_travel),
       description: {
         link_googlemaps,
         project_id,
         document_id,
-        planPrice: cantidadString(parseFloat(subtotal_travel || 0)),
+        planPrice: formatMoney(subtotal_travel),
         planDescription: description?.planDescription || "Sin descripción",
+        planName: description?.planName || '',
+        idSlug: description?.idSlug || '',
+        flotilla: description?.flotilla || '',
+        isActive: description?.isActive ?? true,
+        planCreatedAt: description?.createdAt || '',
+        planUpdatedAt: description?.updatedAt || '',
+        planVersion: description?.__v ?? 0
       },
+      cost_breakdown: {
+        ...(cost_breakdown || {}),
+        casetas_unit: (cost_breakdown || {}).casetas_unit || 'fijo',
+        casetas_notes: (cost_breakdown || {}).casetas_notes || '',
+        operator_unit: (cost_breakdown || {}).operator_unit || 'dia',
+        per_diem_unit: (cost_breakdown || {}).per_diem_unit || 'dia',
+        gasoline_unit: (cost_breakdown || {}).gasoline_unit || 'km',
+        unit_rent_unit: (cost_breakdown || {}).unit_rent_unit || 'dia',
+        unit_rent_qty: (cost_breakdown || {}).unit_rent_qty || 0
+      },
+      pre_flight: pre_flight || {},
+      profit_pct: profit_pct ?? 8,
+      indirect_pct: indirect_pct ?? 12,
+      cargo_description: cargo_description || '',
+      origin: origin || '',
+      destination: destination || '',
+      stops: stops || [],
+      cost_center: cost_center || '',
+      notes: notes || '',
+      tarjeta_deposito: tarjeta_deposito || '',
+      casetas: casetas || '',
     };
   },
 };
