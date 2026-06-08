@@ -162,6 +162,14 @@ const FleteSchema = new Schema({
   notes: {
     type: String,
     default: ''
+  },
+  payment_method: {
+    type: String,
+    default: ''
+  },
+  driver_address: {
+    type: String,
+    default: ''
   }
 }, { timestamps: true })
 

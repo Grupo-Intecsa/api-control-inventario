@@ -915,7 +915,17 @@ module.exports = {
       stops,
       cost_center,
       notes,
+      payment_method,
+      driver_address,
     } = data;
+
+    // Forzar cost_breakdown a objeto plano (Mongoose subdocuments no siempre serializan bien)
+    const plainCostBreakdown = cost_breakdown
+      ? (cost_breakdown.toObject ? cost_breakdown.toObject() : JSON.parse(JSON.stringify(cost_breakdown)))
+      : {};
+
+    console.log('[PDFServices.vehicleData] cost_breakdown raw:', cost_breakdown);
+    console.log('[PDFServices.vehicleData] cost_breakdown plain:', plainCostBreakdown);
 
     let flotillaData = {
       modelo: "Sin modelo",
@@ -968,7 +978,9 @@ module.exports = {
       vehicle: {
         name: flotillaData.modelo,
         placas: flotillaData.placas,
+        unit_code: vehicle || flotillaData.placas || '',
         driver,
+        driver_address: driver_address || '',
         fuel_card,
         fuel_amount: formatMoney(fuel_amount),
       },
@@ -984,7 +996,7 @@ module.exports = {
         document_id,
         planPrice: formatMoney(subtotal_travel),
         planDescription: description?.planDescription || "Sin descripción",
-        planName: description?.planName || '',
+        planName: description?.planName || description?.planDescription || "Sin descripción",
         idSlug: description?.idSlug || '',
         flotilla: description?.flotilla || '',
         isActive: description?.isActive ?? true,
@@ -993,19 +1005,28 @@ module.exports = {
         planVersion: description?.__v ?? 0
       },
       cost_breakdown: {
-        ...(cost_breakdown || {}),
-        casetas_unit: (cost_breakdown || {}).casetas_unit || 'fijo',
-        casetas_notes: (cost_breakdown || {}).casetas_notes || '',
-        operator_unit: (cost_breakdown || {}).operator_unit || 'dia',
-        per_diem_unit: (cost_breakdown || {}).per_diem_unit || 'dia',
-        gasoline_unit: (cost_breakdown || {}).gasoline_unit || 'km',
-        unit_rent_unit: (cost_breakdown || {}).unit_rent_unit || 'dia',
-        unit_rent_qty: (cost_breakdown || {}).unit_rent_qty || 0
+        ...plainCostBreakdown,
+        casetas_unit: plainCostBreakdown.casetas_unit || 'fijo',
+        casetas_notes: plainCostBreakdown.casetas_notes || '',
+        operator_unit: plainCostBreakdown.operator_unit || 'dia',
+        per_diem_unit: plainCostBreakdown.per_diem_unit || 'dia',
+        gasoline_unit: plainCostBreakdown.gasoline_unit || 'km',
+        unit_rent_unit: plainCostBreakdown.unit_rent_unit || 'dia',
+        unit_rent_qty: plainCostBreakdown.unit_rent_qty || 0,
+        profit_amount: (data?.profit_amount || plainCostBreakdown.profit_amount || 0) > 0 || parseFloat(subtotal_travel || 0) === 0
+          ? (data?.profit_amount || plainCostBreakdown.profit_amount || 0)
+          : (parseFloat(subtotal_travel || 0) * ((profit_pct ?? 8) / 100)),
+        indirect_amount: (data?.indirect_amount || plainCostBreakdown.indirect_amount || 0) > 0 || parseFloat(subtotal_travel || 0) === 0
+          ? (data?.indirect_amount || plainCostBreakdown.indirect_amount || 0)
+          : (parseFloat(subtotal_travel || 0) * ((indirect_pct ?? 12) / 100))
       },
-      pre_flight: pre_flight || {},
+      pre_flight: pre_flight
+        ? (pre_flight.toObject ? pre_flight.toObject() : JSON.parse(JSON.stringify(pre_flight)))
+        : {},
       profit_pct: profit_pct ?? 8,
       indirect_pct: indirect_pct ?? 12,
       cargo_description: cargo_description || '',
+      subtotal_travel_raw: parseFloat(subtotal_travel || 0),
       origin: origin || '',
       destination: destination || '',
       stops: stops || [],
@@ -1013,6 +1034,7 @@ module.exports = {
       notes: notes || '',
       tarjeta_deposito: tarjeta_deposito || '',
       casetas: casetas || '',
+      payment_method: payment_method || '',
     };
   },
 };

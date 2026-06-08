@@ -108,7 +108,9 @@ const mapDocumentBody = (type, body = {}) => {
     destination:      body.destination || '',
     stops:            Array.isArray(body.stops) ? body.stops : [],
     cost_center:      body.cost_center || '',
-    notes:            body.notes || ''
+    notes:            body.notes || '',
+    payment_method:   body.payment_method || '',
+    driver_address:   body.driver_address || ''
   }
 }
 
@@ -230,15 +232,16 @@ module.exports = {
     return planes
   },
   update: async (_id, body, type) => {
+    const payload = mapDocumentBody(type, body)
     switch (type) {
       case 'flete':
-        const flotilla = await Flete.findByIdAndUpdate(_id, { ...body })
+        const flotilla = await Flete.findByIdAndUpdate(_id, { ...payload })
         return flotilla
       case 'traslado':
-        const traslado = await Traslado.findByIdAndUpdate(_id, { ...body })
+        const traslado = await Traslado.findByIdAndUpdate(_id, { ...payload })
         return traslado
       case 'renta':
-        const renta = await Rentas.findByIdAndUpdate(_id, { ...body })
+        const renta = await Rentas.findByIdAndUpdate(_id, { ...payload })
         return renta
     }
   },
@@ -246,12 +249,18 @@ module.exports = {
     switch (type) {
       case 'flete':
         const flotilla = await Flete.findById({ _id: id })
+          .populate('client', 'name slug')
+          .populate('bussiness_cost', 'name slug')
         return flotilla
       case 'traslado':
         const traslado = await Traslado.findById({ _id: id })
+          .populate('client', 'name slug')
+          .populate('bussiness_cost', 'name slug')
         return traslado
       case 'renta':
         const renta = await Rentas.findById({ _id: id })
+          .populate('client', 'name slug')
+          .populate('bussiness_cost', 'name slug')
         return renta
     }
   },
