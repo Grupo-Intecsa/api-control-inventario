@@ -36,7 +36,7 @@ const mapDocumentBody = (type, body = {}) => {
     per_diem_unit:    body.per_diem_unit || 'dia',
     per_diem_days:    toNumber(body.per_diem_days),
     gasoline_rate:    toNumber(body.gasoline_rate),
-    gasoline_unit:    body.gasoline_unit || 'km',
+    gasoline_unit:    body.gasoline_unit || 'fijo',
     gasoline_km:      toNumber(body.gasoline_km ?? body.recorrido_km),
     unit_rent_amount: toNumber(body.unit_rent_amount),
     unit_rent_period: body.unit_rent_period || 'dia',
