@@ -1010,7 +1010,7 @@ module.exports = {
         casetas_notes: plainCostBreakdown.casetas_notes || '',
         operator_unit: plainCostBreakdown.operator_unit || 'dia',
         per_diem_unit: plainCostBreakdown.per_diem_unit || 'dia',
-        gasoline_unit: plainCostBreakdown.gasoline_unit || 'km',
+        gasoline_unit: 'fijo', // spec §3.4: gasolina siempre monto fijo, nunca por km. gasoline_km queda solo informativo.
         unit_rent_unit: plainCostBreakdown.unit_rent_unit || 'dia',
         unit_rent_qty: plainCostBreakdown.unit_rent_qty || 0,
         profit_amount: (data?.profit_amount || plainCostBreakdown.profit_amount || 0) > 0 || parseFloat(subtotal_travel || 0) === 0
