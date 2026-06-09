@@ -98,7 +98,7 @@ const RentasSchema = new Schema({
     }, 
     bussiness_cost: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'bussinesses',
+        ref: 'bussiness',
     },
     route: {
         type: JSON,
@@ -108,7 +108,7 @@ const RentasSchema = new Schema({
     },
     client: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'businesses',
+        ref: 'bussiness',
     },
     link_googlemaps: {
         type: String,

@@ -164,6 +164,11 @@ module.exports = {
     return empresa
   },
   getDocumentsByIdBussiness: async ({ idBussines, query }) => {
+    if (!mongoose.Types.ObjectId.isValid(idBussines)) {
+      const err = new Error(`idBussines inválido: ${idBussines}`)
+      err.statusCode = 400
+      throw err
+    }
     const aggCanceled = viewDocumentsCanceled(new mongoose.Types.ObjectId(idBussines))
     const aggNormal = viewDocumentsNormal(new mongoose.Types.ObjectId(idBussines))
 
@@ -248,17 +253,17 @@ module.exports = {
   getById: async (id, type) => {
     switch (type) {
       case 'flete':
-        const flotilla = await Flete.findById({ _id: id })
+        const flotilla = await Flete.findById(id)
           .populate('client', 'name slug')
           .populate('bussiness_cost', 'name slug')
         return flotilla
       case 'traslado':
-        const traslado = await Traslado.findById({ _id: id })
+        const traslado = await Traslado.findById(id)
           .populate('client', 'name slug')
           .populate('bussiness_cost', 'name slug')
         return traslado
       case 'renta':
-        const renta = await Rentas.findById({ _id: id })
+        const renta = await Rentas.findById(id)
           .populate('client', 'name slug')
           .populate('bussiness_cost', 'name slug')
         return renta

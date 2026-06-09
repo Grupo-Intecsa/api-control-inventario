@@ -223,13 +223,22 @@ module.exports = {
     const { id } = req.params
     const { type } = req.query
 
+    if (!id || !type) {
+      return res.status(400).json({ message: 'id y type son requeridos' })
+    }
+    if (['traslado', 'flete', 'renta'].indexOf(type) === -1) {
+      return res.status(400).json({ message: `type inválido: ${type}` })
+    }
+
     try {
       const response = await FlotillasServices.getById(id, type)
-      if (response) {
-        return res.status(200).json({ [type]: response })
+      if (!response) {
+        return res.status(404).json({ message: 'Documento no encontrado' })
       }
+      return res.status(200).json({ [type]: response })
     } catch (error) {
-      return res.status(400).json({ message: error })
+      console.error('GET /flotilla/get/:id error:', error.message)
+      return res.status(400).json({ message: error.message })
     }
   },
   updateVehiculo: async (req, res) => {
