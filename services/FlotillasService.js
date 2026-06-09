@@ -164,6 +164,11 @@ module.exports = {
     return empresa
   },
   getDocumentsByIdBussiness: async ({ idBussines, query }) => {
+    if (!mongoose.Types.ObjectId.isValid(idBussines)) {
+      const err = new Error(`idBussines inválido: ${idBussines}`)
+      err.statusCode = 400
+      throw err
+    }
     const aggCanceled = viewDocumentsCanceled(new mongoose.Types.ObjectId(idBussines))
     const aggNormal = viewDocumentsNormal(new mongoose.Types.ObjectId(idBussines))
 

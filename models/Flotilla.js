@@ -34,7 +34,7 @@ const FlotillasSchema = new Schema({
     }, 
     bussiness_cost: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'bussinesses',
+      ref: 'bussiness',
     },
     picture: {
       type: String,      
