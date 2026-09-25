@@ -1,4 +1,6 @@
 require('dotenv').config()
+const fetch = require('node-fetch');
+const { Counter } = require("../models")
 
 // de twilio whatsapp
 
@@ -18,7 +20,7 @@ module.exports = {
         const twilioMessage = await client.messages 
         .create({ 
             body: payload, 
-            from: 'whatsapp:+14155238886',       
+            from: 'whatsapp:+121212121212',       
             to: 'whatsapp:+5215524097656'
         }) 
         .then(message => message.sid )
@@ -49,6 +51,50 @@ module.exports = {
 
         return send 
         
-    }
+    },
+    createItemOnBoard: async(payload) => {
+
+        const { email, name, phone, subject, coment, urlValid  } = payload
+        
+        // TODO pasarle datos de nombre, label, email, telefono, comentario
+
+        let query4 = 'mutation ($myItemName: String!, $columnVals: JSON!) { create_item (board_id:202977424, item_name:$myItemName, column_values: $columnVals ) { id } }';
+        let vars = {
+            "myItemName" : name,
+            "columnVals": JSON.stringify({
+                "status": { "label": subject },  
+                "text3": email,
+                "text": phone,
+                "comentario": `mensaje: ${coment} archivo adjunto: ${urlValid}`                
+            })        
+                    
+        };  
+
+        // const uploadQuery = 'mutation { add_file_to_column (item_id: 1191458915, column_id: "file", $file: File!) { id } }'
+
+        const response = new Promise((resolve, reject) => {
+            resolve(
+            fetch("https://api.monday.com/v2", {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization' : process.env.MONDAYAPIAUTH
+            },
+            body: JSON.stringify({
+                'query' : query4,
+                'variables': JSON.stringify(vars)
+            })
+            })
+            .then(res => res.json())
+            .then(res => res)
+            )
+        })            
+            const p1 = Promise.all([response]).then(res => res[0])
+            
+            return p1
+
+    },
+    postCounterAgent: async ({ contador, agent }) => new Counter({ contador, agent }).save(),
+
 }
 

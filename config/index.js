@@ -1,9 +1,15 @@
-const NODE_ENV = process.env.NODE_ENV
+const NODE_ENV = process.env.NODE_ENV;
 
 const config = {
-    test: {
-        MONGO_URI: `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cchavezmx.oemvf.mongodb.net/beotestdb?authSource=admin&replicaSet=atlas-8l423c-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true`
-    }
-}
+  test: {
+    MONGO_URI: `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@gti.tcrun.mongodb.net/test?retryWrites=true&w=majority`,
+  },
+  prod: {
+    MONGO_URI: `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@gti.tcrun.mongodb.net/prod?retryWrites=true&w=majority`,
+  },
+  catv2: {
+    MONGO_URI: `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@gti.tcrun.mongodb.net/catalogov2?retryWrites=true&w=majority`,
+  },
+};
 
-module.exports = config[NODE_ENV]
+module.exports = config[NODE_ENV];
