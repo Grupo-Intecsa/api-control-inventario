@@ -1010,15 +1010,16 @@ module.exports = {
         casetas_notes: plainCostBreakdown.casetas_notes || '',
         operator_unit: plainCostBreakdown.operator_unit || 'dia',
         per_diem_unit: plainCostBreakdown.per_diem_unit || 'dia',
-        gasoline_unit: 'fijo', // spec §3.4: gasolina siempre monto fijo, nunca por km. gasoline_km queda solo informativo.
+        gasoline_unit: plainCostBreakdown.gasoline_unit || 'fijo',
         unit_rent_unit: plainCostBreakdown.unit_rent_unit || 'dia',
         unit_rent_qty: plainCostBreakdown.unit_rent_qty || 0,
+        // El subtotal real en modo desglose es la suma de conceptos, no subtotal_travel.
         profit_amount: (data?.profit_amount || plainCostBreakdown.profit_amount || 0) > 0 || parseFloat(subtotal_travel || 0) === 0
           ? (data?.profit_amount || plainCostBreakdown.profit_amount || 0)
-          : (parseFloat(subtotal_travel || 0) * ((profit_pct ?? 8) / 100)),
+          : Math.round(parseFloat(subtotal_travel || 0) * ((profit_pct ?? 8) / 100) * 100) / 100,
         indirect_amount: (data?.indirect_amount || plainCostBreakdown.indirect_amount || 0) > 0 || parseFloat(subtotal_travel || 0) === 0
           ? (data?.indirect_amount || plainCostBreakdown.indirect_amount || 0)
-          : (parseFloat(subtotal_travel || 0) * ((indirect_pct ?? 12) / 100))
+          : Math.round(parseFloat(subtotal_travel || 0) * ((indirect_pct ?? 12) / 100) * 100) / 100
       },
       pre_flight: pre_flight
         ? (pre_flight.toObject ? pre_flight.toObject() : JSON.parse(JSON.stringify(pre_flight)))

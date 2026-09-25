@@ -37,7 +37,9 @@ const mapDocumentBody = (type, body = {}) => {
     per_diem_days:    toNumber(body.per_diem_days),
     gasoline_rate:    toNumber(body.gasoline_rate),
     gasoline_unit:    body.gasoline_unit || 'fijo',
-    gasoline_km:      toNumber(body.gasoline_km ?? body.recorrido_km),
+    gasoline_km:      body.gasoline_unit === 'km'
+      ? toNumber(body.gasoline_km ?? body.recorrido_km)
+      : toNumber(body.gasoline_km ?? 1),
     unit_rent_amount: toNumber(body.unit_rent_amount),
     unit_rent_period: body.unit_rent_period || 'dia',
     unit_rent_unit:   body.unit_rent_unit || 'dia',
@@ -115,6 +117,7 @@ const mapDocumentBody = (type, body = {}) => {
 }
 
 module.exports = {
+  mapDocumentBody,
   create: async (type, body) => {
     const payload = mapDocumentBody(type, body)
     switch (type) {
